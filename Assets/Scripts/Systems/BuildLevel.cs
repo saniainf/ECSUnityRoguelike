@@ -19,7 +19,7 @@ namespace Client
 
         char[,] levelArray = new char[,]{
             { '8','8','8','8','8','8','8','8','8','8' },
-            { '8','.','.','.','.','.','.','.','.','8' },
+            { '8','@','.','.','.','.','.','.','.','8' },
             { '8','.','.','.','.','.','.','.','.','8' },
             { '8','.','.','.','.','.','.','.','.','8' },
             { '8','.','.','.','.','.','.','.','.','8' },
@@ -45,6 +45,7 @@ namespace Client
         Sprite[] floorSprites;
         Sprite sodaSprite;
         Sprite appleSprite;
+        Sprite playerSprite;
 
         void IEcsInitSystem.Initialize()
         {
@@ -54,6 +55,7 @@ namespace Client
             floorSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 32, 33, 34, 35, 36, 37, 38, 39 });
             sodaSprite = spriteSheet[18];
             appleSprite = spriteSheet[19];
+            playerSprite = spriteSheet[0];
 
             List<Coords> emptyCells = new List<Coords>();
 
@@ -68,14 +70,15 @@ namespace Client
             for (int i = 0; i < levelArray.GetLength(0); i++)
                 for (int j = 0; j < levelArray.GetLength(1); j++)
                 {
+                    go = LayoutSpriteObjects(j, i, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
+                    _world.CreateEntityWith(out positionComponent);
+                    positionComponent.Transform = go.transform;
+                    positionComponent.Coords.X = (int)go.transform.localPosition.x;
+                    positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+
                     switch (levelArray[i, j])
                     {
                         case '.':
-                            go = LayoutSpriteObjects(j, i, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
-                            _world.CreateEntityWith(out positionComponent);
-                            positionComponent.Transform = go.transform;
-                            positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                            positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                             coords.X = j;
                             coords.Y = i;
                             emptyCells.Add(coords);
@@ -87,6 +90,13 @@ namespace Client
                             positionComponent.Coords.X = (int)go.transform.localPosition.x;
                             positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                             wallComponent.Solid = true;
+                            break;
+                        case '@':
+                            go = LayoutSpriteObjects(j, i, "player", gameBoardRoot, LayersName.Object.ToString(), playerSprite);
+                            _world.CreateEntityWith(out positionComponent);
+                            positionComponent.Transform = go.transform;
+                            positionComponent.Coords.X = (int)go.transform.localPosition.x;
+                            positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                             break;
                         default:
                             break;
