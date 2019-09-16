@@ -21,7 +21,7 @@ namespace Client
                 // Register your systems here, for example:
                 // .Add (new TestSystem1())
                 // .Add (new TestSystem2())
-                //.Add(new UserInputSystem())
+                .Add(new UserInputSystem())
                 //.Add(new LevelBoardSystem())
                 .Add(new BuildLevel());
             _systems.Initialize();

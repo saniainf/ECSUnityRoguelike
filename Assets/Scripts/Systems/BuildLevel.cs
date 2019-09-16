@@ -10,9 +10,12 @@ namespace Client
         readonly EcsWorld _world = null;
         EcsFilter<Position> _positions = null;
         EcsFilter<Wall> _wall = null;
+        EcsFilter<Player> _player = null;
 
         Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
         GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
+        GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
+        RuntimeAnimatorController playerAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/PlayerAnimatorController");
 
         Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -70,7 +73,7 @@ namespace Client
             for (int i = 0; i < levelArray.GetLength(0); i++)
                 for (int j = 0; j < levelArray.GetLength(1); j++)
                 {
-                    go = LayoutSpriteObjects(j, i, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
+                    go = LayoutSpriteObjects(prefabSprite, j, i, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
                     _world.CreateEntityWith(out positionComponent);
                     positionComponent.Transform = go.transform;
                     positionComponent.Coords.X = (int)go.transform.localPosition.x;
@@ -84,7 +87,7 @@ namespace Client
                             emptyCells.Add(coords);
                             break;
                         case '8':
-                            go = LayoutSpriteObjects(j, i, "solidWall", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(solidWallSprites));
+                            go = LayoutSpriteObjects(prefabSprite, j, i, "solidWall", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(solidWallSprites));
                             _world.CreateEntityWith(out positionComponent, out wallComponent);
                             positionComponent.Transform = go.transform;
                             positionComponent.Coords.X = (int)go.transform.localPosition.x;
@@ -92,11 +95,12 @@ namespace Client
                             wallComponent.Solid = true;
                             break;
                         case '@':
-                            go = LayoutSpriteObjects(j, i, "player", gameBoardRoot, LayersName.Object.ToString(), playerSprite);
-                            _world.CreateEntityWith(out positionComponent);
+                            go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Object.ToString(), playerAnimation);
+                            _world.CreateEntityWith(out positionComponent, out Player player);
                             positionComponent.Transform = go.transform;
                             positionComponent.Coords.X = (int)go.transform.localPosition.x;
                             positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                            player.animator = go.GetComponent<Animator>();
                             break;
                         default:
                             break;
@@ -106,7 +110,7 @@ namespace Client
             {
                 Coords cell = VExt.NextFromList(emptyCells);
 
-                go = LayoutSpriteObjects(cell.X, cell.Y, "apple", gameObjectsRoot, LayersName.Object.ToString(), appleSprite);
+                go = LayoutSpriteObjects(prefabSprite, cell.X, cell.Y, "apple", gameObjectsRoot, LayersName.Object.ToString(), appleSprite);
                 _world.CreateEntityWith(out positionComponent, out foodComponent);
                 positionComponent.Transform = go.transform;
                 positionComponent.Coords.X = (int)go.transform.localPosition.x;
@@ -120,7 +124,7 @@ namespace Client
             {
                 Coords cell = VExt.NextFromList(emptyCells);
 
-                go = LayoutSpriteObjects(cell.X, cell.Y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
+                go = LayoutSpriteObjects(prefabSprite, cell.X, cell.Y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
                 _world.CreateEntityWith(out positionComponent, out foodComponent);
                 positionComponent.Transform = go.transform;
                 positionComponent.Coords.X = (int)go.transform.localPosition.x;
@@ -135,7 +139,7 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
                 int indxSprite = Random.Range(0, softWall.Length);
 
-                go = LayoutSpriteObjects(cell.X, cell.Y, "softWall", gameObjectsRoot, LayersName.Object.ToString(), softWall[indxSprite]);
+                go = LayoutSpriteObjects(prefabSprite, cell.X, cell.Y, "softWall", gameObjectsRoot, LayersName.Object.ToString(), softWall[indxSprite]);
                 _world.CreateEntityWith(out positionComponent, out wallComponent);
                 positionComponent.Transform = go.transform;
                 positionComponent.Coords.X = (int)go.transform.localPosition.x;
@@ -147,9 +151,9 @@ namespace Client
             }
         }
 
-        private GameObject LayoutSpriteObjects(int x, int y, string name, Transform parent, string sortingLayer, Sprite sprite)
+        private GameObject LayoutSpriteObjects(GameObject prefab, int x, int y, string name, Transform parent, string sortingLayer, Sprite sprite)
         {
-            GameObject go = Object.Instantiate(prefabSprite);
+            GameObject go = Object.Instantiate(prefab);
             go.transform.SetParent(parent);
             go.transform.localPosition = new Vector2(x, y);
             go.name = ($"{name}_{go.transform.localPosition.x}_{go.transform.localPosition.y}");
@@ -157,6 +161,16 @@ namespace Client
             SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
             sr.sortingLayerName = sortingLayer;
             sr.sprite = sprite;
+
+            return go;
+        }
+
+        private GameObject LayoutAnimationObjects(GameObject prefab, int x, int y, string name, Transform parent, string sortingLayer, RuntimeAnimatorController controller)
+        {
+            GameObject go = LayoutSpriteObjects(prefab, x, y, name, parent, sortingLayer, null);
+
+            Animator animator = go.GetComponent<Animator>();
+            animator.runtimeAnimatorController = controller;
 
             return go;
         }
@@ -171,6 +185,11 @@ namespace Client
             foreach (int i in _wall)
             {
                 _wall.Components1[i].damageSprite = null;
+            }
+
+            foreach (int i in _player)
+            {
+                _player.Components1[i].animator = null;
             }
         }
     }
