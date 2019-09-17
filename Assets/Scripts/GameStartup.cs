@@ -18,14 +18,12 @@ namespace Client
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
 #endif
             _systems
-                // Register your systems here, for example:
-                // .Add (new TestSystem1())
-                // .Add (new TestSystem2())
+                .Add(new TurnSystem())
+                .Add(new ActionSystem())
                 .Add(new UserInputSystem())
-                //.Add(new LevelBoardSystem())
                 .Add(new BuildLevel());
             _systems
-                .Inject(new TestInject());
+                .Inject(new InjectFields());
             _systems.Initialize();
         }
 
