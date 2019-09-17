@@ -24,6 +24,8 @@ namespace Client
                 .Add(new UserInputSystem())
                 //.Add(new LevelBoardSystem())
                 .Add(new BuildLevel());
+            _systems
+                .Inject(new TestInject());
             _systems.Initialize();
         }
 
