@@ -11,7 +11,7 @@ namespace Client
 
         void IEcsRunSystem.Run()
         {
-            
+
         }
     }
 }

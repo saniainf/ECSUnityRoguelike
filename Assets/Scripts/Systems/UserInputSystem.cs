@@ -7,7 +7,7 @@ namespace Client
     sealed class UserInputSystem : IEcsRunSystem
     {
         EcsWorld _world = null;
-        EcsFilter<Player> _player = null;
+        //EcsFilter<Player> _player = null;
 
         void IEcsRunSystem.Run()
         {

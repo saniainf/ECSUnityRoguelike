@@ -10,12 +10,14 @@ namespace Client
         readonly EcsWorld _world = null;
         EcsFilter<Position> _positions = null;
         EcsFilter<Wall> _wall = null;
-        EcsFilter<Player> _player = null;
+        EcsFilter<Animation> _player = null;
 
         Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
         GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
         GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
         RuntimeAnimatorController playerAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/PlayerAnimatorController");
+        RuntimeAnimatorController enemyAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/EnemyAnimatorController");
+        RuntimeAnimatorController enemy2Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
 
         Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -35,6 +37,8 @@ namespace Client
         int sodaCount = 3;
         int appleCount = 1;
         int wallCount = 3;
+        int enemyCount = 2;
+        int enemy2Count = 1;
 
         int appleFoodValue = 20;
         int sodaFoodValue = 10;
@@ -48,7 +52,6 @@ namespace Client
         Sprite[] floorSprites;
         Sprite sodaSprite;
         Sprite appleSprite;
-        Sprite playerSprite;
 
         void IEcsInitSystem.Initialize()
         {
@@ -58,7 +61,6 @@ namespace Client
             floorSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 32, 33, 34, 35, 36, 37, 38, 39 });
             sodaSprite = spriteSheet[18];
             appleSprite = spriteSheet[19];
-            playerSprite = spriteSheet[0];
 
             List<Coords> emptyCells = new List<Coords>();
 
@@ -67,6 +69,7 @@ namespace Client
             Position positionComponent;
             Wall wallComponent;
             Food foodComponent;
+            Animation animationComponent;
 
             VExt.ReverseArray(ref levelArray);
 
@@ -96,11 +99,11 @@ namespace Client
                             break;
                         case '@':
                             go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Object.ToString(), playerAnimation);
-                            _world.CreateEntityWith(out positionComponent, out Player player);
+                            _world.CreateEntityWith(out positionComponent, out animationComponent);
                             positionComponent.Transform = go.transform;
                             positionComponent.Coords.X = (int)go.transform.localPosition.x;
                             positionComponent.Coords.Y = (int)go.transform.localPosition.y;
-                            player.animator = go.GetComponent<Animator>();
+                            animationComponent.animator = go.GetComponent<Animator>();
                             break;
                         default:
                             break;
@@ -147,6 +150,35 @@ namespace Client
                 wallComponent.Solid = false;
                 wallComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
                 wallComponent.damageSprite = softWallDamage[indxSprite];
+
+                emptyCells.Remove(cell);
+            }
+
+            for (int i = 0; i < enemyCount; i++)
+            {
+                Coords cell = VExt.NextFromList(emptyCells);
+
+                go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy", gameObjectsRoot, LayersName.Object.ToString(), enemyAnimation);
+                _world.CreateEntityWith(out positionComponent, out animationComponent);
+                positionComponent.Transform = go.transform;
+                positionComponent.Coords.X = (int)go.transform.localPosition.x;
+                positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                animationComponent.animator = go.GetComponent<Animator>();
+
+                emptyCells.Remove(cell);
+            }
+
+            for (int i = 0; i < enemy2Count; i++)
+            {
+                Coords cell = VExt.NextFromList(emptyCells);
+
+                go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy2", gameObjectsRoot, LayersName.Object.ToString(), enemy2Animation);
+                _world.CreateEntityWith(out positionComponent, out animationComponent);
+                positionComponent.Transform = go.transform;
+                positionComponent.Coords.X = (int)go.transform.localPosition.x;
+                positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                animationComponent.animator = go.GetComponent<Animator>();
+
                 emptyCells.Remove(cell);
             }
         }

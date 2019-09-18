@@ -2,9 +2,8 @@ using UnityEngine;
 
 namespace Client
 {
-    sealed class Player
+    sealed class Animation
     {
-        public int HealthPoint = 10;
         public Animator animator;
     }
 }
