@@ -6,5 +6,6 @@ namespace Client
     {
         public Coords Coords;
         public Transform Transform;
+        public Rigidbody2D Rigidbody;
     }
 }

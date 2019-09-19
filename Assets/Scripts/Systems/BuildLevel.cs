@@ -8,6 +8,8 @@ namespace Client
     sealed class BuildLevel : IEcsInitSystem
     {
         readonly EcsWorld _world = null;
+        readonly InjectFields _injectFields = null;
+
         EcsFilter<Position> _positions = null;
         EcsFilter<Wall> _wall = null;
         EcsFilter<Animation> _player = null;
@@ -70,6 +72,7 @@ namespace Client
             Wall wallComponent;
             Food foodComponent;
             Animation animationComponent;
+            Action actionComponent;
 
             VExt.ReverseArray(ref levelArray);
 
@@ -99,11 +102,16 @@ namespace Client
                             break;
                         case '@':
                             go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Object.ToString(), playerAnimation);
-                            _world.CreateEntityWith(out positionComponent, out animationComponent);
+                            EcsEntity playerEntity = _world.CreateEntityWith(out positionComponent, out animationComponent, out actionComponent);
+
                             positionComponent.Transform = go.transform;
                             positionComponent.Coords.X = (int)go.transform.localPosition.x;
                             positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                            positionComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             animationComponent.animator = go.GetComponent<Animator>();
+                            actionComponent.MoveDirection = MoveDirection.NONE;
+
+                            _injectFields.thisTurnEntity = playerEntity;
                             break;
                         default:
                             break;
@@ -159,11 +167,12 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy", gameObjectsRoot, LayersName.Object.ToString(), enemyAnimation);
-                _world.CreateEntityWith(out positionComponent, out animationComponent);
+                _world.CreateEntityWith(out positionComponent, out animationComponent, out actionComponent);
                 positionComponent.Transform = go.transform;
                 positionComponent.Coords.X = (int)go.transform.localPosition.x;
                 positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                 animationComponent.animator = go.GetComponent<Animator>();
+                actionComponent.MoveDirection = MoveDirection.NONE;
 
                 emptyCells.Remove(cell);
             }
@@ -173,11 +182,12 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy2", gameObjectsRoot, LayersName.Object.ToString(), enemy2Animation);
-                _world.CreateEntityWith(out positionComponent, out animationComponent);
+                _world.CreateEntityWith(out positionComponent, out animationComponent, out actionComponent);
                 positionComponent.Transform = go.transform;
                 positionComponent.Coords.X = (int)go.transform.localPosition.x;
                 positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                 animationComponent.animator = go.GetComponent<Animator>();
+                actionComponent.MoveDirection = MoveDirection.NONE;
 
                 emptyCells.Remove(cell);
             }
@@ -212,6 +222,7 @@ namespace Client
             foreach (int i in _positions)
             {
                 _positions.Components1[i].Transform = null;
+                _positions.Components1[i].Rigidbody = null;
             }
 
             foreach (int i in _wall)
