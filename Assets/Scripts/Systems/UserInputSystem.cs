@@ -20,7 +20,7 @@ namespace Client
             EcsEntity entity = _injectFields.thisTurnEntity;
             Specify specify = _world.GetComponent<Specify>(in entity);
             Rigidbody2D rb = _world.GetComponent<Position>(in entity).Rigidbody;
-
+            /*
             if (specify.Status == Status.ACTION)
             {
                 Vector2 newPostion = Vector2.MoveTowards(rb.position, specify.EndPosition, 5f * Time.deltaTime);

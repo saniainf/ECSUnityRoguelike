@@ -14,6 +14,7 @@ namespace Client
         List<EcsEntity> npc;
 
         EcsEntity thisTurnEntity;
+        int thisTurnEntityId = 0;
 
         void IEcsInitSystem.Initialize()
         {
@@ -32,16 +33,22 @@ namespace Client
                 }
             }
 
-            thisTurnEntity = npc[0];
-            Specify specify = _world.GetComponent<Specify>(thisTurnEntity);
-            specify.Status = Status.ACTION;
+            //thisTurnEntity = npc[thisTurnEntityId];
+            //Specify thisTurnEntitySpecify = _world.GetComponent<Specify>(thisTurnEntity);
+            //thisTurnEntitySpecify.Status = Status.ACTION;
             _injectFields.thisTurnEntity = thisTurnEntity;
+
+            _world.RemoveEntity(in thisTurnEntity);
         }
 
         void IEcsRunSystem.Run()
         {
-            _world.IsEntityExists(in _injectFields.thisTurnEntity);
-
+            //npc.RemoveAll(entity => _world.IsEntityExists(in entity) == false);
+            //Specify thisTurnEntitySpecify = _world.GetComponent<Specify>(thisTurnEntity);
+            //if (thisTurnEntitySpecify.Status == Status.STANDBY)
+            //{
+            //    thisTurnEntity = npc[thisTurnEntityId + 1 > npc.Count ? 0 : thisTurnEntityId + 1];
+            //}
         }
 
         void IEcsInitSystem.Destroy()
