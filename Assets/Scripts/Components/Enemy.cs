@@ -1,6 +1,6 @@
 namespace Client
 {
-    sealed class Turn
+    sealed class Enemy
     {
         // Add your data here.
     }

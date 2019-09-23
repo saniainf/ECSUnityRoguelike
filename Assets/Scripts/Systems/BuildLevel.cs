@@ -72,7 +72,7 @@ namespace Client
             Wall wallComponent;
             Food foodComponent;
             Animation animationComponent;
-            Action actionComponent;
+            Specify specifyComponent;
 
             VExt.ReverseArray(ref levelArray);
 
@@ -102,15 +102,13 @@ namespace Client
                             break;
                         case '@':
                             go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Object.ToString(), playerAnimation);
-                            EcsEntity playerEntity = _world.CreateEntityWith(out positionComponent, out animationComponent, out actionComponent);
-
+                            EcsEntity playerEntity = _world.CreateEntityWith(out positionComponent, out animationComponent, out specifyComponent);
+                            _world.AddComponent<Player>(in playerEntity);
                             positionComponent.Transform = go.transform;
                             positionComponent.Coords.X = (int)go.transform.localPosition.x;
                             positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                             positionComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             animationComponent.animator = go.GetComponent<Animator>();
-                            actionComponent.MoveDirection = MoveDirection.NONE;
-
                             _injectFields.thisTurnEntity = playerEntity;
                             break;
                         default:
@@ -167,12 +165,13 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy", gameObjectsRoot, LayersName.Object.ToString(), enemyAnimation);
-                _world.CreateEntityWith(out positionComponent, out animationComponent, out actionComponent);
+                EcsEntity enemy1 = _world.CreateEntityWith(out positionComponent, out animationComponent, out specifyComponent);
+                _world.AddComponent<Enemy>(in enemy1);
                 positionComponent.Transform = go.transform;
                 positionComponent.Coords.X = (int)go.transform.localPosition.x;
                 positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                 animationComponent.animator = go.GetComponent<Animator>();
-                actionComponent.MoveDirection = MoveDirection.NONE;
+                specifyComponent.MoveDirection = MoveDirection.NONE;
 
                 emptyCells.Remove(cell);
             }
@@ -182,12 +181,13 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy2", gameObjectsRoot, LayersName.Object.ToString(), enemy2Animation);
-                _world.CreateEntityWith(out positionComponent, out animationComponent, out actionComponent);
+                EcsEntity enemy2 = _world.CreateEntityWith(out positionComponent, out animationComponent, out specifyComponent);
+                _world.AddComponent<Enemy>(in enemy2);
                 positionComponent.Transform = go.transform;
                 positionComponent.Coords.X = (int)go.transform.localPosition.x;
                 positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                 animationComponent.animator = go.GetComponent<Animator>();
-                actionComponent.MoveDirection = MoveDirection.NONE;
+                specifyComponent.MoveDirection = MoveDirection.NONE;
 
                 emptyCells.Remove(cell);
             }

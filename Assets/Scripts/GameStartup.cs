@@ -18,10 +18,10 @@ namespace Client
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
 #endif
             _systems
+                .Add(new BuildLevel())
                 .Add(new TurnSystem())
                 .Add(new ActionSystem())
-                .Add(new UserInputSystem())
-                .Add(new BuildLevel());
+                .Add(new UserInputSystem());
             _systems
                 .Inject(new InjectFields());
             _systems.Initialize();
