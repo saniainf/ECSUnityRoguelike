@@ -19,9 +19,10 @@ namespace Client
 #endif
             _systems
                 .Add(new BuildLevel())
-                .Add(new TurnSystem())
-                .Add(new ActionSystem())
-                .Add(new UserInputSystem());
+                //.Add(new TurnSystem())
+                //.Add(new ActionSystem())
+                //.Add(new UserInputSystem())
+                .Add(new TestSystem());
             _systems
                 .Inject(new InjectFields());
             _systems.Initialize();

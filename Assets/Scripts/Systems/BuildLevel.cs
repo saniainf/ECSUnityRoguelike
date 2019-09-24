@@ -109,7 +109,6 @@ namespace Client
                             positionComponent.Coords.Y = (int)go.transform.localPosition.y;
                             positionComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             animationComponent.animator = go.GetComponent<Animator>();
-                            _injectFields.thisTurnEntity = playerEntity;
                             break;
                         default:
                             break;
@@ -219,21 +218,21 @@ namespace Client
 
         void IEcsInitSystem.Destroy()
         {
-            foreach (int i in _positions)
-            {
-                _positions.Components1[i].Transform = null;
-                _positions.Components1[i].Rigidbody = null;
-            }
+            //foreach (int i in _positions)
+            //{
+            //    _positions.Components1[i].Transform = null;
+            //    _positions.Components1[i].Rigidbody = null;
+            //}
 
-            foreach (int i in _wall)
-            {
-                _wall.Components1[i].damageSprite = null;
-            }
+            //foreach (int i in _wall)
+            //{
+            //    _wall.Components1[i].damageSprite = null;
+            //}
 
-            foreach (int i in _player)
-            {
-                _player.Components1[i].animator = null;
-            }
+            //foreach (int i in _player)
+            //{
+            //    _player.Components1[i].animator = null;
+            //}
         }
     }
 }

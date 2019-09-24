@@ -17,9 +17,9 @@ namespace Client
         {
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
-            EcsEntity entity = _injectFields.thisTurnEntity;
-            Specify specify = _world.GetComponent<Specify>(in entity);
-            Rigidbody2D rb = _world.GetComponent<Position>(in entity).Rigidbody;
+            //EcsEntity entity = _injectFields.thisTurnEntity;
+            //Specify specify = _world.GetComponent<Specify>(in entity);
+            //Rigidbody2D rb = _world.GetComponent<Position>(in entity).Rigidbody;
             /*
             if (specify.Status == Status.ACTION)
             {
