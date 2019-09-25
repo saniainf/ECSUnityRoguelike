@@ -18,11 +18,13 @@ namespace Client
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
 #endif
             _systems
-                .Add(new BuildLevel())
-                //.Add(new TurnSystem())
-                //.Add(new ActionSystem())
-                //.Add(new UserInputSystem())
-                .Add(new TestSystem());
+                .Add(new GameWorldInitSystem());
+            //.Add(new BuildLevel())
+            //.Add(new TurnSystem())
+            //.Add(new ActionSystem())
+            _systems
+                .Add(new UserInputSystem())
+                .Add(new GameWorldSystem());
             _systems
                 .Inject(new InjectFields());
             _systems.Initialize();
@@ -31,7 +33,7 @@ namespace Client
         void Update()
         {
             _systems.Run();
-            // Optional: One-frame components cleanup.
+
             _world.RemoveOneFrameComponents();
         }
 

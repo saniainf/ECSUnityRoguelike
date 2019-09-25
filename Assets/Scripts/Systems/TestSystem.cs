@@ -7,7 +7,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
         InjectFields _injectField = null;
-        EcsFilter<Position> _entity = null;
+        EcsFilter<PositionComponent> _entity = null;
 
         void IEcsInitSystem.Initialize()
         {
@@ -21,12 +21,7 @@ namespace Client
         {
             foreach (var item in _entity)
             {
-                _world.RemoveEntity(in _entity.Entities[item]);
-            }
-
-            foreach (var item in _injectField.Entities)
-            {
-                var c1 = _world.GetComponent<Position>(in item);
+                _world.AddComponent<GameObjectRemoveEvent>(in _entity.Entities[item]);
             }
         }
 

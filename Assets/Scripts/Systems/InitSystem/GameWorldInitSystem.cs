@@ -5,15 +5,11 @@ using UnityEngine;
 namespace Client
 {
     [EcsInject]
-    sealed class BuildLevel : IEcsInitSystem
+    sealed class GameWorldInitSystem : IEcsInitSystem
     {
         readonly EcsWorld _world = null;
-        readonly InjectFields _injectFields = null;
 
-        EcsFilter<PositionComponent> _positions = null;
-        EcsFilter<Wall> _wall = null;
-        EcsFilter<AnimationComponent> _player = null;
-
+        #region Resourses
         Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
         GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
         GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
@@ -36,6 +32,15 @@ namespace Client
             { '8','.','.','.','8','.','.','.','.','8' },
             { '8','8','8','8','8','8','8','8','8','8' }};
 
+        Sprite[] solidWallSprites;
+        Sprite[] softWall;
+        Sprite[] softWallDamage;
+        Sprite[] floorSprites;
+        Sprite sodaSprite;
+        Sprite appleSprite;
+        #endregion
+
+        #region Settings
         int sodaCount = 3;
         int appleCount = 1;
         int wallCount = 3;
@@ -47,13 +52,7 @@ namespace Client
 
         int minWallHP = 1;
         int maxWallHP = 4;
-
-        Sprite[] solidWallSprites;
-        Sprite[] softWall;
-        Sprite[] softWallDamage;
-        Sprite[] floorSprites;
-        Sprite sodaSprite;
-        Sprite appleSprite;
+        #endregion
 
         void IEcsInitSystem.Initialize()
         {
@@ -68,11 +67,11 @@ namespace Client
 
             GameObject go;
             Coords coords = new Coords();
-            PositionComponent positionComponent;
             Wall wallComponent;
             Food foodComponent;
             AnimationComponent animationComponent;
             SpecifyComponent specifyComponent;
+            GameObjectCreateEvent gameObjectCreateEvent;
 
             VExt.ReverseArray(ref levelArray);
 
@@ -80,10 +79,9 @@ namespace Client
                 for (int j = 0; j < levelArray.GetLength(1); j++)
                 {
                     go = LayoutSpriteObjects(prefabSprite, j, i, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
-                    _world.CreateEntityWith(out positionComponent);
-                    positionComponent.Transform = go.transform;
-                    positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                    positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                    var wallEntity = _world.CreateEntityWith(out gameObjectCreateEvent);
+                    gameObjectCreateEvent.Transform = go.transform;
+                    gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
                     switch (levelArray[i, j])
                     {
@@ -94,20 +92,16 @@ namespace Client
                             break;
                         case '8':
                             go = LayoutSpriteObjects(prefabSprite, j, i, "solidWall", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(solidWallSprites));
-                            _world.CreateEntityWith(out positionComponent, out wallComponent);
-                            positionComponent.Transform = go.transform;
-                            positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                            positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                            var solidWall = _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent);
+                            gameObjectCreateEvent.Transform = go.transform;
+                            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             wallComponent.Solid = true;
                             break;
                         case '@':
                             go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Object.ToString(), playerAnimation);
-                            EcsEntity playerEntity = _world.CreateEntityWith(out positionComponent, out animationComponent, out specifyComponent);
-                            _world.AddComponent<Player>(in playerEntity);
-                            positionComponent.Transform = go.transform;
-                            positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                            positionComponent.Coords.Y = (int)go.transform.localPosition.y;
-                            positionComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
+                            var playerEntity = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out Player player);
+                            gameObjectCreateEvent.Transform = go.transform;
+                            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             animationComponent.animator = go.GetComponent<Animator>();
                             break;
                         default:
@@ -119,10 +113,9 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutSpriteObjects(prefabSprite, cell.X, cell.Y, "apple", gameObjectsRoot, LayersName.Object.ToString(), appleSprite);
-                _world.CreateEntityWith(out positionComponent, out foodComponent);
-                positionComponent.Transform = go.transform;
-                positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                _world.CreateEntityWith(out gameObjectCreateEvent, out foodComponent);
+                gameObjectCreateEvent.Transform = go.transform;
+                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 foodComponent.foodValue = appleFoodValue;
 
                 emptyCells.Remove(cell);
@@ -133,10 +126,9 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutSpriteObjects(prefabSprite, cell.X, cell.Y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
-                _world.CreateEntityWith(out positionComponent, out foodComponent);
-                positionComponent.Transform = go.transform;
-                positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                _world.CreateEntityWith(out gameObjectCreateEvent, out foodComponent);
+                gameObjectCreateEvent.Transform = go.transform;
+                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 foodComponent.foodValue = sodaFoodValue;
 
                 emptyCells.Remove(cell);
@@ -148,10 +140,9 @@ namespace Client
                 int indxSprite = Random.Range(0, softWall.Length);
 
                 go = LayoutSpriteObjects(prefabSprite, cell.X, cell.Y, "softWall", gameObjectsRoot, LayersName.Object.ToString(), softWall[indxSprite]);
-                _world.CreateEntityWith(out positionComponent, out wallComponent);
-                positionComponent.Transform = go.transform;
-                positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent);
+                gameObjectCreateEvent.Transform = go.transform;
+                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 wallComponent.Solid = false;
                 wallComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
                 wallComponent.damageSprite = softWallDamage[indxSprite];
@@ -164,11 +155,10 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy", gameObjectsRoot, LayersName.Object.ToString(), enemyAnimation);
-                EcsEntity enemy1 = _world.CreateEntityWith(out positionComponent, out animationComponent, out specifyComponent);
+                EcsEntity enemy1 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out specifyComponent);
                 _world.AddComponent<Enemy>(in enemy1);
-                positionComponent.Transform = go.transform;
-                positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                gameObjectCreateEvent.Transform = go.transform;
+                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 animationComponent.animator = go.GetComponent<Animator>();
                 specifyComponent.MoveDirection = MoveDirection.NONE;
 
@@ -180,11 +170,10 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy2", gameObjectsRoot, LayersName.Object.ToString(), enemy2Animation);
-                EcsEntity enemy2 = _world.CreateEntityWith(out positionComponent, out animationComponent, out specifyComponent);
+                EcsEntity enemy2 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out specifyComponent);
                 _world.AddComponent<Enemy>(in enemy2);
-                positionComponent.Transform = go.transform;
-                positionComponent.Coords.X = (int)go.transform.localPosition.x;
-                positionComponent.Coords.Y = (int)go.transform.localPosition.y;
+                gameObjectCreateEvent.Transform = go.transform;
+                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 animationComponent.animator = go.GetComponent<Animator>();
                 specifyComponent.MoveDirection = MoveDirection.NONE;
 
@@ -197,7 +186,7 @@ namespace Client
             GameObject go = Object.Instantiate(prefab);
             go.transform.SetParent(parent);
             go.transform.localPosition = new Vector2(x, y);
-            go.name = ($"{name}_{go.transform.localPosition.x}_{go.transform.localPosition.y}");
+            go.name = ($"{name}_(x{go.transform.localPosition.x}, y{go.transform.localPosition.y})");
 
             SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
             sr.sortingLayerName = sortingLayer;
@@ -218,21 +207,7 @@ namespace Client
 
         void IEcsInitSystem.Destroy()
         {
-            //foreach (int i in _positions)
-            //{
-            //    _positions.Components1[i].Transform = null;
-            //    _positions.Components1[i].Rigidbody = null;
-            //}
 
-            //foreach (int i in _wall)
-            //{
-            //    _wall.Components1[i].damageSprite = null;
-            //}
-
-            //foreach (int i in _player)
-            //{
-            //    _player.Components1[i].animator = null;
-            //}
         }
     }
 }

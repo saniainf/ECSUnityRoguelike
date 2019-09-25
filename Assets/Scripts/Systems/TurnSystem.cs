@@ -8,8 +8,8 @@ namespace Client
     {
         EcsWorld _world = null;
         InjectFields _injectFields = null;
-        EcsFilter<Specify, Player> _playerEntity = null;
-        EcsFilter<Specify, Enemy> _enemyEntity = null;
+        EcsFilter<SpecifyComponent, Player> _playerEntity = null;
+        EcsFilter<SpecifyComponent, Enemy> _enemyEntity = null;
 
         void IEcsInitSystem.Initialize()
         {

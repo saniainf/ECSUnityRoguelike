@@ -11,12 +11,25 @@ namespace Client
         EcsWorld _world = null;
         InjectFields _injectFields = null;
 
-        EcsFilter<Specify> _actionEntity = null;
+        EcsFilter<SpecifyComponent> _actionEntity = null;
+        EcsFilter<PositionComponent> _entity = null;
+        EcsFilter<Wall> _wall = null;
+
+        bool press = false;
 
         void IEcsRunSystem.Run()
         {
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
+            var key = Input.GetKey(KeyCode.Space);
+            if (key && !press)
+            {
+                press = true;
+                foreach (var item in _entity)
+                {
+                    _world.AddComponent<GameObjectRemoveEvent>(in _wall.Entities[item]);
+                }
+            }
             //EcsEntity entity = _injectFields.thisTurnEntity;
             //Specify specify = _world.GetComponent<Specify>(in entity);
             //Rigidbody2D rb = _world.GetComponent<Position>(in entity).Rigidbody;

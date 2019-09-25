@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client
 {
-    sealed class Animation : IEcsAutoResetComponent
+    sealed class AnimationComponent : IEcsAutoResetComponent
     {
         public Animator animator;
 

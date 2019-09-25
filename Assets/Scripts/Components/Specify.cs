@@ -18,7 +18,7 @@ namespace Client
         TURNEND
     }
 
-    sealed class Specify
+    sealed class SpecifyComponent
     {
         public MoveDirection MoveDirection = MoveDirection.NONE;
         public Status Status = Status.STANDBY;

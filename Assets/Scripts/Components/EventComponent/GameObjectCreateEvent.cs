@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Client
 {
-    sealed class Position : IEcsAutoResetComponent
+    [EcsOneFrame]
+    sealed class GameObjectCreateEvent : IEcsAutoResetComponent
     {
-        public Coords Coords;
-        public Transform Transform;
-        public Rigidbody2D Rigidbody;
+        public Transform Transform = null;
+        public Rigidbody2D Rigidbody = null;
 
         void IEcsAutoResetComponent.Reset()
         {
