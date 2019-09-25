@@ -67,7 +67,7 @@ namespace Client
 
             GameObject go;
             Coords coords = new Coords();
-            Wall wallComponent;
+            WallComponent wallComponent;
             Food foodComponent;
             AnimationComponent animationComponent;
             SpecifyComponent specifyComponent;
@@ -99,7 +99,7 @@ namespace Client
                             break;
                         case '@':
                             go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Object.ToString(), playerAnimation);
-                            var playerEntity = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out Player player);
+                            var playerEntity = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out PlayerComponent player);
                             gameObjectCreateEvent.Transform = go.transform;
                             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             animationComponent.animator = go.GetComponent<Animator>();
@@ -156,7 +156,7 @@ namespace Client
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy", gameObjectsRoot, LayersName.Object.ToString(), enemyAnimation);
                 EcsEntity enemy1 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out specifyComponent);
-                _world.AddComponent<Enemy>(in enemy1);
+                _world.AddComponent<EnemyComponent>(in enemy1);
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 animationComponent.animator = go.GetComponent<Animator>();
@@ -171,7 +171,7 @@ namespace Client
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy2", gameObjectsRoot, LayersName.Object.ToString(), enemy2Animation);
                 EcsEntity enemy2 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out specifyComponent);
-                _world.AddComponent<Enemy>(in enemy2);
+                _world.AddComponent<EnemyComponent>(in enemy2);
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 animationComponent.animator = go.GetComponent<Animator>();

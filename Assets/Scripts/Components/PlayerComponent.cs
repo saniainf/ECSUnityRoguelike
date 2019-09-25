@@ -1,6 +1,6 @@
 namespace Client
 {
-    sealed class Player
+    sealed class PlayerComponent
     {
         // Add your data here.
     }

@@ -14,6 +14,7 @@ namespace Client
     enum Status
     {
         STANDBY,
+        INPUT,
         ACTION,
         TURNEND
     }
@@ -26,5 +27,6 @@ namespace Client
         public Vector2 EndPosition = Vector2.zero;
         public float Speed = 0f;
         public Vector2 Direction = Vector2.zero;
+        public int Initiative = 0;
     }
 }

@@ -1,6 +1,6 @@
 namespace Client
 {
-    sealed class Enemy
+    sealed class EnemyComponent
     {
         // Add your data here.
     }

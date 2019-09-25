@@ -8,12 +8,10 @@ namespace Client
     [EcsInject]
     sealed class UserInputSystem : IEcsRunSystem
     {
-        EcsWorld _world = null;
-        InjectFields _injectFields = null;
-
-        EcsFilter<SpecifyComponent> _actionEntity = null;
-        EcsFilter<PositionComponent> _entity = null;
-        EcsFilter<Wall> _wall = null;
+        readonly EcsWorld _world = null;
+        readonly EcsFilter<SpecifyComponent> _actionEntity = null;
+        readonly EcsFilter<PositionComponent> _entity = null;
+        readonly EcsFilter<WallComponent> _wall = null;
 
         bool press = false;
 
@@ -25,9 +23,10 @@ namespace Client
             if (key && !press)
             {
                 press = true;
-                foreach (var item in _entity)
+                Debug.Log("press");
+                foreach (var item in _actionEntity)
                 {
-                    _world.AddComponent<GameObjectRemoveEvent>(in _wall.Entities[item]);
+                    _world.AddComponent<GameObjectRemoveEvent>(in _actionEntity.Entities[item]);
                 }
             }
             //EcsEntity entity = _injectFields.thisTurnEntity;

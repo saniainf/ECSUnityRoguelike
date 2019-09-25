@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client
 {
-    sealed class Wall : IEcsAutoResetComponent
+    sealed class WallComponent : IEcsAutoResetComponent
     {
         public bool Solid = false;
         public int HealthPoint = 3;
