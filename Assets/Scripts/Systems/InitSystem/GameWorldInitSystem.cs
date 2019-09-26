@@ -100,6 +100,9 @@ namespace Client
                         case '@':
                             go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Object.ToString(), playerAnimation);
                             var playerEntity = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out PlayerComponent player);
+                            specifyComponent = _world.AddComponent<SpecifyComponent>(in playerEntity);
+                            _world.AddComponent<TurnComponent>(in playerEntity);
+                            specifyComponent.MoveDirection = MoveDirection.NONE;
                             gameObjectCreateEvent.Transform = go.transform;
                             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             animationComponent.animator = go.GetComponent<Animator>();
