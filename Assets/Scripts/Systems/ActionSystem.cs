@@ -7,84 +7,53 @@ namespace Client
     sealed class ActionSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<SpecifyComponent, ActionPhaseComponent> _actionPhaseEntities = null;
+        readonly EcsFilter<SpecifyComponent, PositionComponent, ActionPhaseComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
 
         void IEcsRunSystem.Run()
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            foreach (var i in _actionPhaseEntities)
             {
-                foreach (var i in _actionPhaseEntities)
+                ref var rb = ref _actionPhaseEntities.Components2[i].Rigidbody;
+                ref var specify = ref _actionPhaseEntities.Components1[i];
+                var speed = 5f;
+
+                switch (specify.MoveDirection)
                 {
-                    _world.AddComponent<PhaseEndEvent>(in _actionPhaseEntities.Entities[i]);
+                    case MoveDirection.UP:
+                        specify.EndPosition = new Vector2(rb.position.x, rb.position.y + 1);
+                        specify.Speed = speed;
+                        specify.MoveDirection = MoveDirection.NONE;
+                        break;
+                    case MoveDirection.DOWN:
+                        specify.EndPosition = new Vector2(rb.position.x, rb.position.y - 1);
+                        specify.Speed = speed;
+                        specify.MoveDirection = MoveDirection.NONE;
+                        break;
+                    case MoveDirection.LEFT:
+                        specify.EndPosition = new Vector2(rb.position.x - 1, rb.position.y);
+                        specify.Speed = speed;
+                        specify.MoveDirection = MoveDirection.NONE;
+                        break;
+                    case MoveDirection.RIGHT:
+                        specify.EndPosition = new Vector2(rb.position.x + 1, rb.position.y);
+                        specify.Speed = speed;
+                        specify.MoveDirection = MoveDirection.NONE;
+                        break;
+                    case MoveDirection.NONE:
+                        break;
+                    default:
+                        break;
                 }
-            }
-            //EcsEntity entity = _injectFields.thisTurnEntity;
-            //Specify specify = _world.GetComponent<Specify>(in entity);
-            //Rigidbody2D rb = _world.GetComponent<Position>(in entity).Rigidbody;
-            /*
-            if (specify.Status == Status.ACTION)
-            {
-                Vector2 newPostion = Vector2.MoveTowards(rb.position, specify.EndPosition, 5f * Time.deltaTime);
+
+                Vector2 newPostion = Vector2.MoveTowards(rb.position, specify.EndPosition, specify.Speed * Time.deltaTime);
                 rb.MovePosition(newPostion);
                 float sqrRemainingDistance = (rb.position - specify.EndPosition).sqrMagnitude;
-                if (sqrRemainingDistance < float.Epsilon)
-                    specify.Status = Status.TURNEND;
-            }
 
-            /*
-            if (new Vector2(x, y).sqrMagnitude > 0.01f)
-            {
-                if (Mathf.Abs(x) > Mathf.Abs(y))
-                {
-                    if (x > 0f)
-                    {
-                        if (!specify.ActionRun)
-                        {
-                            specify.ActionRun = true;
-                            specify.StartPosition = rb.position;
-                            specify.EndPosition = new Vector2(rb.position.x + 1, rb.position.y);
-                            specify.Direction = (specify.EndPosition - specify.StartPosition).normalized;
-                            specify.Speed = 2f;
-                        }
-                    }
-                    else
-                    {
-                        if (!specify.ActionRun)
-                        {
-                            specify.ActionRun = true;
-                            specify.StartPosition = rb.position;
-                            specify.EndPosition = new Vector2(rb.position.x - 1, rb.position.y);
-                            specify.Direction = (specify.EndPosition - specify.StartPosition).normalized;
-                            specify.Speed = 2f;
-                        }
-                    }
-                }
-                else
-                {
-                    if (y > 0f)
-                    {
-                        if (!specify.ActionRun)
-                        {
-                            specify.ActionRun = true;
-                            specify.StartPosition = rb.position;
-                            specify.EndPosition = new Vector2(rb.position.x, rb.position.y + 1);
-                            specify.Direction = (specify.EndPosition - specify.StartPosition).normalized;
-                            specify.Speed = 2f;
-                        }
-                    }
-                    else
-                    {
-                        if (!specify.ActionRun)
-                        {
-                            specify.ActionRun = true;
-                            specify.StartPosition = rb.position;
-                            specify.EndPosition = new Vector2(rb.position.x, rb.position.y - 1);
-                            specify.Direction = (specify.EndPosition - specify.StartPosition).normalized;
-                            specify.Speed = 2f;
-                        }
-                    }
-                }
-            }*/
-        }
+                //next phase
+                if (sqrRemainingDistance < float.Epsilon)
+                    _world.AddComponent<PhaseEndEvent>(in _actionPhaseEntities.Entities[i]);
+
+            }
+         }
     }
 }

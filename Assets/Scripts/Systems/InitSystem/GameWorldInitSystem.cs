@@ -72,6 +72,8 @@ namespace Client
             AnimationComponent animationComponent;
             SpecifyComponent specifyComponent;
             GameObjectCreateEvent gameObjectCreateEvent;
+            EnemyComponent enemyComponent;
+            int initiative = 1;
 
             VExt.ReverseArray(ref levelArray);
 
@@ -103,6 +105,7 @@ namespace Client
                             specifyComponent = _world.AddComponent<SpecifyComponent>(in playerEntity);
                             _world.AddComponent<TurnComponent>(in playerEntity);
                             specifyComponent.MoveDirection = MoveDirection.NONE;
+                            specifyComponent.Initiative = initiative++;
                             gameObjectCreateEvent.Transform = go.transform;
                             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                             animationComponent.animator = go.GetComponent<Animator>();
@@ -158,12 +161,14 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy", gameObjectsRoot, LayersName.Object.ToString(), enemyAnimation);
-                EcsEntity enemy1 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out specifyComponent);
-                _world.AddComponent<EnemyComponent>(in enemy1);
+                EcsEntity enemy1 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
+                specifyComponent = _world.AddComponent<SpecifyComponent>(in enemy1);
+                _world.AddComponent<TurnComponent>(in enemy1);
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 animationComponent.animator = go.GetComponent<Animator>();
                 specifyComponent.MoveDirection = MoveDirection.NONE;
+                specifyComponent.Initiative = initiative++;
 
                 emptyCells.Remove(cell);
             }
@@ -173,12 +178,14 @@ namespace Client
                 Coords cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.X, cell.Y, "enemy2", gameObjectsRoot, LayersName.Object.ToString(), enemy2Animation);
-                EcsEntity enemy2 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out specifyComponent);
-                _world.AddComponent<EnemyComponent>(in enemy2);
+                EcsEntity enemy2 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
+                specifyComponent = _world.AddComponent<SpecifyComponent>(in enemy2);
+                _world.AddComponent<TurnComponent>(in enemy2);
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 animationComponent.animator = go.GetComponent<Animator>();
                 specifyComponent.MoveDirection = MoveDirection.NONE;
+                specifyComponent.Initiative = initiative++;
 
                 emptyCells.Remove(cell);
             }

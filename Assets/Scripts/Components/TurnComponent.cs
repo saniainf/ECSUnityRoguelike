@@ -5,11 +5,10 @@ namespace Client
         STANDBY,
         INPUT,
         ACTION,
-        TURNEND
     }
 
     sealed class TurnComponent
     {
-        public Phase Phase = Phase.INPUT;
+        public Phase Phase = Phase.STANDBY;
     }
 }
