@@ -9,25 +9,17 @@ namespace Client
     {
         Floor,
         Wall,
-        Object
+        Object,
+        Character
     }
 
     public static class VExt
     {
         public static Random random = new Random();
 
-        public static Vector3 ToVector3(this Vector2Int vector, float height = 0)
+        public static Vector2Int ToInt2(this Vector2 v)
         {
-            return new Vector3(vector.x, height, vector.y);
-        }
-
-        public static Vector2Int ToVector2Int(this Vector3 vector)
-        {
-            return new Vector2Int
-            {
-                x = Mathf.RoundToInt(vector.x),
-                y = Mathf.RoundToInt(vector.z),
-            };
+            return new Vector2Int((int)v.x, (int)v.y);
         }
 
         public static void ReverseArray<T>(ref T[,] array)
@@ -69,11 +61,5 @@ namespace Client
             var array = (T[])Enum.GetValues(typeof(T));
             return NextFromArray(array);
         }
-    }
-
-    struct Coords
-    {
-        public int X;
-        public int Y;
     }
 }

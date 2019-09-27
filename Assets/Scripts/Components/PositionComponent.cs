@@ -5,7 +5,7 @@ namespace Client
 {
     sealed class PositionComponent : IEcsAutoResetComponent
     {
-        public Coords Coords;
+        public Vector2Int Coords;
         public Transform Transform = null;
         public Rigidbody2D Rigidbody = null;
 

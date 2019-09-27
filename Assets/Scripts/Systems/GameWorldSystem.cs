@@ -22,8 +22,8 @@ namespace Client
                 var c1 = _world.AddComponent<PositionComponent>(in newEntity);
                 c1.Transform = newGO;
                 c1.Rigidbody = newRB;
-                c1.Coords.X = (int)newGO.transform.localPosition.x;
-                c1.Coords.Y = (int)newGO.transform.localPosition.y;
+                c1.Coords.x = (int)newGO.transform.localPosition.x;
+                c1.Coords.y = (int)newGO.transform.localPosition.y;
             }
 
             foreach (var i in _removeEvents)

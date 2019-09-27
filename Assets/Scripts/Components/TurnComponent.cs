@@ -4,11 +4,12 @@ namespace Client
     {
         STANDBY,
         INPUT,
-        ACTION,
+        ACTION
     }
 
     sealed class TurnComponent
     {
         public Phase Phase = Phase.STANDBY;
+        public bool ReturnInput = false;
     }
 }

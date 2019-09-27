@@ -1,6 +1,6 @@
 namespace Client
 {
-    sealed class Food
+    sealed class FoodComponent
     {
         public int foodValue;
     }

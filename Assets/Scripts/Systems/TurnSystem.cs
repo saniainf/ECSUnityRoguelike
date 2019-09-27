@@ -2,6 +2,7 @@ using Leopotam.Ecs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Client
 {
@@ -32,7 +33,15 @@ namespace Client
                     case Phase.ACTION:
                         _world.RemoveComponent<ActionPhaseComponent>(in entity);
                         _phaseEndEvents.Components2[i].Phase = Phase.STANDBY;
+                        ResetSpecifyField(ref _phaseEndEvents.Components3[i]);
                         // next turnEntity
+                        if (_phaseEndEvents.Components2[i].ReturnInput)
+                        {
+                            _world.AddComponent<InputPhaseComponent>(in entity);
+                            _phaseEndEvents.Components2[i].Phase = Phase.INPUT;
+                            _phaseEndEvents.Components2[i].ReturnInput = false;
+                            break;
+                        }
                         nextEntity = true;
                         thisInitiative = _phaseEndEvents.Components3[i].Initiative;
                         break;
@@ -41,9 +50,21 @@ namespace Client
                 }
             }
 
+            //TODO проверить что все енти в standby
             if (nextEntity)
+            {
                 nextTurnEnity(thisInitiative);
+            }
         }
+
+        void ResetSpecifyField(ref SpecifyComponent specify)
+        {
+            specify.EndPosition = Vector2Int.zero;
+            specify.ActionType = ActionType.NONE;
+            specify.Speed = 0f;
+            specify.MoveDirection = MoveDirection.NONE;
+        }
+
 
         void nextTurnEnity(int thisInitiative)
         {
@@ -69,8 +90,8 @@ namespace Client
             {
                 if (_turnEntities.Components2[i].Initiative == min)
                 {
-                    _turnEntities.Components1[i].Phase = Phase.INPUT;
                     _world.AddComponent<InputPhaseComponent>(in _turnEntities.Entities[i]);
+                    _turnEntities.Components1[i].Phase = Phase.INPUT;
                 }
             }
         }
