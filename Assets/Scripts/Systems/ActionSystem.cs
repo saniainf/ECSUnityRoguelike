@@ -19,13 +19,17 @@ namespace Client
         {
             foreach (var i in _actionPhaseEntities)
             {
-                ref var rb = ref _actionPhaseEntities.Components2[i].Rigidbody;
+                ref var entityPos = ref _actionPhaseEntities.Components2[i];
+                ref var rb = ref entityPos.Rigidbody;
                 ref var specify = ref _actionPhaseEntities.Components1[i];
+                ref var entity = ref _actionPhaseEntities.Entities[i];
 
                 specify.Speed = speed;
 
                 if (specify.MoveDirection != MoveDirection.NONE)
                 {
+                    SpriteRenderer sr = entityPos.Transform.gameObject.GetComponent<SpriteRenderer>();
+
                     switch (specify.MoveDirection)
                     {
                         case MoveDirection.UP:
@@ -39,10 +43,12 @@ namespace Client
                         case MoveDirection.LEFT:
                             specify.EndPosition = new Vector2Int((int)rb.position.x - 1, (int)rb.position.y);
                             specify.MoveDirection = MoveDirection.NONE;
+                            sr.flipX = true;
                             break;
                         case MoveDirection.RIGHT:
                             specify.EndPosition = new Vector2Int((int)rb.position.x + 1, (int)rb.position.y);
                             specify.MoveDirection = MoveDirection.NONE;
+                            sr.flipX = false;
                             break;
                         default:
                             break;
@@ -53,21 +59,46 @@ namespace Client
                 {
                     foreach (var j in _wallEntities)
                     {
-                        bool canMove = true;
-                        if (specify.EndPosition == _wallEntities.Components1[j].Coords)
-                            canMove = false;
+                        ref var wallPos = ref _wallEntities.Components1[j];
+                        ref var wall = ref _wallEntities.Components2[j];
 
-                        if (canMove)
+                        if (specify.EndPosition == wallPos.Coords)
                         {
-                            specify.ActionType = ActionType.MOVE;
-                        }
-                        else
-                        {
-                            _world.GetComponent<TurnComponent>(in _actionPhaseEntities.Entities[i]).ReturnInput = true;
-                            _world.AddComponent<PhaseEndEvent>(in _actionPhaseEntities.Entities[i]);
-                            return;
+                            if (wall.Solid)
+                            {
+                                _world.GetComponent<TurnComponent>(in entity).ReturnInput = true;
+                                _world.AddComponent<PhaseEndEvent>(in entity);
+                                return;
+                            }
+                            else
+                            {
+                                wall.HealthPoint -= 1;
+                                if (!wall.Damage)
+                                {
+                                    SpriteRenderer sr = wallPos.Transform.gameObject.GetComponent<SpriteRenderer>();
+                                    sr.sprite = wall.DamageSprite;
+                                    wall.Damage = true;
+                                }
+                                if (wall.HealthPoint <= 0)
+                                {
+                                    _world.AddComponent<GameObjectRemoveEvent>(in _wallEntities.Entities[j]);
+                                }
+                                //chop
+                                ref var animator = ref _world.GetComponent<AnimationComponent>(in entity).animator;
+                                animator.SetTrigger("Chop");
+                                specify.ActionType = ActionType.ANIMATION;
+                                return;
+                            }
                         }
                     }
+                    specify.ActionType = ActionType.MOVE;
+                }
+
+                if (specify.ActionType == ActionType.ANIMATION)
+                {
+                    ref var animator = ref _world.GetComponent<AnimationComponent>(in entity).animator;
+                    
+                    _world.AddComponent<PhaseEndEvent>(in entity);
                 }
 
                 if (specify.ActionType == ActionType.MOVE)

@@ -7,11 +7,12 @@ namespace Client
     {
         public bool Solid = false;
         public int HealthPoint = 3;
-        public Sprite damageSprite;
+        public Sprite DamageSprite;
+        public bool Damage = false;
 
         void IEcsAutoResetComponent.Reset()
         {
-            damageSprite = null;
+            DamageSprite = null;
         }
     }
 }

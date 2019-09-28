@@ -44,7 +44,7 @@ namespace Client
         int sodaCount = 3;
         int appleCount = 1;
         int wallCount = 3;
-        int enemyCount = 2;
+        int enemyCount = 1;
         int enemy2Count = 1;
 
         int appleFoodValue = 20;
@@ -151,7 +151,7 @@ namespace Client
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
                 wallComponent.Solid = false;
                 wallComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
-                wallComponent.damageSprite = softWallDamage[indxSprite];
+                wallComponent.DamageSprite = softWallDamage[indxSprite];
 
                 emptyCells.Remove(cell);
             }
