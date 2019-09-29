@@ -24,6 +24,7 @@ namespace Client
             _systems
                 .Add(new UserInputSystem())
                 .Add(new ActionSystem())
+                .Add(new ActionMoveSysytem())
                 .Add(new TurnSystem())
                 .Add(new GameWorldSystem());
 

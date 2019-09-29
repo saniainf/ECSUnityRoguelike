@@ -34,7 +34,7 @@ namespace Client
                         _world.RemoveComponent<ActionPhaseComponent>(in entity);
                         _phaseEndEvents.Components2[i].Phase = Phase.STANDBY;
                         ResetSpecifyField(ref _phaseEndEvents.Components3[i]);
-                        // next turnEntity
+                        //next turnEntity
                         if (_phaseEndEvents.Components2[i].ReturnInput)
                         {
                             _world.AddComponent<InputPhaseComponent>(in entity);
@@ -68,9 +68,6 @@ namespace Client
 
         void nextTurnEnity(int thisInitiative)
         {
-            //var specifies = _turnEntities.Components2.ToList().FindAll(x => x.Initiative > thisInitiative);
-            //int min = specifies.Min(i => i.Initiative);
-
             List<int> initiative = new List<int>();
 
             foreach (var i in _turnEntities)
@@ -90,6 +87,7 @@ namespace Client
             {
                 if (_turnEntities.Components2[i].Initiative == min)
                 {
+                    Debug.Log("add");
                     _world.AddComponent<InputPhaseComponent>(in _turnEntities.Entities[i]);
                     _turnEntities.Components1[i].Phase = Phase.INPUT;
                 }

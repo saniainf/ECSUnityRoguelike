@@ -5,7 +5,7 @@ namespace Client
 {
     sealed class AnimationComponent : IEcsAutoResetComponent
     {
-        public Animator animator;
+        public Animator animator = null;
 
         void IEcsAutoResetComponent.Reset()
         {

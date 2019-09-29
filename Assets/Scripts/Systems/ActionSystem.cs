@@ -91,14 +91,15 @@ namespace Client
                             }
                         }
                     }
-                    specify.ActionType = ActionType.MOVE;
                 }
 
                 if (specify.ActionType == ActionType.ANIMATION)
                 {
                     ref var animator = ref _world.GetComponent<AnimationComponent>(in entity).animator;
-                    
-                    _world.AddComponent<PhaseEndEvent>(in entity);
+                    if (animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+                    {
+                        _world.AddComponent<PhaseEndEvent>(in entity);
+                    }
                 }
 
                 if (specify.ActionType == ActionType.MOVE)
