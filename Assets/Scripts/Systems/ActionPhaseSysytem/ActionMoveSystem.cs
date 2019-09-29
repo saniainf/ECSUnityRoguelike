@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Client
 {
     [EcsInject]
-    sealed class ActionMoveSysytem : IEcsRunSystem
+    sealed class ActionMoveSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 

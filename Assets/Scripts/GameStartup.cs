@@ -23,8 +23,8 @@ namespace Client
 
             _systems
                 .Add(new UserInputSystem())
-                .Add(new ActionSystem())
-                .Add(new ActionMoveSysytem())
+                .Add(new ActionSystemV2())
+                .Add(new ActionMoveSystem())
                 .Add(new TurnSystem())
                 .Add(new GameWorldSystem());
 

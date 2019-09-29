@@ -90,6 +90,7 @@ namespace Client
                                 return;
                             }
                         }
+                        specify.ActionType = ActionType.MOVE;
                     }
                 }
 

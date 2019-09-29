@@ -27,10 +27,8 @@ namespace Client
 
                 specify.Speed = speed;
 
-                var a = _world.GetComponent<TurnComponent>(in _actionPhaseEntities.Entities[i]);
                 if (specify.ActionType == ActionType.NONE)
                 {
-                    Debug.Log(a.Phase.ToString());
                     SpriteRenderer sr = entityPos.Transform.gameObject.GetComponent<SpriteRenderer>();
 
                     switch (specify.MoveDirection)
@@ -56,11 +54,11 @@ namespace Client
                         default:
                             break;
                     }
-                    var c1 = _world.AddComponent<ActionMoveComponent>(in _actionPhaseEntities.Entities[i]);
-                    c1.EndPosition = specify.EndPosition;
-                    c1.Rigidbody = rb;
-                    c1.Speed = specify.Speed;
-                    specify.ActionType = ActionType.MOVE;
+                    //var c1 = _world.AddComponent<ActionMoveComponent>(in _actionPhaseEntities.Entities[i]);
+                    //c1.EndPosition = specify.EndPosition;
+                    //c1.Rigidbody = rb;
+                    //c1.Speed = specify.Speed;
+                    //specify.ActionType = ActionType.MOVE;
                 }
 
 
@@ -74,6 +72,7 @@ namespace Client
                     if (itsOk)
                     {
                         _actionPhaseEntities.Components2[i].Coords = specify.EndPosition;
+                        specify.ActionType = ActionType.NONE;
                         _world.AddComponent<PhaseEndEvent>(in _actionPhaseEntities.Entities[i]);
                     }
                 }
