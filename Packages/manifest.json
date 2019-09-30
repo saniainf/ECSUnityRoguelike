@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "com.leopotam.ecs": "https://github.com/Leopotam/ecs.git#v20190822",
-    "com.leopotam.ecs-ui": "https://github.com/Leopotam/ecs-ui.git#v20190722",
-    "com.leopotam.ecs-unityintegration": "https://github.com/Leopotam/ecs-unityintegration.git#v20190722",
+    "com.leopotam.ecs": "https://github.com/Leopotam/ecs.git",
+    "com.leopotam.ecs-ui": "https://github.com/Leopotam/ecs-ui.git",
+    "com.leopotam.ecs-unityintegration": "https://github.com/Leopotam/ecs-unityintegration.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.collab-proxy": "1.2.16",
@@ -48,16 +48,16 @@
   },
   "lock": {
     "com.leopotam.ecs": {
-      "hash": "3efe5ff48ba96d6753e0c4954f1cc928f83b8c3b",
-      "revision": "v20190822"
+      "hash": "9a19ebdd9ffffae20edde46bf7ec27a4bf243ead",
+      "revision": "HEAD"
     },
     "com.leopotam.ecs-ui": {
       "hash": "0ca6e9ff58b2cea42aa34aabc23aca279cb864b0",
-      "revision": "v20190722"
+      "revision": "HEAD"
     },
     "com.leopotam.ecs-unityintegration": {
       "hash": "3a5eff9acdf412abc14d3a38f15838380786c45f",
-      "revision": "v20190722"
+      "revision": "HEAD"
     }
   }
 }

@@ -19,13 +19,13 @@ namespace Client
 #endif
             _systems
                 .Add(new GameWorldInitSystem())
-                //.Add(new TurnInitSystem());
+                .Add(new TurnInitSystem());
 
-            //_systems
-            //    .Add(new UserInputSystem())
-            //    .Add(new ActionSystemV2())
-            //    .Add(new ActionMoveSystem())
-            //    .Add(new TurnSystem())
+            _systems
+                .Add(new UserInputSystem())
+                .Add(new ActionSystem())
+                .Add(new ActionMoveSystem())
+                .Add(new TurnSystem())
                 .Add(new GameWorldSystem());
 
             _systems.Initialize();
