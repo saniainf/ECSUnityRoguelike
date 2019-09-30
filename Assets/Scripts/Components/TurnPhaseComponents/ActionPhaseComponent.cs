@@ -4,6 +4,6 @@ namespace Client
 {
     sealed class ActionPhaseComponent
     {
-        public ActionType ActionType = ActionType.NONE;
+        
     }
 }

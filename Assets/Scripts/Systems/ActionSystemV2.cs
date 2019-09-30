@@ -23,7 +23,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<PositionComponent, ActionPhaseComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
+        readonly EcsFilter<PositionComponent, ActionPhaseComponent, InputDirectionComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
         readonly EcsFilter<PositionComponent, WallComponent> _wallEntities = null;
         readonly EcsFilter<PositionComponent, EnemyComponent> _enemyEntities = null;
         readonly EcsFilter<PositionComponent, FoodComponent> _foodEntities = null;
@@ -40,59 +40,54 @@ namespace Client
                 ref var entity = ref _actionPhaseEntities.Entities[i];
                 ref var c1 = ref _actionPhaseEntities.Components1[i];
                 ref var c2 = ref _actionPhaseEntities.Components2[i];
-                ref var rb = ref c1.Rigidbody;
+                ref var c3 = ref _actionPhaseEntities.Components3[i];
 
-                if (c2.ActionType == ActionType.NONE)
+                SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
+                Vector2Int endPosition = Vector2Int.zero;
+
+                switch (c3.MoveDirection)
                 {
-                    SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
-                    Vector2Int endPosition;
-
-                    switch (c1.MoveDirection)
-                    {
-                        case MoveDirection.UP:
-                            endPosition = new Vector2Int((int)rb.position.x, (int)rb.position.y + 1);
-                            c1.MoveDirection = MoveDirection.NONE;
-                            break;
-                        case MoveDirection.DOWN:
-                            endPosition = new Vector2Int((int)rb.position.x, (int)rb.position.y - 1);
-                            c1.MoveDirection = MoveDirection.NONE;
-                            break;
-                        case MoveDirection.LEFT:
-                            endPosition = new Vector2Int((int)rb.position.x - 1, (int)rb.position.y);
-                            c1.MoveDirection = MoveDirection.NONE;
-                            sr.flipX = true;
-                            break;
-                        case MoveDirection.RIGHT:
-                            endPosition = new Vector2Int((int)rb.position.x + 1, (int)rb.position.y);
-                            c1.MoveDirection = MoveDirection.NONE;
-                            sr.flipX = false;
-                            break;
-                        default:
-                            break;
-                    }
-                    var c = _world.AddComponent<ActionMoveComponent>(in entity);
-                    c.EndPosition = endPosition;
-                    c.Rigidbody = rb;
-                    c.Speed = speed;
-                    specify.ActionType = ActionType.MOVE;
-                }
-
-
-                if (specify.ActionType == ActionType.MOVE)
-                {
-                    bool itsOk = true;
-                    foreach (var k in _moveEntities)
-                    {
-                        itsOk = false;
-                    }
-                    if (itsOk)
-                    {
-                        _actionPhaseEntities.Components2[i].Coords = specify.EndPosition;
-                        specify.ActionType = ActionType.NONE;
-                        _world.AddComponent<PhaseEndEvent>(in _actionPhaseEntities.Entities[i]);
-                    }
+                    case MoveDirection.UP:
+                        endPosition = new Vector2Int(c1.Coords.x, c1.Coords.y + 1);
+                        CreateMoveEntity(entity, endPosition);
+                        _world.RemoveComponent<InputDirectionComponent>(in entity);
+                        break;
+                    case MoveDirection.DOWN:
+                        endPosition = new Vector2Int(c1.Coords.x, c1.Coords.y - 1);
+                        CreateMoveEntity(entity, endPosition);
+                        _world.RemoveComponent<InputDirectionComponent>(in entity);
+                        break;
+                    case MoveDirection.LEFT:
+                        endPosition = new Vector2Int(c1.Coords.x - 1, c1.Coords.y);
+                        CreateMoveEntity(entity, endPosition);
+                        _world.RemoveComponent<InputDirectionComponent>(in entity);
+                        sr.flipX = true;
+                        break;
+                    case MoveDirection.RIGHT:
+                        endPosition = new Vector2Int(c1.Coords.x + 1, c1.Coords.y);
+                        CreateMoveEntity(entity, endPosition);
+                        _world.RemoveComponent<InputDirectionComponent>(in entity);
+                        sr.flipX = false;
+                        break;
+                    default:
+                        break;
                 }
             }
+
+            if (_moveEntities.GetEntitiesCount() == 0)
+            {
+                foreach (var i in _actionPhaseEntities)
+                {
+                    _world.AddComponent<PhaseEndEvent>(in _actionPhaseEntities.Entities[i]);
+                }
+            }
+        }
+
+        void CreateMoveEntity(EcsEntity entity, Vector2Int endPosition)
+        {
+            var c = _world.AddComponent<ActionMoveComponent>(in entity);
+            c.EndPosition = endPosition;
+            c.Speed = speed;
         }
     }
 }

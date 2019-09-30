@@ -9,7 +9,7 @@ namespace Client
     sealed class UserInputSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<InputPhaseComponent, PositionComponent>.Exclude<GameObjectRemoveEvent> _inputPhaseEntities = null;
+        readonly EcsFilter<InputPhaseComponent>.Exclude<GameObjectRemoveEvent> _inputPhaseEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -30,10 +30,11 @@ namespace Client
 
                 foreach (var i in _inputPhaseEntities)
                 {
-                    _inputPhaseEntities.Components2[i].MoveDirection = direction;
+                    ref var entity = ref _inputPhaseEntities.Entities[i];
+                    var c = _world.AddComponent<InputDirectionComponent>(in entity);
+                    c.MoveDirection = direction;
 
                     _world.RemoveComponent<InputPhaseComponent>(in _inputPhaseEntities.Entities[i]);
-
                     _world.AddComponent<PhaseEndEvent>(in _inputPhaseEntities.Entities[i]);
                 }
             }

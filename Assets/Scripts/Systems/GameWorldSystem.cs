@@ -19,11 +19,11 @@ namespace Client
                 Rigidbody2D newRB = _createEvents.Components1[i].Rigidbody;
                 ref var newEntity = ref _createEvents.Entities[i];
 
-                var c1 = _world.AddComponent<PositionComponent>(in newEntity);
-                c1.Transform = newGO;
-                c1.Rigidbody = newRB;
-                c1.Coords.x = (int)newGO.transform.localPosition.x;
-                c1.Coords.y = (int)newGO.transform.localPosition.y;
+                var c = _world.AddComponent<PositionComponent>(in newEntity);
+                c.Transform = newGO;
+                c.Rigidbody = newRB;
+                c.Coords.x = (int)newGO.transform.localPosition.x;
+                c.Coords.y = (int)newGO.transform.localPosition.y;
             }
 
             foreach (var i in _removeEvents)

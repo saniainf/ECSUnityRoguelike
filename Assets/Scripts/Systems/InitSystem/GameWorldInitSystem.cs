@@ -10,15 +10,15 @@ namespace Client
         readonly EcsWorld _world = null;
 
         #region Resourses
-        Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
-        GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
-        GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
-        RuntimeAnimatorController playerAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/PlayerAnimatorController");
-        RuntimeAnimatorController enemyAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/EnemyAnimatorController");
-        RuntimeAnimatorController enemy2Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
+        readonly Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
+        readonly GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
+        readonly GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
+        readonly RuntimeAnimatorController playerAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/PlayerAnimatorController");
+        readonly RuntimeAnimatorController enemyAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/EnemyAnimatorController");
+        readonly RuntimeAnimatorController enemy2Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
 
-        Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
-        Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
+        readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
+        readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
 
         char[,] levelArray = new char[,]{
             { '8','8','8','8','8','8','8','8','8','8' },
