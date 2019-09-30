@@ -50,8 +50,10 @@ namespace Client
         int appleFoodValue = 20;
         int sodaFoodValue = 10;
 
-        int minWallHP = 1;
-        int maxWallHP = 4;
+        int minWallHP = 2;
+        int maxWallHP = 3;
+
+        int initiative = 1;
         #endregion
 
         void IEcsInitSystem.Initialize()
@@ -66,14 +68,12 @@ namespace Client
             List<Vector2Int> emptyCells = new List<Vector2Int>();
 
             GameObject go;
-            Vector2Int coords = new Vector2Int();
             WallComponent wallComponent;
             FoodComponent foodComponent;
             AnimationComponent animationComponent;
-            SpecifyComponent specifyComponent;
+            TurnComponent turnComponent;
             GameObjectCreateEvent gameObjectCreateEvent;
             EnemyComponent enemyComponent;
-            int initiative = 1;
 
             VExt.ReverseArray(ref levelArray);
 
@@ -81,34 +81,36 @@ namespace Client
                 for (int j = 0; j < levelArray.GetLength(1); j++)
                 {
                     go = LayoutSpriteObjects(prefabSprite, j, i, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
-                    var wallEntity = _world.CreateEntityWith(out gameObjectCreateEvent);
+                    _world.CreateEntityWith(out gameObjectCreateEvent);
+
                     gameObjectCreateEvent.Transform = go.transform;
                     gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
                     switch (levelArray[i, j])
                     {
                         case '.':
-                            coords.x = j;
-                            coords.y = i;
-                            emptyCells.Add(coords);
+                            emptyCells.Add(new Vector2Int(j, i));
                             break;
                         case '8':
                             go = LayoutSpriteObjects(prefabSprite, j, i, "solidWall", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(solidWallSprites));
-                            var solidWall = _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent);
+                            _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent);
+
                             gameObjectCreateEvent.Transform = go.transform;
                             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
                             wallComponent.Solid = true;
                             break;
                         case '@':
                             go = LayoutAnimationObjects(prefabAnimation, j, i, "player", gameObjectsRoot, LayersName.Character.ToString(), playerAnimation);
                             var playerEntity = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out PlayerComponent player);
-                            specifyComponent = _world.AddComponent<SpecifyComponent>(in playerEntity);
-                            _world.AddComponent<TurnComponent>(in playerEntity);
-                            specifyComponent.MoveDirection = MoveDirection.NONE;
-                            specifyComponent.Initiative = initiative++;
+
                             gameObjectCreateEvent.Transform = go.transform;
                             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
                             animationComponent.animator = go.GetComponent<Animator>();
+
+                            turnComponent = _world.AddComponent<TurnComponent>(in playerEntity);
+                            turnComponent.Initiative = initiative++;
                             break;
                         default:
                             break;
@@ -120,8 +122,10 @@ namespace Client
 
                 go = LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "apple", gameObjectsRoot, LayersName.Object.ToString(), appleSprite);
                 _world.CreateEntityWith(out gameObjectCreateEvent, out foodComponent);
+
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
                 foodComponent.foodValue = appleFoodValue;
 
                 emptyCells.Remove(cell);
@@ -133,8 +137,10 @@ namespace Client
 
                 go = LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
                 _world.CreateEntityWith(out gameObjectCreateEvent, out foodComponent);
+
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
                 foodComponent.foodValue = sodaFoodValue;
 
                 emptyCells.Remove(cell);
@@ -147,8 +153,10 @@ namespace Client
 
                 go = LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "softWall", gameObjectsRoot, LayersName.Object.ToString(), softWall[indxSprite]);
                 _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent);
+
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
                 wallComponent.Solid = false;
                 wallComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
                 wallComponent.DamageSprite = softWallDamage[indxSprite];
@@ -161,14 +169,15 @@ namespace Client
                 var cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "enemy", gameObjectsRoot, LayersName.Character.ToString(), enemyAnimation);
-                EcsEntity enemy1 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
-                specifyComponent = _world.AddComponent<SpecifyComponent>(in enemy1);
-                _world.AddComponent<TurnComponent>(in enemy1);
+                var enemy1 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
+
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
                 animationComponent.animator = go.GetComponent<Animator>();
-                specifyComponent.MoveDirection = MoveDirection.NONE;
-                specifyComponent.Initiative = initiative++;
+
+                turnComponent = _world.AddComponent<TurnComponent>(in enemy1);
+                turnComponent.Initiative = initiative++;
 
                 emptyCells.Remove(cell);
             }
@@ -178,14 +187,15 @@ namespace Client
                 var cell = VExt.NextFromList(emptyCells);
 
                 go = LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "enemy2", gameObjectsRoot, LayersName.Character.ToString(), enemy2Animation);
-                EcsEntity enemy2 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
-                specifyComponent = _world.AddComponent<SpecifyComponent>(in enemy2);
-                _world.AddComponent<TurnComponent>(in enemy2);
+                var enemy2 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
+
                 gameObjectCreateEvent.Transform = go.transform;
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
                 animationComponent.animator = go.GetComponent<Animator>();
-                specifyComponent.MoveDirection = MoveDirection.NONE;
-                specifyComponent.Initiative = initiative++;
+
+                turnComponent = _world.AddComponent<TurnComponent>(in enemy2);
+                turnComponent.Initiative = initiative++;
 
                 emptyCells.Remove(cell);
             }

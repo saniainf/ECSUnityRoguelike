@@ -6,65 +6,50 @@ using UnityEngine;
 
 namespace Client
 {
+    enum Phase : int
+    {
+        STANDBY,
+        INPUT,
+        ACTION
+    }
+
     [EcsInject]
     sealed class TurnSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<PhaseEndEvent, TurnComponent, SpecifyComponent>.Exclude<GameObjectRemoveEvent> _phaseEndEvents = null;
-        readonly EcsFilter<TurnComponent, SpecifyComponent> _turnEntities = null;
+        readonly EcsFilter<PhaseEndEvent, TurnComponent>.Exclude<GameObjectRemoveEvent> _phaseEndEvents = null;
+        readonly EcsFilter<TurnComponent> _turnEntities = null;
 
         void IEcsRunSystem.Run()
         {
-            bool nextEntity = false;
-            int thisInitiative = 0;
-
             foreach (var i in _phaseEndEvents)
             {
                 ref var entity = ref _phaseEndEvents.Entities[i];
-                var thisPhase = _phaseEndEvents.Components2[i].Phase;
+                ref var c2 = ref _phaseEndEvents.Components2[i];
 
-                switch (thisPhase)
+                switch (c2.Phase)
                 {
                     case Phase.INPUT:
-                        _world.RemoveComponent<InputPhaseComponent>(in entity);
                         _world.AddComponent<ActionPhaseComponent>(in entity);
-                        _phaseEndEvents.Components2[i].Phase = Phase.ACTION;
+                        c2.Phase = Phase.ACTION;
                         break;
                     case Phase.ACTION:
-                        _world.RemoveComponent<ActionPhaseComponent>(in entity);
-                        _phaseEndEvents.Components2[i].Phase = Phase.STANDBY;
-                        ResetSpecifyField(ref _phaseEndEvents.Components3[i]);
+                        c2.Phase = Phase.STANDBY;
                         //next turnEntity
-                        if (_phaseEndEvents.Components2[i].ReturnInput)
+                        if (c2.ReturnInput)
                         {
                             _world.AddComponent<InputPhaseComponent>(in entity);
-                            _phaseEndEvents.Components2[i].Phase = Phase.INPUT;
-                            _phaseEndEvents.Components2[i].ReturnInput = false;
+                            c2.Phase = Phase.INPUT;
+                            c2.ReturnInput = false;
                             break;
                         }
-                        nextEntity = true;
-                        thisInitiative = _phaseEndEvents.Components3[i].Initiative;
+                        nextTurnEnity(c2.Initiative);
                         break;
                     default:
                         break;
                 }
             }
-
-            //TODO проверить что все енти в standby
-            if (nextEntity)
-            {
-                nextTurnEnity(thisInitiative);
-            }
         }
-
-        void ResetSpecifyField(ref SpecifyComponent specify)
-        {
-            specify.EndPosition = Vector2Int.zero;
-            specify.ActionType = ActionType.NONE;
-            specify.Speed = 0f;
-            specify.MoveDirection = MoveDirection.NONE;
-        }
-
 
         void nextTurnEnity(int thisInitiative)
         {
@@ -72,7 +57,10 @@ namespace Client
 
             foreach (var i in _turnEntities)
             {
-                initiative.Add(_turnEntities.Components2[i].Initiative);
+                if (_turnEntities.Components1[i].Phase != Phase.STANDBY)
+                    return;
+
+                initiative.Add(_turnEntities.Components1[i].Initiative);
             }
 
             var greatOf = initiative.FindAll(i => i > thisInitiative);
@@ -85,9 +73,8 @@ namespace Client
 
             foreach (var i in _turnEntities)
             {
-                if (_turnEntities.Components2[i].Initiative == min)
+                if (_turnEntities.Components1[i].Initiative == min)
                 {
-                    Debug.Log("add");
                     _world.AddComponent<InputPhaseComponent>(in _turnEntities.Entities[i]);
                     _turnEntities.Components1[i].Phase = Phase.INPUT;
                 }

@@ -2,6 +2,8 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    [EcsIgnoreInFilter]
-    sealed class ActionPhaseComponent { }
+    sealed class ActionPhaseComponent
+    {
+        public ActionType ActionType = ActionType.NONE;
+    }
 }

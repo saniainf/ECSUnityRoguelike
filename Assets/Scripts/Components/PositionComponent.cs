@@ -9,6 +9,8 @@ namespace Client
         public Transform Transform = null;
         public Rigidbody2D Rigidbody = null;
 
+        public MoveDirection MoveDirection = MoveDirection.NONE;
+
         void IEcsAutoResetComponent.Reset()
         {
             Transform = null;

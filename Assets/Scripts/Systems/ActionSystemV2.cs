@@ -3,14 +3,31 @@ using UnityEngine;
 
 namespace Client
 {
+    enum MoveDirection
+    {
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
+    enum ActionType
+    {
+        NONE,
+        MOVE,
+    }
+
     [EcsInject]
     sealed class ActionSystemV2 : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<SpecifyComponent, PositionComponent, ActionPhaseComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
+
+        readonly EcsFilter<PositionComponent, ActionPhaseComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
         readonly EcsFilter<PositionComponent, WallComponent> _wallEntities = null;
         readonly EcsFilter<PositionComponent, EnemyComponent> _enemyEntities = null;
         readonly EcsFilter<PositionComponent, FoodComponent> _foodEntities = null;
+
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
 
         //TODO брать из настроек
@@ -20,45 +37,44 @@ namespace Client
         {
             foreach (var i in _actionPhaseEntities)
             {
-                ref var entityPos = ref _actionPhaseEntities.Components2[i];
-                ref var rb = ref entityPos.Rigidbody;
-                ref var specify = ref _actionPhaseEntities.Components1[i];
                 ref var entity = ref _actionPhaseEntities.Entities[i];
+                ref var c1 = ref _actionPhaseEntities.Components1[i];
+                ref var c2 = ref _actionPhaseEntities.Components2[i];
+                ref var rb = ref c1.Rigidbody;
 
-                specify.Speed = speed;
-
-                if (specify.ActionType == ActionType.NONE)
+                if (c2.ActionType == ActionType.NONE)
                 {
-                    SpriteRenderer sr = entityPos.Transform.gameObject.GetComponent<SpriteRenderer>();
+                    SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
+                    Vector2Int endPosition;
 
-                    switch (specify.MoveDirection)
+                    switch (c1.MoveDirection)
                     {
                         case MoveDirection.UP:
-                            specify.EndPosition = new Vector2Int((int)rb.position.x, (int)rb.position.y + 1);
-                            specify.MoveDirection = MoveDirection.NONE;
+                            endPosition = new Vector2Int((int)rb.position.x, (int)rb.position.y + 1);
+                            c1.MoveDirection = MoveDirection.NONE;
                             break;
                         case MoveDirection.DOWN:
-                            specify.EndPosition = new Vector2Int((int)rb.position.x, (int)rb.position.y - 1);
-                            specify.MoveDirection = MoveDirection.NONE;
+                            endPosition = new Vector2Int((int)rb.position.x, (int)rb.position.y - 1);
+                            c1.MoveDirection = MoveDirection.NONE;
                             break;
                         case MoveDirection.LEFT:
-                            specify.EndPosition = new Vector2Int((int)rb.position.x - 1, (int)rb.position.y);
-                            specify.MoveDirection = MoveDirection.NONE;
+                            endPosition = new Vector2Int((int)rb.position.x - 1, (int)rb.position.y);
+                            c1.MoveDirection = MoveDirection.NONE;
                             sr.flipX = true;
                             break;
                         case MoveDirection.RIGHT:
-                            specify.EndPosition = new Vector2Int((int)rb.position.x + 1, (int)rb.position.y);
-                            specify.MoveDirection = MoveDirection.NONE;
+                            endPosition = new Vector2Int((int)rb.position.x + 1, (int)rb.position.y);
+                            c1.MoveDirection = MoveDirection.NONE;
                             sr.flipX = false;
                             break;
                         default:
                             break;
                     }
-                    //var c1 = _world.AddComponent<ActionMoveComponent>(in _actionPhaseEntities.Entities[i]);
-                    //c1.EndPosition = specify.EndPosition;
-                    //c1.Rigidbody = rb;
-                    //c1.Speed = specify.Speed;
-                    //specify.ActionType = ActionType.MOVE;
+                    var c = _world.AddComponent<ActionMoveComponent>(in entity);
+                    c.EndPosition = endPosition;
+                    c.Rigidbody = rb;
+                    c.Speed = speed;
+                    specify.ActionType = ActionType.MOVE;
                 }
 
 
