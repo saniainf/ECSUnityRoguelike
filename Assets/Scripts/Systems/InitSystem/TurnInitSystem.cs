@@ -14,8 +14,7 @@ namespace Client
         {
             foreach (var i in _player)
             {
-                _player.Components2[i].Phase = Phase.INPUT;
-                _world.AddComponent<InputPhaseComponent>(in _player.Entities[i]);
+                _world.AddComponent<InputPhaseComponent>(_player.Entities[i]);
             }
         }
 

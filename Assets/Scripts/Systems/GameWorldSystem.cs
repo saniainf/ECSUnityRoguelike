@@ -19,7 +19,7 @@ namespace Client
                 Rigidbody2D newRB = _createEvents.Components1[i].Rigidbody;
                 ref var newEntity = ref _createEvents.Entities[i];
 
-                var c = _world.AddComponent<PositionComponent>(in newEntity);
+                var c = _world.AddComponent<PositionComponent>(newEntity);
                 c.Transform = newGO;
                 c.Rigidbody = newRB;
                 c.Coords.x = (int)newGO.transform.localPosition.x;

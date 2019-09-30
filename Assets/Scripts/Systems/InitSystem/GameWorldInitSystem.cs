@@ -109,7 +109,7 @@ namespace Client
 
                             animationComponent.animator = go.GetComponent<Animator>();
 
-                            turnComponent = _world.AddComponent<TurnComponent>(in playerEntity);
+                            turnComponent = _world.AddComponent<TurnComponent>(playerEntity);
                             turnComponent.Initiative = initiative++;
                             break;
                         default:
@@ -176,7 +176,7 @@ namespace Client
 
                 animationComponent.animator = go.GetComponent<Animator>();
 
-                turnComponent = _world.AddComponent<TurnComponent>(in enemy1);
+                turnComponent = _world.AddComponent<TurnComponent>(enemy1);
                 turnComponent.Initiative = initiative++;
 
                 emptyCells.Remove(cell);
@@ -194,7 +194,7 @@ namespace Client
 
                 animationComponent.animator = go.GetComponent<Animator>();
 
-                turnComponent = _world.AddComponent<TurnComponent>(in enemy2);
+                turnComponent = _world.AddComponent<TurnComponent>(enemy2);
                 turnComponent.Initiative = initiative++;
 
                 emptyCells.Remove(cell);

@@ -6,48 +6,34 @@ using UnityEngine;
 
 namespace Client
 {
-    enum Phase : int
-    {
-        STANDBY,
-        INPUT,
-        ACTION
-    }
-
     [EcsInject]
     sealed class TurnSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<PhaseEndEvent, TurnComponent>.Exclude<GameObjectRemoveEvent> _phaseEndEvents = null;
+
         readonly EcsFilter<TurnComponent> _turnEntities = null;
+        readonly EcsFilter<InputPhaseComponent, PhaseEndEvent> _inputPhaseEnd = null;
+        readonly EcsFilter<ActionPhaseComponent, TurnComponent, PhaseEndEvent> _actionPhaseEnd = null;
 
         void IEcsRunSystem.Run()
         {
-            foreach (var i in _phaseEndEvents)
+            foreach (var i in _inputPhaseEnd)
             {
-                ref var entity = ref _phaseEndEvents.Entities[i];
-                ref var c2 = ref _phaseEndEvents.Components2[i];
+                _world.AddComponent<ActionPhaseComponent>(_inputPhaseEnd.Entities[i]);
+                _world.RemoveComponent<InputPhaseComponent>(_inputPhaseEnd.Entities[i]);
+            }
 
-                switch (c2.Phase)
-                {
-                    case Phase.INPUT:
-                        _world.AddComponent<ActionPhaseComponent>(in entity);
-                        c2.Phase = Phase.ACTION;
-                        break;
-                    case Phase.ACTION:
-                        c2.Phase = Phase.STANDBY;
-                        //next turnEntity
-                        if (c2.ReturnInput)
-                        {
-                            _world.AddComponent<InputPhaseComponent>(in entity);
-                            c2.Phase = Phase.INPUT;
-                            c2.ReturnInput = false;
-                            break;
-                        }
-                        nextTurnEnity(c2.Initiative);
-                        break;
-                    default:
-                        break;
-                }
+            foreach (var i in _actionPhaseEnd)
+            {
+                _world.RemoveComponent<ActionPhaseComponent>(_actionPhaseEnd.Entities[i]);
+
+                //if (_actionPhaseEnd.Components2[i].ReturnInput)
+                //{
+                //    _actionPhaseEnd.Components2[i].ReturnInput = false;
+                    _world.AddComponent<InputPhaseComponent>(_actionPhaseEnd.Entities[i]);
+                //}
+                //else
+                //    nextTurnEnity(_actionPhaseEnd.Components2[i].Initiative);
             }
         }
 
@@ -57,9 +43,6 @@ namespace Client
 
             foreach (var i in _turnEntities)
             {
-                if (_turnEntities.Components1[i].Phase != Phase.STANDBY)
-                    return;
-
                 initiative.Add(_turnEntities.Components1[i].Initiative);
             }
 
@@ -75,8 +58,7 @@ namespace Client
             {
                 if (_turnEntities.Components1[i].Initiative == min)
                 {
-                    _world.AddComponent<InputPhaseComponent>(in _turnEntities.Entities[i]);
-                    _turnEntities.Components1[i].Phase = Phase.INPUT;
+                    _world.AddComponent<InputPhaseComponent>(_turnEntities.Entities[i]);
                 }
             }
         }
