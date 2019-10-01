@@ -15,8 +15,8 @@ namespace Client
             foreach (var i in _moveEntities)
             {
                 ref var entity = ref _moveEntities.Entities[i];
-                ref var c1 = ref _moveEntities.Components1[i];
-                ref var c2 = ref _moveEntities.Components2[i];
+                var c1 = _moveEntities.Components1[i];
+                var c2 = _moveEntities.Components2[i];
 
                 Vector2 newPostion = Vector2.MoveTowards(c2.Rigidbody.position, c1.EndPosition, c1.Speed * Time.deltaTime);
                 c2.Rigidbody.MovePosition(newPostion);
@@ -27,7 +27,7 @@ namespace Client
                     c2.Rigidbody.position = c1.EndPosition;
                     c2.Coords = c1.EndPosition;
 
-                    _world.RemoveComponent<ActionMoveComponent>(in entity);
+                    _world.RemoveComponent<ActionMoveComponent>(entity);
                 }
             }
         }

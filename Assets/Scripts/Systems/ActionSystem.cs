@@ -20,6 +20,7 @@ namespace Client
         readonly EcsFilter<ActionPhaseComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
         readonly EcsFilter<PositionComponent, InputDirectionComponent>.Exclude<GameObjectRemoveEvent> _inputEntities = null;
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
+        readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
 
         readonly EcsFilter<PositionComponent, WallComponent> _wallEntities = null;
 
@@ -31,8 +32,8 @@ namespace Client
             foreach (var i in _inputEntities)
             {
                 ref var entity = ref _inputEntities.Entities[i];
-                ref var c1 = ref _inputEntities.Components1[i];
-                ref var c2 = ref _inputEntities.Components2[i];
+                var c1 = _inputEntities.Components1[i];
+                var c2 = _inputEntities.Components2[i];
 
                 SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
                 Vector2Int endPosition = Vector2Int.zero;
@@ -42,23 +43,23 @@ namespace Client
                     case MoveDirection.UP:
                         endPosition = new Vector2Int(c1.Coords.x, c1.Coords.y + 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CheckNewPositon(entity, endPosition);
+                        CreateAction(entity, endPosition);
                         break;
                     case MoveDirection.DOWN:
                         endPosition = new Vector2Int(c1.Coords.x, c1.Coords.y - 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CheckNewPositon(entity, endPosition);
+                        CreateAction(entity, endPosition);
                         break;
                     case MoveDirection.LEFT:
                         endPosition = new Vector2Int(c1.Coords.x - 1, c1.Coords.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CheckNewPositon(entity, endPosition);
+                        CreateAction(entity, endPosition);
                         sr.flipX = true;
                         break;
                     case MoveDirection.RIGHT:
                         endPosition = new Vector2Int(c1.Coords.x + 1, c1.Coords.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CheckNewPositon(entity, endPosition);
+                        CreateAction(entity, endPosition);
                         sr.flipX = false;
                         break;
                     default:
@@ -66,7 +67,7 @@ namespace Client
                 }
             }
 
-            if (_moveEntities.GetEntitiesCount() == 0)
+            if (_moveEntities.GetEntitiesCount() == 0 && _animationEntities.GetEntitiesCount() == 0)
             {
                 foreach (var i in _actionPhaseEntities)
                 {
@@ -75,21 +76,57 @@ namespace Client
             }
         }
 
-        void CheckNewPositon(EcsEntity entity, Vector2Int endPosition)
+        void CreateAction(EcsEntity entity, Vector2Int endPosition)
         {
+            //check wall
+            if (!CheckWallCollision(entity, endPosition))
+                CreateMoveEntity(entity, endPosition);
+        }
+
+        bool CheckWallCollision(EcsEntity entity, Vector2Int endPosition)
+        {
+            bool result = false;
+
             foreach (var i in _wallEntities)
             {
-                ref var c1 = ref _wallEntities.Components1[i];
-                ref var c2 = ref _wallEntities.Components2[i];
+                ref var wallEntity = ref _wallEntities.Entities[i];
+                var c1 = _wallEntities.Components1[i];
+                var c2 = _wallEntities.Components2[i];
 
-                if (endPosition == c1.Coords)
+                if (c1.Coords == endPosition)
                 {
-                    _world.AddComponent<PhaseEndEvent>(entity);
-                    _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
-                    return;
+                    result = true;
+
+                    if (c2.Solid)
+                    {
+                        _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
+                    }
+                    else
+                    {
+                        if (!c2.Damage)
+                        {
+                            SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
+                            sr.sprite = c2.DamageSprite;
+                            c2.Damage = true;
+                        }
+
+                        CreateAnimationEntity(entity, ActionAnimation.CHOP);
+
+                        c2.HealthPoint -= 1;
+                        if (c2.HealthPoint <= 0)
+                        {
+                            _world.AddComponent<GameObjectRemoveEvent>(wallEntity);
+                        }
+                    }
                 }
             }
-            CreateMoveEntity(entity, endPosition);
+            return result;
+        }
+
+        void CreateAnimationEntity(EcsEntity entity, ActionAnimation animation)
+        {
+            var c = _world.AddComponent<ActionAnimationComponent>(entity);
+            c.Animation = animation;
         }
 
         void CreateMoveEntity(EcsEntity entity, Vector2Int endPosition)

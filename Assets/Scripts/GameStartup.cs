@@ -25,6 +25,7 @@ namespace Client
                 .Add(new UserInputSystem())
                 .Add(new ActionSystem())
                 .Add(new ActionMoveSystem())
+                .Add(new ActionAnimationSystem())
                 .Add(new TurnSystem())
                 .Add(new GameWorldSystem());
 

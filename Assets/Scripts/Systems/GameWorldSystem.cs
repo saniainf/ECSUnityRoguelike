@@ -15,8 +15,8 @@ namespace Client
         {
             foreach (var i in _createEvents)
             {
-                Transform newGO = _createEvents.Components1[i].Transform;
-                Rigidbody2D newRB = _createEvents.Components1[i].Rigidbody;
+                var newGO = _createEvents.Components1[i].Transform;
+                var newRB = _createEvents.Components1[i].Rigidbody;
                 ref var newEntity = ref _createEvents.Entities[i];
 
                 var c = _world.AddComponent<PositionComponent>(newEntity);
@@ -28,7 +28,7 @@ namespace Client
 
             foreach (var i in _removeEvents)
             {
-                Transform destroyGO = _removeEvents.Components2[i].Transform;
+                var destroyGO = _removeEvents.Components2[i].Transform;
                 ref var removeEntity = ref _removeEvents.Entities[i];
                 destroyGO.gameObject.SetActive(false);
                 _world.RemoveEntity(in removeEntity);

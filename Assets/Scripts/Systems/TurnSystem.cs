@@ -27,13 +27,13 @@ namespace Client
             {
                 _world.RemoveComponent<ActionPhaseComponent>(_actionPhaseEnd.Entities[i]);
 
-                //if (_actionPhaseEnd.Components2[i].ReturnInput)
-                //{
-                //    _actionPhaseEnd.Components2[i].ReturnInput = false;
+                if (_actionPhaseEnd.Components2[i].ReturnInput)
+                {
+                    _actionPhaseEnd.Components2[i].ReturnInput = false;
                     _world.AddComponent<InputPhaseComponent>(_actionPhaseEnd.Entities[i]);
-                //}
-                //else
-                //    nextTurnEnity(_actionPhaseEnd.Components2[i].Initiative);
+                }
+                else
+                    nextTurnEnity(_actionPhaseEnd.Components2[i].Initiative);
             }
         }
 
