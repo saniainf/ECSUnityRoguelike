@@ -2,6 +2,6 @@ namespace Client
 {
     sealed class PlayerComponent
     {
-        // Add your data here.
+        public int FoodPoint = 0;
     }
 }

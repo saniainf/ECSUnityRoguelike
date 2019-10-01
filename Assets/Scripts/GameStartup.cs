@@ -23,9 +23,11 @@ namespace Client
 
             _systems
                 .Add(new UserInputSystem())
+                .Add(new EnemyInputSystem())
                 .Add(new ActionSystem())
                 .Add(new ActionMoveSystem())
                 .Add(new ActionAnimationSystem())
+                .Add(new CollestSystem())
                 .Add(new TurnSystem())
                 .Add(new GameWorldSystem());
 

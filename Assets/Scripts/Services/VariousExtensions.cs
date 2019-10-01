@@ -15,8 +15,6 @@ namespace Client
 
     public static class VExt
     {
-        public static Random random = new Random();
-
         public static Vector2Int ToInt2(this Vector2 v)
         {
             return new Vector2Int((int)v.x, (int)v.y);

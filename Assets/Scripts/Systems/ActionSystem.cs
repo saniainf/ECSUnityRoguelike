@@ -5,7 +5,6 @@ namespace Client
 {
     enum MoveDirection
     {
-        NONE,
         UP,
         DOWN,
         LEFT,
@@ -36,7 +35,7 @@ namespace Client
                 var c2 = _inputEntities.Components2[i];
 
                 SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
-                Vector2Int endPosition = Vector2Int.zero;
+                Vector2Int endPosition;
 
                 switch (c2.MoveDirection)
                 {
@@ -80,7 +79,9 @@ namespace Client
         {
             //check wall
             if (!CheckWallCollision(entity, endPosition))
+            {
                 CreateMoveEntity(entity, endPosition);
+            }
         }
 
         bool CheckWallCollision(EcsEntity entity, Vector2Int endPosition)
@@ -110,7 +111,7 @@ namespace Client
                             c2.Damage = true;
                         }
 
-                        CreateAnimationEntity(entity, ActionAnimation.CHOP);
+                        CreateAnimationEntity(entity, AnimationTriger.CHOP);
 
                         c2.HealthPoint -= 1;
                         if (c2.HealthPoint <= 0)
@@ -123,7 +124,7 @@ namespace Client
             return result;
         }
 
-        void CreateAnimationEntity(EcsEntity entity, ActionAnimation animation)
+        void CreateAnimationEntity(EcsEntity entity, AnimationTriger animation)
         {
             var c = _world.AddComponent<ActionAnimationComponent>(entity);
             c.Animation = animation;

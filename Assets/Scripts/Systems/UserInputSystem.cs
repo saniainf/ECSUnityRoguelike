@@ -9,7 +9,7 @@ namespace Client
     sealed class UserInputSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<InputPhaseComponent>.Exclude<GameObjectRemoveEvent> _inputPhaseEntities = null;
+        readonly EcsFilter<InputPhaseComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _inputPhaseEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -36,7 +36,7 @@ namespace Client
 
                     _world.AddComponent<PhaseEndEvent>(entity);
                 }
-        }
+            }
         }
     }
 }

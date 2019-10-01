@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client
 {
-    enum ActionAnimation
+    enum AnimationTriger
     {
         NONE,
         IDLE,
@@ -28,16 +28,16 @@ namespace Client
 
                 if (!c1.Run)
                 {
+                    var clips = c2.animator.GetCurrentAnimatorClipInfo(0);
+                    c1.StartClip = clips[0].clip.name;
                     c2.animator.SetTrigger(c1.Animation.ToString());
                     c1.Run = true;
                 }
                 else
                 {
-                    var state = c2.animator.GetCurrentAnimatorStateInfo(0);
-                    if (state.IsName(ActionAnimation.IDLE.ToString()))
-                    {
+                    var clips = c2.animator.GetCurrentAnimatorClipInfo(0);
+                    if (c1.StartClip == clips[0].clip.name)
                         _world.RemoveComponent<ActionAnimationComponent>(entity);
-                    }
                 }
             }
         }
