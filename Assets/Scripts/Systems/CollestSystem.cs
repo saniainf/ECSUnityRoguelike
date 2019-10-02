@@ -25,7 +25,7 @@ namespace Client
 
                     if (pc1.Coords == fc1.Coords)
                     {
-                        pc2.FoodPoint += fc2.foodValue;
+                        pc2.HealthPoint += fc2.foodValue;
                         _world.AddComponent<GameObjectRemoveEvent>(fe);
                     }
                 }

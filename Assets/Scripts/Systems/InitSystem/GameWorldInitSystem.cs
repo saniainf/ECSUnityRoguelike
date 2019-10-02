@@ -44,8 +44,8 @@ namespace Client
         int sodaCount = 3;
         int appleCount = 1;
         int wallCount = 5;
-        int enemyCount = 1;
-        int enemy2Count = 1;
+        int enemyCount = 10;
+        int enemy2Count = 10;
 
         int appleFoodValue = 20;
         int sodaFoodValue = 10;
@@ -108,6 +108,8 @@ namespace Client
                             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
                             animationComponent.animator = go.GetComponent<Animator>();
+
+                            player.HealthPoint = 10;
 
                             turnComponent = _world.AddComponent<TurnComponent>(playerEntity);
                             turnComponent.Initiative = initiative++;
@@ -176,6 +178,8 @@ namespace Client
 
                 animationComponent.animator = go.GetComponent<Animator>();
 
+                enemyComponent.HealthPoint = 2;
+
                 turnComponent = _world.AddComponent<TurnComponent>(enemy1);
                 turnComponent.Initiative = initiative++;
 
@@ -193,6 +197,8 @@ namespace Client
                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
                 animationComponent.animator = go.GetComponent<Animator>();
+
+                enemyComponent.HealthPoint = 3;
 
                 turnComponent = _world.AddComponent<TurnComponent>(enemy2);
                 turnComponent.Initiative = initiative++;

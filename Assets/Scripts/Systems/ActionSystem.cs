@@ -18,10 +18,13 @@ namespace Client
 
         readonly EcsFilter<ActionPhaseComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
         readonly EcsFilter<PositionComponent, InputDirectionComponent>.Exclude<GameObjectRemoveEvent> _inputEntities = null;
+
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
 
-        readonly EcsFilter<PositionComponent, WallComponent> _wallEntities = null;
+        readonly EcsFilter<PositionComponent, WallComponent>.Exclude<GameObjectRemoveEvent> _wallEntities = null;
+        readonly EcsFilter<PositionComponent, EnemyComponent>.Exclude<GameObjectRemoveEvent> _enemyEntities = null;
+        readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
 
         //TODO брать из настроек
         readonly float speed = 5f;
@@ -78,10 +81,63 @@ namespace Client
         void CreateAction(EcsEntity entity, Vector2Int endPosition)
         {
             //check wall
-            if (!CheckWallCollision(entity, endPosition))
+            if (!CheckWallCollision(entity, endPosition) && !CheckEnemyCollision(entity, endPosition) && !CheckPlayerCollision(entity, endPosition))
             {
                 CreateMoveEntity(entity, endPosition);
             }
+        }
+
+        bool CheckEnemyCollision(EcsEntity entity, Vector2Int endPosition)
+        {
+            bool result = false;
+
+            foreach (var i in _enemyEntities)
+            {
+                ref var enemyEntity = ref _enemyEntities.Entities[i];
+                var c1 = _enemyEntities.Components1[i];
+                var c2 = _enemyEntities.Components2[i];
+
+                if (c1.Coords == endPosition)
+                {
+                    result = true;
+
+                    CreateAnimationEntity(entity, AnimationTriger.CHOP);
+
+                    c2.HealthPoint -= 1;
+                    if (c2.HealthPoint <= 0)
+                    {
+                        _world.AddComponent<GameObjectRemoveEvent>(enemyEntity);
+                    }
+                }
+            }
+            return result;
+        }
+
+        bool CheckPlayerCollision(EcsEntity entity, Vector2Int endPosition)
+        {
+            bool result = false;
+
+            foreach (var i in _playerEntities)
+            {
+                ref var playerEntity = ref _playerEntities.Entities[i];
+                var c1 = _playerEntities.Components1[i];
+                var c2 = _playerEntities.Components2[i];
+
+                if (c1.Coords == endPosition)
+                {
+                    result = true;
+
+                    CreateAnimationEntity(entity, AnimationTriger.CHOP);
+                    CreateAnimationEntity(playerEntity, AnimationTriger.HIT);
+
+                    c2.HealthPoint -= 1;
+                    if (c2.HealthPoint <= 0)
+                    {
+                        _world.AddComponent<GameObjectRemoveEvent>(playerEntity);
+                    }
+                }
+            }
+            return result;
         }
 
         bool CheckWallCollision(EcsEntity entity, Vector2Int endPosition)
