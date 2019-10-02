@@ -17,9 +17,9 @@ namespace Client
             {
                 var newGO = _createEvents.Components1[i].Transform;
                 var newRB = _createEvents.Components1[i].Rigidbody;
-                ref var newEntity = ref _createEvents.Entities[i];
+                ref var entity = ref _createEvents.Entities[i];
 
-                var c = _world.AddComponent<PositionComponent>(newEntity);
+                var c = _world.AddComponent<PositionComponent>(entity);
                 c.Transform = newGO;
                 c.Rigidbody = newRB;
                 c.Coords.x = (int)newGO.transform.localPosition.x;
@@ -28,10 +28,20 @@ namespace Client
 
             foreach (var i in _removeEvents)
             {
-                var destroyGO = _removeEvents.Components2[i].Transform;
-                ref var removeEntity = ref _removeEvents.Entities[i];
-                destroyGO.gameObject.SetActive(false);
-                _world.RemoveEntity(in removeEntity);
+                ref var entity = ref _removeEvents.Entities[i];
+                var c1 = _removeEvents.Components1[i];
+                var c2 = _removeEvents.Components2[i];
+
+                if (c1.RemoveTime <= 0)
+                {
+                    var destroyGO = c2.Transform;
+                    destroyGO.gameObject.SetActive(false);
+                    _world.RemoveEntity(entity);
+                }
+                else
+                {
+                    c1.RemoveTime -= Time.deltaTime;
+                }
             }
         }
     }

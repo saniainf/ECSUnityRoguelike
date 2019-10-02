@@ -29,6 +29,7 @@ namespace Client
                 .Add(new ActionAnimationSystem())
                 .Add(new CollestSystem())
                 .Add(new TurnSystem())
+                .Add(new EffectSystem())
                 .Add(new GameWorldSystem());
 
             _systems.Initialize();

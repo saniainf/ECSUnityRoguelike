@@ -3,9 +3,13 @@ using UnityEngine;
 
 namespace Client
 {
-    [EcsOneFrame]
-    sealed class GameObjectRemoveEvent
+    sealed class GameObjectRemoveEvent : IEcsAutoResetComponent
     {
+        public float RemoveTime = 0f;
 
+        void IEcsAutoResetComponent.Reset()
+        {
+            RemoveTime = 0f;
+        }
     }
 }

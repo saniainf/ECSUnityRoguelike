@@ -26,6 +26,9 @@ namespace Client
         readonly EcsFilter<PositionComponent, EnemyComponent>.Exclude<GameObjectRemoveEvent> _enemyEntities = null;
         readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
 
+        readonly Sprite chopEffect = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet")[55];
+        readonly GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
+
         //TODO брать из настроек
         readonly float speed = 5f;
 
@@ -103,10 +106,16 @@ namespace Client
 
                     CreateAnimationEntity(entity, AnimationTriger.CHOP);
 
+                    var go = VExt.LayoutSpriteObjects(prefabSprite, endPosition.x, endPosition.y, LayersName.Effect.ToString(), chopEffect);
+                    _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out SpriteEffectComponent effect);
+                    gameObjectCreateEvent.Transform = go.transform;
+                    effect.LifeTime = 0.3f;
+
                     c2.HealthPoint -= 1;
                     if (c2.HealthPoint <= 0)
                     {
-                        _world.AddComponent<GameObjectRemoveEvent>(enemyEntity);
+                        var c = _world.AddComponent<GameObjectRemoveEvent>(enemyEntity);
+                        c.RemoveTime = 0.3f;
                     }
                 }
             }
@@ -130,10 +139,16 @@ namespace Client
                     CreateAnimationEntity(entity, AnimationTriger.CHOP);
                     CreateAnimationEntity(playerEntity, AnimationTriger.HIT);
 
+                    var go = VExt.LayoutSpriteObjects(prefabSprite, endPosition.x, endPosition.y, LayersName.Effect.ToString(), chopEffect);
+                    _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out SpriteEffectComponent effect);
+                    gameObjectCreateEvent.Transform = go.transform;
+                    effect.LifeTime = 0.3f;
+
                     c2.HealthPoint -= 1;
                     if (c2.HealthPoint <= 0)
                     {
-                        _world.AddComponent<GameObjectRemoveEvent>(playerEntity);
+                        var c = _world.AddComponent<GameObjectRemoveEvent>(playerEntity);
+                        c.RemoveTime = 0.3f;
                     }
                 }
             }
@@ -169,10 +184,16 @@ namespace Client
 
                         CreateAnimationEntity(entity, AnimationTriger.CHOP);
 
+                        var go = VExt.LayoutSpriteObjects(prefabSprite, endPosition.x, endPosition.y, LayersName.Effect.ToString(), chopEffect);
+                        _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out SpriteEffectComponent effect);
+                        gameObjectCreateEvent.Transform = go.transform;
+                        effect.LifeTime = 0.3f;
+
                         c2.HealthPoint -= 1;
                         if (c2.HealthPoint <= 0)
                         {
-                            _world.AddComponent<GameObjectRemoveEvent>(wallEntity);
+                            var c = _world.AddComponent<GameObjectRemoveEvent>(wallEntity);
+                            c.RemoveTime = 0.3f;
                         }
                     }
                 }
