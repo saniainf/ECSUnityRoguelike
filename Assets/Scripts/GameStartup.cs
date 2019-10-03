@@ -9,8 +9,6 @@ namespace Client
         EcsWorld _world;
         EcsSystems _systems;
 
-        int a = 0;
-
         void OnEnable()
         {
             _world = new EcsWorld();
@@ -21,10 +19,8 @@ namespace Client
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
 #endif
             _systems
+                .Add(new TurnInitSystem())
                 .Add(new GameWorldInitSystem())
-                .Add(new TurnInitSystem());
-
-            _systems
                 .Add(new UserInputSystem())
                 .Add(new EnemyInputSystem())
                 .Add(new ActionSystem())
@@ -40,11 +36,6 @@ namespace Client
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Keypad5))
-            {
-                
-            }
-
             _systems.Run();
 
             _world.RemoveOneFrameComponents();
