@@ -5,13 +5,19 @@ using Random = UnityEngine.Random;
 
 namespace Client
 {
-    enum LayersName
+    public enum LayersName
     {
         Floor,
         Wall,
         Object,
         Character,
         Effect
+    }
+
+    public enum SpriteEffect
+    {
+        NONE,
+        CHOP
     }
 
     public static class VExt

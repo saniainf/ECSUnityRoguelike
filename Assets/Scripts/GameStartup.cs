@@ -1,5 +1,6 @@
 using Leopotam.Ecs;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Client
 {
@@ -7,6 +8,8 @@ namespace Client
     {
         EcsWorld _world;
         EcsSystems _systems;
+
+        int a = 0;
 
         void OnEnable()
         {
@@ -27,7 +30,7 @@ namespace Client
                 .Add(new ActionSystem())
                 .Add(new ActionMoveSystem())
                 .Add(new ActionAnimationSystem())
-                .Add(new CollestSystem())
+                .Add(new CollectSystem())
                 .Add(new TurnSystem())
                 .Add(new EffectSystem())
                 .Add(new GameWorldSystem());
@@ -37,6 +40,11 @@ namespace Client
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Keypad5))
+            {
+                
+            }
+
             _systems.Run();
 
             _world.RemoveOneFrameComponents();

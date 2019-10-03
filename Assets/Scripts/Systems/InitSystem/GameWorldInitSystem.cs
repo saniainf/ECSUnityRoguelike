@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Client
 {
     [EcsInject]
-    sealed class GameWorldInitSystem : IEcsInitSystem
+    sealed class GameWorldInitSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 
@@ -56,8 +56,10 @@ namespace Client
         int initiative = 1;
         #endregion
 
-        void IEcsInitSystem.Initialize()
+        void IEcsRunSystem.Run()
         {
+            foreach(int wi in _)
+
             solidWallSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 25, 26, 28, 29 });
             softWall = VExt.ExtractSubArray(spriteSheet, new int[] { 21, 22, 23, 24, 27, 30, 31 });
             softWallDamage = VExt.ExtractSubArray(spriteSheet, new int[] { 48, 49, 50, 51, 52, 53, 54 });
@@ -205,11 +207,6 @@ namespace Client
 
                 emptyCells.Remove(cell);
             }
-        }
-
-        void IEcsInitSystem.Destroy()
-        {
-
         }
     }
 }

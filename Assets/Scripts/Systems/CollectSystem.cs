@@ -3,7 +3,7 @@ using Leopotam.Ecs;
 namespace Client
 {
     [EcsInject]
-    sealed class CollestSystem : IEcsRunSystem
+    sealed class CollectSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 
