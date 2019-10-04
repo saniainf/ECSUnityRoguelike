@@ -80,7 +80,6 @@ namespace Client
 
         void CreateAction(EcsEntity entity, Vector2Int endPosition)
         {
-            //check wall
             if (!CheckWallCollision(entity, endPosition) && !CheckEnemyCollision(entity, endPosition) && !CheckPlayerCollision(entity, endPosition))
             {
                 CreateMoveEntity(entity, endPosition);
@@ -95,7 +94,6 @@ namespace Client
             {
                 ref var enemyEntity = ref _enemyEntities.Entities[i];
                 var c1 = _enemyEntities.Components1[i];
-                var c2 = _enemyEntities.Components2[i];
 
                 if (c1.Coords == endPosition)
                 {
@@ -104,13 +102,8 @@ namespace Client
                     CreateAnimationEntity(entity, AnimationTriger.CHOP);
                     CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
-                    c2.HealthPoint -= 1;
-                    if (c2.HealthPoint <= 0)
-                    {
-                        var c = _world.AddComponent<GameObjectRemoveEvent>(enemyEntity);
-                        c.RemoveTime = 0.3f;
-                    }
-                }
+                    _world.AddComponent<ImpactEvent>(enemyEntity).HitValue = 1;
+                 }
             }
             return result;
         }
@@ -123,7 +116,6 @@ namespace Client
             {
                 ref var playerEntity = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Components1[i];
-                var c2 = _playerEntities.Components2[i];
 
                 if (c1.Coords == endPosition)
                 {
@@ -133,12 +125,7 @@ namespace Client
                     CreateAnimationEntity(playerEntity, AnimationTriger.HIT);
                     CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
-                    c2.HealthPoint -= 1;
-                    if (c2.HealthPoint <= 0)
-                    {
-                        var c = _world.AddComponent<GameObjectRemoveEvent>(playerEntity);
-                        c.RemoveTime = 0.3f;
-                    }
+                    _world.AddComponent<ImpactEvent>(playerEntity).HitValue = 1;
                 }
             }
             return result;
@@ -174,12 +161,7 @@ namespace Client
                         CreateAnimationEntity(entity, AnimationTriger.CHOP);
                         CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
-                        c2.HealthPoint -= 1;
-                        if (c2.HealthPoint <= 0)
-                        {
-                            var c = _world.AddComponent<GameObjectRemoveEvent>(wallEntity);
-                            c.RemoveTime = 0.3f;
-                        }
+                        _world.AddComponent<ImpactEvent>(wallEntity).HitValue = 1;
                     }
                 }
             }

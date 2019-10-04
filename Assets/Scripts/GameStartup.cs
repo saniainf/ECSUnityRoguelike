@@ -29,6 +29,7 @@ namespace Client
                 .Add(new CollectSystem())
                 .Add(new TurnSystem())
                 .Add(new EffectSystem())
+                .Add(new InfluenceSystem())
                 .Add(new GameWorldSystem());
 
             _systems.Initialize();

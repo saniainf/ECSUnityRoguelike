@@ -20,6 +20,14 @@ namespace Client
         CHOP
     }
 
+    enum AnimationTriger
+    {
+        NONE,
+        IDLE,
+        CHOP,
+        HIT
+    }
+
     public static class VExt
     {
         private static Transform GameObjectsOther = new GameObject("GameObjectsOther").transform;

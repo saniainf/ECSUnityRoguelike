@@ -8,7 +8,6 @@ namespace Client
     sealed class TurnInitSystem : IEcsInitSystem, IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<PlayerComponent, TurnComponent> _player = null;
 
         void IEcsInitSystem.Initialize()
         {

@@ -3,14 +3,6 @@ using UnityEngine;
 
 namespace Client
 {
-    enum AnimationTriger
-    {
-        NONE,
-        IDLE,
-        CHOP,
-        HIT
-    }
-
     [EcsInject]
     sealed class ActionAnimationSystem : IEcsRunSystem
     {

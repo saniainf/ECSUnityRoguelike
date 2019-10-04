@@ -83,6 +83,7 @@ namespace Client
                 TurnComponent turnComponent;
                 GameObjectCreateEvent gameObjectCreateEvent;
                 EnemyComponent enemyComponent;
+                DataSheetComponent dataComponent;
 
                 VExt.ReverseArray(ref levelArray);
 
@@ -120,7 +121,8 @@ namespace Client
 
                                     animationComponent.animator = go.GetComponent<Animator>();
 
-                                    player.HealthPoint = 10;
+                                    dataComponent = _world.AddComponent<DataSheetComponent>(playerEntity);
+                                    dataComponent.HealthPoint = 10;
 
                                     turnComponent = _world.AddComponent<TurnComponent>(playerEntity);
                                     turnComponent.Initiative = initiative++;
@@ -180,14 +182,15 @@ namespace Client
                     int indxSprite = Random.Range(0, softWall.Length);
 
                     go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "softWall", gameObjectsRoot, LayersName.Object.ToString(), softWall[indxSprite]);
-                    _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent);
+                    _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent, out dataComponent);
 
                     gameObjectCreateEvent.Transform = go.transform;
                     gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
                     wallComponent.Solid = false;
-                    wallComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
                     wallComponent.DamageSprite = softWallDamage[indxSprite];
+
+                    dataComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
 
                     emptyCells.Remove(cell);
                 }
@@ -204,7 +207,8 @@ namespace Client
 
                     animationComponent.animator = go.GetComponent<Animator>();
 
-                    enemyComponent.HealthPoint = 2;
+                    dataComponent = _world.AddComponent<DataSheetComponent>(enemy1);
+                    dataComponent.HealthPoint = 2;
 
                     turnComponent = _world.AddComponent<TurnComponent>(enemy1);
                     turnComponent.Initiative = initiative++;
@@ -224,7 +228,8 @@ namespace Client
 
                     animationComponent.animator = go.GetComponent<Animator>();
 
-                    enemyComponent.HealthPoint = 3;
+                    dataComponent = _world.AddComponent<DataSheetComponent>(enemy2);
+                    dataComponent.HealthPoint = 3;
 
                     turnComponent = _world.AddComponent<TurnComponent>(enemy2);
                     turnComponent.Initiative = initiative++;
