@@ -5,6 +5,7 @@ namespace Client
 {
     enum MoveDirection
     {
+        NONE,
         UP,
         DOWN,
         LEFT,
@@ -63,6 +64,9 @@ namespace Client
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, endPosition);
                         sr.flipX = false;
+                        break;
+                    case MoveDirection.NONE:
+                        _world.RemoveComponent<InputDirectionComponent>(in entity);
                         break;
                     default:
                         break;

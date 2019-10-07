@@ -21,13 +21,9 @@ namespace Client
 
                 foreach (var j in _playerEntities)
                 {
-                    var pc1 = _playerEntities.Components1[i];
-                    var playerPosition = pc1.Coords.ToVector3(z: -100f);
-                    if (cc1.Transform.position != playerPosition)
-                    {
-                        var newPosition = Vector3.Lerp(cc1.Transform.position, playerPosition, speed * Time.deltaTime);
-                        cc1.Transform.position = newPosition;
-                    }
+                    var playerPosition = _playerEntities.Components1[i].Transform.position;
+                    playerPosition.z = -100f;
+                    cc1.Transform.position = playerPosition;
                 }
 
             }

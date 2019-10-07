@@ -11,7 +11,7 @@ namespace Client
 
         void IEcsInitSystem.Initialize()
         {
-
+            _world.CreateEntityWith(out WorldCreateEvent _);
         }
 
         void IEcsInitSystem.Destroy() { }

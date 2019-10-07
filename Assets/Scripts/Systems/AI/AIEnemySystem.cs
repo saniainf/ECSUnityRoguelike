@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Client
 {
     [EcsInject]
-    sealed class EnemyInputSystem : IEcsRunSystem
+    sealed class AIEnemySystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
         readonly EcsFilter<InputPhaseComponent, PositionComponent, EnemyComponent>.Exclude<GameObjectRemoveEvent> _inputPhaseEntities = null;
@@ -12,7 +12,7 @@ namespace Client
 
         void IEcsRunSystem.Run()
         {
-            var direction = VExt.NextEnum<MoveDirection>();
+            var direction = Random.value > 0.7f ? VExt.NextEnum<MoveDirection>() : MoveDirection.NONE;
 
             foreach (var i in _inputPhaseEntities)
             {

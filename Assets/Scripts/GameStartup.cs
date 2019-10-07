@@ -20,18 +20,18 @@ namespace Client
 #endif
             _systems
                 .Add(new TurnInitSystem())
-                .Add(new GameWorldInitSystem())
+                .Add(new GameWorldEventsSystem())
                 .Add(new UserInputSystem())
-                .Add(new EnemyInputSystem())
+                .Add(new AIEnemySystem())
                 .Add(new ActionSystem())
                 .Add(new ActionMoveSystem())
                 .Add(new ActionAnimationSystem())
                 .Add(new CollectSystem())
                 .Add(new TurnSystem())
                 .Add(new EffectSystem())
-                .Add(new InfluenceSystem())
-                .Add(new GameWorldSystem())
-                .Add(new UISystem())
+                .Add(new InfluenceEventsSystem())
+                .Add(new GameObjectEventsSystem())
+                .Add(new UIEventsSystem())
                 .Add(new CameraSystem());
 
             _systems.Initialize();

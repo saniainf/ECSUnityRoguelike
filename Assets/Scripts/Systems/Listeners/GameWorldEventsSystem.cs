@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Client
 {
     [EcsInject]
-    sealed class GameWorldInitSystem : IEcsRunSystem
+    sealed class GameWorldEventsSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 
