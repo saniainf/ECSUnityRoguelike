@@ -18,8 +18,8 @@ namespace Client
                 var c1 = _moveEntities.Components1[i];
                 var c2 = _moveEntities.Components2[i];
 
-                Vector2 newPostion = Vector2.MoveTowards(c2.Rigidbody.position, c1.EndPosition, c1.Speed * Time.deltaTime);
-                c2.Rigidbody.MovePosition(newPostion);
+                Vector2 newPosition = Vector2.MoveTowards(c2.Rigidbody.position, c1.EndPosition, c1.Speed * Time.deltaTime);
+                c2.Rigidbody.MovePosition(newPosition);
 
                 float sqrRemainingDistance = (c2.Rigidbody.position - c1.EndPosition).sqrMagnitude;
                 if (sqrRemainingDistance < float.Epsilon)

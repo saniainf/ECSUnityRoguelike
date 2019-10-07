@@ -1,4 +1,5 @@
 using Leopotam.Ecs;
+using UnityEngine;
 
 namespace Client
 {
@@ -7,15 +8,15 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<PositionComponent, PlayerComponent> _playerEntities = null;
-        readonly EcsFilter<PositionComponent, FoodComponent> _foodEntities = null;
+        readonly EcsFilter<PositionComponent, ActionPhaseComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+        readonly EcsFilter<PositionComponent, FoodComponent>.Exclude<GameObjectRemoveEvent> _foodEntities = null;
 
         void IEcsRunSystem.Run()
         {
             foreach (var i in _playerEntities)
             {
+                ref var pe = ref _playerEntities.Entities[i];
                 var pc1 = _playerEntities.Components1[i];
-                var pc2 = _playerEntities.Components2[i];
 
                 foreach (var j in _foodEntities)
                 {
@@ -25,7 +26,9 @@ namespace Client
 
                     if (pc1.Coords == fc1.Coords)
                     {
-                        pc2.HealthPoint += fc2.foodValue;
+                        var c = _world.EnsureComponent<CollectEvent>(pe, out _);
+                        c.HealValue = fc2.foodValue;
+
                         _world.AddComponent<GameObjectRemoveEvent>(fe);
                     }
                 }

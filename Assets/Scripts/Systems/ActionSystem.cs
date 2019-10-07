@@ -27,7 +27,7 @@ namespace Client
         readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
 
         //TODO брать из настроек
-        readonly float speed = 5f;
+        readonly float speed = 7f;
 
         void IEcsRunSystem.Run()
         {
@@ -94,6 +94,7 @@ namespace Client
             {
                 ref var enemyEntity = ref _enemyEntities.Entities[i];
                 var c1 = _enemyEntities.Components1[i];
+                var dsc = _world.GetComponent<DataSheetComponent>(entity);
 
                 if (c1.Coords == endPosition)
                 {
@@ -102,8 +103,8 @@ namespace Client
                     CreateAnimationEntity(entity, AnimationTriger.CHOP);
                     CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
-                    _world.AddComponent<ImpactEvent>(enemyEntity).HitValue = 1;
-                 }
+                    _world.EnsureComponent<ImpactEvent>(enemyEntity, out _).HitValue += dsc.HitDamage;
+                }
             }
             return result;
         }
@@ -116,6 +117,7 @@ namespace Client
             {
                 ref var playerEntity = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Components1[i];
+                var dsc = _world.GetComponent<DataSheetComponent>(entity);
 
                 if (c1.Coords == endPosition)
                 {
@@ -125,7 +127,7 @@ namespace Client
                     CreateAnimationEntity(playerEntity, AnimationTriger.HIT);
                     CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
-                    _world.AddComponent<ImpactEvent>(playerEntity).HitValue = 1;
+                    _world.EnsureComponent<ImpactEvent>(playerEntity, out _).HitValue += dsc.HitDamage;
                 }
             }
             return result;
@@ -140,6 +142,7 @@ namespace Client
                 ref var wallEntity = ref _wallEntities.Entities[i];
                 var c1 = _wallEntities.Components1[i];
                 var c2 = _wallEntities.Components2[i];
+                var dsc = _world.GetComponent<DataSheetComponent>(entity);
 
                 if (c1.Coords == endPosition)
                 {
@@ -161,7 +164,7 @@ namespace Client
                         CreateAnimationEntity(entity, AnimationTriger.CHOP);
                         CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
-                        _world.AddComponent<ImpactEvent>(wallEntity).HitValue = 1;
+                        _world.EnsureComponent<ImpactEvent>(wallEntity, out _).HitValue += dsc.HitDamage;
                     }
                 }
             }

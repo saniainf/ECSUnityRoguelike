@@ -27,16 +27,16 @@ namespace Client
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
 
         char[,] levelArray = new char[,]{
-            { '8','8','8','8','8','8','8','8','8','8' },
-            { '8','@','.','.','.','.','.','.','.','8' },
-            { '8','.','.','.','.','.','.','.','.','8' },
-            { '8','.','.','.','.','.','.','.','.','8' },
-            { '8','.','.','.','.','.','.','.','.','8' },
-            { '8','8','.','8','8','.','.','.','.','8' },
-            { '8','.','.','.','8','.','.','.','.','8' },
-            { '8','.','.','.','.','.','.','.','.','8' },
-            { '8','.','.','.','8','.','.','.','.','8' },
-            { '8','8','8','8','8','8','8','8','8','8' }};
+            { '8','8','8','8','8','8','8','8','8','8','8','8' },
+            { '8','@','.','.','.','.','.','.','.','8','.','8' },
+            { '8','.','.','.','.','.','.','.','.','8','.','8' },
+            { '8','.','.','.','.','.','.','.','.','8','.','8' },
+            { '8','.','.','.','.','.','.','.','.','.','.','8' },
+            { '8','8','.','8','8','.','.','.','.','8','.','8' },
+            { '8','.','.','.','8','.','.','.','.','8','.','8' },
+            { '8','.','.','.','.','.','.','.','.','8','.','8' },
+            { '8','.','.','.','8','.','.','.','.','8','.','8' },
+            { '8','8','8','8','8','8','8','8','8','8','8','8' }};
 
         Sprite[] solidWallSprites;
         Sprite[] softWall;
@@ -123,6 +123,7 @@ namespace Client
 
                                     dataComponent = _world.AddComponent<DataSheetComponent>(playerEntity);
                                     dataComponent.HealthPoint = 10;
+                                    dataComponent.HitDamage = 1;
 
                                     turnComponent = _world.AddComponent<TurnComponent>(playerEntity);
                                     turnComponent.Initiative = initiative++;
@@ -209,6 +210,7 @@ namespace Client
 
                     dataComponent = _world.AddComponent<DataSheetComponent>(enemy1);
                     dataComponent.HealthPoint = 2;
+                    dataComponent.HitDamage = 1;
 
                     turnComponent = _world.AddComponent<TurnComponent>(enemy1);
                     turnComponent.Initiative = initiative++;
@@ -230,6 +232,7 @@ namespace Client
 
                     dataComponent = _world.AddComponent<DataSheetComponent>(enemy2);
                     dataComponent.HealthPoint = 3;
+                    dataComponent.HitDamage = 2;
 
                     turnComponent = _world.AddComponent<TurnComponent>(enemy2);
                     turnComponent.Initiative = initiative++;

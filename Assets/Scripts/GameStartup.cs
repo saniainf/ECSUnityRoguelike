@@ -30,7 +30,9 @@ namespace Client
                 .Add(new TurnSystem())
                 .Add(new EffectSystem())
                 .Add(new InfluenceSystem())
-                .Add(new GameWorldSystem());
+                .Add(new GameWorldSystem())
+                .Add(new UISystem())
+                .Add(new CameraSystem());
 
             _systems.Initialize();
         }

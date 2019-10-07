@@ -11,6 +11,7 @@ namespace Client
 
         void IEcsInitSystem.Initialize()
         {
+
         }
 
         void IEcsInitSystem.Destroy() { }
