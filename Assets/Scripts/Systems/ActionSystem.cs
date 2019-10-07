@@ -104,7 +104,7 @@ namespace Client
                 {
                     result = true;
 
-                    CreateAnimationEntity(entity, AnimationTriger.CHOP);
+                    CreateAnimationEntity(entity, AnimationTriger.Chop);
                     CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
                     _world.EnsureComponent<ImpactEvent>(enemyEntity, out _).HitValue += dsc.HitDamage;
@@ -127,8 +127,8 @@ namespace Client
                 {
                     result = true;
 
-                    CreateAnimationEntity(entity, AnimationTriger.CHOP);
-                    CreateAnimationEntity(playerEntity, AnimationTriger.HIT);
+                    CreateAnimationEntity(entity, AnimationTriger.Chop);
+                    CreateAnimationEntity(playerEntity, AnimationTriger.Hit);
                     CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
                     _world.EnsureComponent<ImpactEvent>(playerEntity, out _).HitValue += dsc.HitDamage;
@@ -165,7 +165,7 @@ namespace Client
                             c2.Damage = true;
                         }
 
-                        CreateAnimationEntity(entity, AnimationTriger.CHOP);
+                        CreateAnimationEntity(entity, AnimationTriger.Chop);
                         CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
                         _world.EnsureComponent<ImpactEvent>(wallEntity, out _).HitValue += dsc.HitDamage;

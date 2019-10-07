@@ -20,16 +20,18 @@ namespace Client
         CHOP
     }
 
-    enum AnimationTriger
+    public enum AnimationTriger
     {
-        NONE,
-        IDLE,
-        CHOP,
-        HIT
+        None,
+        Idle,
+        Chop,
+        Hit
     }
 
     public static class VExt
     {
+        public static string IdleHealthPercent = "HealthPercent";
+
         private static Transform GameObjectsOther = new GameObject("GameObjectsOther").transform;
 
         public static GameObject LayoutSpriteObjects(GameObject prefab, int x, int y, string sortingLayer, Sprite sprite)
