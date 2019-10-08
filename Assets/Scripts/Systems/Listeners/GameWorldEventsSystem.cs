@@ -58,8 +58,8 @@ namespace Client
         int appleFoodValue = 20;
         int sodaFoodValue = 10;
 
-        int minWallHP = 4;
-        int maxWallHP = 7;
+        int minWallHP = 2;
+        int maxWallHP = 4;
 
         #endregion
 

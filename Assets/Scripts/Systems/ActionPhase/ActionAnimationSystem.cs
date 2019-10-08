@@ -31,8 +31,11 @@ namespace Client
                 else
                 {
                     var clips = c2.animator.GetCurrentAnimatorClipInfo(0);
-                    if (c1.StartClip == clips[0].clip.name)
-                        _world.RemoveComponent<ActionAnimationComponent>(entity);
+                    if (clips.Length > 0)
+                    {
+                        if (c1.StartClip == clips[0].clip.name)
+                            _world.RemoveComponent<ActionAnimationComponent>(entity);
+                    }
                 }
             }
         }
