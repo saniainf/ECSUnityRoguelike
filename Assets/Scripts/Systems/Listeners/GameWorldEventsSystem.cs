@@ -58,8 +58,8 @@ namespace Client
         int appleFoodValue = 20;
         int sodaFoodValue = 10;
 
-        int minWallHP = 2;
-        int maxWallHP = 3;
+        int minWallHP = 4;
+        int maxWallHP = 7;
 
         #endregion
 
@@ -123,6 +123,7 @@ namespace Client
 
                                     dataComponent = _world.AddComponent<DataSheetComponent>(playerEntity);
                                     dataComponent.HealthPoint = 10;
+                                    dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
                                     dataComponent.HitDamage = 1;
 
                                     turnComponent = _world.AddComponent<TurnComponent>(playerEntity);
@@ -191,6 +192,7 @@ namespace Client
 
                     dataComponent = _world.AddComponent<DataSheetComponent>(wall);
                     dataComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
+                    dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
 
                     emptyCells.Remove(cell);
                 }
@@ -209,6 +211,7 @@ namespace Client
 
                     dataComponent = _world.AddComponent<DataSheetComponent>(enemy1);
                     dataComponent.HealthPoint = 2;
+                    dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
                     dataComponent.HitDamage = 1;
 
                     turnComponent = _world.AddComponent<TurnComponent>(enemy1);
@@ -231,6 +234,7 @@ namespace Client
 
                     dataComponent = _world.AddComponent<DataSheetComponent>(enemy2);
                     dataComponent.HealthPoint = 3;
+                    dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
                     dataComponent.HitDamage = 2;
 
                     turnComponent = _world.AddComponent<TurnComponent>(enemy2);

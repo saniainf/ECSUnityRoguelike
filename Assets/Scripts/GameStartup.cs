@@ -31,6 +31,7 @@ namespace Client
                 .Add(new EffectSystem())
                 .Add(new InfluenceEventsSystem())
                 .Add(new GameObjectEventsSystem())
+                .Add(new AppearanceSystem())
                 .Add(new UIEventsSystem())
                 .Add(new CameraSystem());
 

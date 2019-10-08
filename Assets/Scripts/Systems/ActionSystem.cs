@@ -126,9 +126,7 @@ namespace Client
                     result = true;
 
                     CreateAnimationEntity(entity, AnimationTriger.Chop);
-                    //CreateAnimationEntity(ce, AnimationTriger.Hit);
-
-                    CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
+                    //CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
 
                     _world.EnsureComponent<ImpactEvent>(ce, out _).HitValue += dsc.HitDamage;
                 }
@@ -136,79 +134,6 @@ namespace Client
 
             return result;
         }
-
-        /*
-        bool CheckEnemyCollision(EcsEntity entity, Vector2Int endPosition)
-        {
-            bool result = false;
-
-            foreach (var i in _enemyEntities)
-            {
-                ref var enemyEntity = ref _enemyEntities.Entities[i];
-                var c1 = _enemyEntities.Components1[i];
-                var dsc = _world.GetComponent<DataSheetComponent>(entity);
-
-                if (c1.Coords == endPosition)
-                {
-                    result = true;
-
-                    CreateAnimationEntity(entity, AnimationTriger.Chop);
-                    CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
-
-                    _world.EnsureComponent<ImpactEvent>(enemyEntity, out _).HitValue += dsc.HitDamage;
-                }
-            }
-            return result;
-        }
-
-        bool CheckPlayerCollision(EcsEntity entity, Vector2Int endPosition)
-        {
-            bool result = false;
-
-            foreach (var i in _playerEntities)
-            {
-                ref var playerEntity = ref _playerEntities.Entities[i];
-                var c1 = _playerEntities.Components1[i];
-                var dsc = _world.GetComponent<DataSheetComponent>(entity);
-
-                if (c1.Coords == endPosition)
-                {
-                    result = true;
-
-                    CreateAnimationEntity(entity, AnimationTriger.Chop);
-                    CreateAnimationEntity(playerEntity, AnimationTriger.Hit);
-                    CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
-
-                    _world.EnsureComponent<ImpactEvent>(playerEntity, out _).HitValue += dsc.HitDamage;
-                }
-            }
-            return result;
-        }
-
-        bool CheckWallCollision(EcsEntity entity, Vector2Int endPosition)
-        {
-            bool result = false;
-
-            foreach (var i in _wallEntities)
-            {
-                ref var wallEntity = ref _wallEntities.Entities[i];
-                var c1 = _wallEntities.Components1[i];
-                var c2 = _wallEntities.Components2[i];
-                var dsc = _world.GetComponent<DataSheetComponent>(entity);
-
-                if (c1.Coords == endPosition)
-                {
-                    result = true;
-
-                    //if (c2.Solid)
-                    //{
-                    //    _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
-                    //}
-                }
-            }
-            return result;
-        }
-        */
 
         void CreateEffect(Vector2Int position, SpriteEffect effect, float lifeTime)
         {

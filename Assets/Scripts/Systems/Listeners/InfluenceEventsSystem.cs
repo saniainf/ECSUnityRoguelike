@@ -19,12 +19,19 @@ namespace Client
                 var c1 = _impactEntities.Components1[i];
                 var c2 = _impactEntities.Components2[i];
 
-                c2.HealthPoint -= c1.HitValue;
+                c2.CurrentHealthPoint -= c1.HitValue;
                 _world.EnsureComponent<ActionAnimationComponent>(entity, out _).Animation = AnimationTriger.Hit;
 
-                Debug.Log("damage " + c1.HitValue);
+                var animator = _world.GetComponent<AnimationComponent>(entity).animator;
+                var cur = animator.GetBool("Damaged");
+                if ((c2.HealthPoint != c2.CurrentHealthPoint) != cur)
+                {
+                    animator.SetBool("Damaged", true);
+                }
 
-                if (c2.HealthPoint <= 0)
+                //Debug.Log("damage " + c1.HitValue);
+
+                if (c2.CurrentHealthPoint <= 0)
                 {
                     var c = _world.AddComponent<GameObjectRemoveEvent>(entity);
                     c.RemoveTime = 0.3f;
@@ -37,8 +44,8 @@ namespace Client
                 var c1 = _collectEntities.Components1[i];
                 var c2 = _collectEntities.Components2[i];
 
-                c2.HealthPoint += c1.HealValue;
-                Debug.Log("heal " + c1.HealValue);
+                c2.CurrentHealthPoint = Mathf.Min(c2.CurrentHealthPoint + c1.HealValue, c2.HealthPoint);
+                //Debug.Log("heal " + c1.HealValue);
             }
         }
     }

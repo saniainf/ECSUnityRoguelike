@@ -38,7 +38,7 @@ namespace Client
                 {
                     var uic1 = _uiEntities.Components1[i];
 
-                    uic1.UIText.text = "LIVE: " + pc1.HealthPoint.ToString();
+                    uic1.UIText.text = "LIVE: " + pc1.CurrentHealthPoint.ToString();
                 }
             }
         }
