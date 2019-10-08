@@ -4,5 +4,7 @@ namespace Client
     {
         public int HealthPoint = 0;
         public int HitDamage = 0;
+
+        public int CurrentHealthPoint = 0;
     }
 }

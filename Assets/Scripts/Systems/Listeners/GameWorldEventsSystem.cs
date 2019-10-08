@@ -20,8 +20,10 @@ namespace Client
         readonly GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
         readonly GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
         readonly RuntimeAnimatorController playerAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/PlayerAnimatorController");
-        readonly RuntimeAnimatorController enemyAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/EnemyAnimatorController");
+        readonly RuntimeAnimatorController enemyAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy1AnimatorController");
         readonly RuntimeAnimatorController enemy2Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
+
+        readonly RuntimeAnimatorController wallSoftAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/WallAnimationController");
 
         readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -50,7 +52,7 @@ namespace Client
         int sodaCount = 3;
         int appleCount = 1;
         int wallCount = 5;
-        int enemyCount = 2;
+        int enemyCount = 1;
         int enemy2Count = 1;
 
         int appleFoodValue = 20;
@@ -77,7 +79,6 @@ namespace Client
                 List<Vector2Int> emptyCells = new List<Vector2Int>();
 
                 GameObject go;
-                WallComponent wallComponent;
                 FoodComponent foodComponent;
                 AnimationComponent animationComponent;
                 TurnComponent turnComponent;
@@ -102,13 +103,12 @@ namespace Client
                                 emptyCells.Add(new Vector2Int(j, i));
                                 break;
                             case '8':
-                                go = VExt.LayoutSpriteObjects(prefabSprite, j, i, "solidWall", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(solidWallSprites));
-                                _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent);
+                                go = VExt.LayoutSpriteObjects(prefabSprite, j, i, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(solidWallSprites));
+                                _world.CreateEntityWith(out gameObjectCreateEvent, out ObstacleComponent _);
 
                                 gameObjectCreateEvent.Transform = go.transform;
                                 gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
-                                wallComponent.Solid = true;
                                 break;
                             case '@':
                                 if (_playerEntity.GetEntitiesCount() == 0)
@@ -180,17 +180,16 @@ namespace Client
                 for (int i = 0; i < wallCount; i++)
                 {
                     var cell = VExt.NextFromList(emptyCells);
-                    int indxSprite = Random.Range(0, softWall.Length);
 
-                    go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "softWall", gameObjectsRoot, LayersName.Object.ToString(), softWall[indxSprite]);
-                    _world.CreateEntityWith(out gameObjectCreateEvent, out wallComponent, out dataComponent);
+                    go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), wallSoftAnimation);
+                    var wall = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out WallComponent _);
 
                     gameObjectCreateEvent.Transform = go.transform;
                     gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
-                    wallComponent.Solid = false;
-                    wallComponent.DamageSprite = softWallDamage[indxSprite];
+                    animationComponent.animator = go.GetComponent<Animator>();
 
+                    dataComponent = _world.AddComponent<DataSheetComponent>(wall);
                     dataComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
 
                     emptyCells.Remove(cell);

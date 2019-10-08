@@ -23,9 +23,12 @@ namespace Client
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
 
-        readonly EcsFilter<PositionComponent, WallComponent>.Exclude<GameObjectRemoveEvent> _wallEntities = null;
-        readonly EcsFilter<PositionComponent, EnemyComponent>.Exclude<GameObjectRemoveEvent> _enemyEntities = null;
-        readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+        //readonly EcsFilter<PositionComponent, WallComponent>.Exclude<GameObjectRemoveEvent> _wallEntities = null;
+        //readonly EcsFilter<PositionComponent, EnemyComponent>.Exclude<GameObjectRemoveEvent> _enemyEntities = null;
+        //readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+
+        readonly EcsFilter<PositionComponent, DataSheetComponent> _collisionEntities = null;
+        readonly EcsFilter<PositionComponent, ObstacleComponent> _obstacleEntities = null;
 
         //TODO брать из настроек
         readonly float speed = 7f;
@@ -84,12 +87,57 @@ namespace Client
 
         void CreateAction(EcsEntity entity, Vector2Int endPosition)
         {
-            if (!CheckWallCollision(entity, endPosition) && !CheckEnemyCollision(entity, endPosition) && !CheckPlayerCollision(entity, endPosition))
+            if (!CheckObstacleCollision(entity, endPosition) && !CheckCollision(entity, endPosition))
             {
                 CreateMoveEntity(entity, endPosition);
             }
         }
 
+        bool CheckObstacleCollision(EcsEntity entity, Vector2Int endPosition)
+        {
+            bool result = false;
+
+            foreach (var i in _obstacleEntities)
+            {
+                ref var wallEntity = ref _obstacleEntities.Entities[i];
+                var c1 = _obstacleEntities.Components1[i];
+
+                if (c1.Coords == endPosition)
+                {
+                    result = true;
+                    _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
+                }
+            }
+            return result;
+        }
+
+        bool CheckCollision(EcsEntity entity, Vector2Int endPosition)
+        {
+            bool result = false;
+
+            foreach (var i in _collisionEntities)
+            {
+                ref var ce = ref _collisionEntities.Entities[i];
+                var c1 = _collisionEntities.Components1[i];
+                var dsc = _world.GetComponent<DataSheetComponent>(entity);
+
+                if (c1.Coords == endPosition)
+                {
+                    result = true;
+
+                    CreateAnimationEntity(entity, AnimationTriger.Chop);
+                    //CreateAnimationEntity(ce, AnimationTriger.Hit);
+
+                    CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
+
+                    _world.EnsureComponent<ImpactEvent>(ce, out _).HitValue += dsc.HitDamage;
+                }
+            }
+
+            return result;
+        }
+
+        /*
         bool CheckEnemyCollision(EcsEntity entity, Vector2Int endPosition)
         {
             bool result = false;
@@ -152,28 +200,15 @@ namespace Client
                 {
                     result = true;
 
-                    if (c2.Solid)
-                    {
-                        _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
-                    }
-                    else
-                    {
-                        if (!c2.Damage)
-                        {
-                            SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
-                            sr.sprite = c2.DamageSprite;
-                            c2.Damage = true;
-                        }
-
-                        CreateAnimationEntity(entity, AnimationTriger.Chop);
-                        CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
-
-                        _world.EnsureComponent<ImpactEvent>(wallEntity, out _).HitValue += dsc.HitDamage;
-                    }
+                    //if (c2.Solid)
+                    //{
+                    //    _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
+                    //}
                 }
             }
             return result;
         }
+        */
 
         void CreateEffect(Vector2Int position, SpriteEffect effect, float lifeTime)
         {
@@ -185,13 +220,13 @@ namespace Client
 
         void CreateAnimationEntity(EcsEntity entity, AnimationTriger animation)
         {
-            var c = _world.AddComponent<ActionAnimationComponent>(entity);
+            var c = _world.EnsureComponent<ActionAnimationComponent>(entity, out _);
             c.Animation = animation;
         }
 
         void CreateMoveEntity(EcsEntity entity, Vector2Int endPosition)
         {
-            var c = _world.AddComponent<ActionMoveComponent>(entity);
+            var c = _world.EnsureComponent<ActionMoveComponent>(entity, out _);
             c.EndPosition = endPosition;
             c.Speed = speed;
         }
