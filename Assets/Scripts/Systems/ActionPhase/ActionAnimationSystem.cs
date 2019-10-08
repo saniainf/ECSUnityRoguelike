@@ -21,9 +21,12 @@ namespace Client
                 if (!c1.Run)
                 {
                     var clips = c2.animator.GetCurrentAnimatorClipInfo(0);
-                    c1.StartClip = clips[0].clip.name;
-                    c2.animator.SetTrigger(c1.Animation.ToString());
-                    c1.Run = true;
+                    if (clips.Length > 0)
+                    {
+                        c1.StartClip = clips[0].clip.name;
+                        c2.animator.SetTrigger(c1.Animation.ToString());
+                        c1.Run = true;
+                    }
                 }
                 else
                 {
