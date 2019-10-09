@@ -23,7 +23,14 @@ namespace Client
         readonly RuntimeAnimatorController enemyAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy1AnimatorController");
         readonly RuntimeAnimatorController enemy2Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
 
-        readonly RuntimeAnimatorController wallSoftAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/WallAnimationController");
+        readonly RuntimeAnimatorController[] wallsAnimation = {
+        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/01WallAnimationController"),
+        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/02WallAnimationController"),
+        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/03WallAnimationController"),
+        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/04WallAnimationController"),
+        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/05WallAnimationController"),
+        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/06WallAnimationController"),
+        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/07WallAnimationController")};
 
         readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -40,9 +47,7 @@ namespace Client
             { '8','.','.','.','8','.','.','.','.','8','.','8' },
             { '8','8','8','8','8','8','8','8','8','8','8','8' }};
 
-        Sprite[] solidWallSprites;
-        Sprite[] softWall;
-        Sprite[] softWallDamage;
+        Sprite[] obstacleSprites;
         Sprite[] floorSprites;
         Sprite sodaSprite;
         Sprite appleSprite;
@@ -67,9 +72,7 @@ namespace Client
         {
             if (_worldCreateEvent.GetEntitiesCount() > 0)
             {
-                solidWallSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 25, 26, 28, 29 });
-                softWall = VExt.ExtractSubArray(spriteSheet, new int[] { 21, 22, 23, 24, 27, 30, 31 });
-                softWallDamage = VExt.ExtractSubArray(spriteSheet, new int[] { 48, 49, 50, 51, 52, 53, 54 });
+                obstacleSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 25, 26, 28, 29 });
                 floorSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 32, 33, 34, 35, 36, 37, 38, 39 });
                 sodaSprite = spriteSheet[18];
                 appleSprite = spriteSheet[19];
@@ -103,7 +106,7 @@ namespace Client
                                 emptyCells.Add(new Vector2Int(j, i));
                                 break;
                             case '8':
-                                go = VExt.LayoutSpriteObjects(prefabSprite, j, i, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(solidWallSprites));
+                                go = VExt.LayoutSpriteObjects(prefabSprite, j, i, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(obstacleSprites));
                                 _world.CreateEntityWith(out gameObjectCreateEvent, out ObstacleComponent _);
 
                                 gameObjectCreateEvent.Transform = go.transform;
@@ -182,7 +185,7 @@ namespace Client
                 {
                     var cell = VExt.NextFromList(emptyCells);
 
-                    go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), wallSoftAnimation);
+                    go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
                     var wall = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out WallComponent _);
 
                     gameObjectCreateEvent.Transform = go.transform;

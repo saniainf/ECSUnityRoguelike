@@ -11,8 +11,6 @@ namespace Client
         readonly EcsFilter<CameraComponent> _cameraEnities = null;
         readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
 
-        float speed = 10f;
-
         void IEcsRunSystem.Run()
         {
             foreach (var i in _cameraEnities)

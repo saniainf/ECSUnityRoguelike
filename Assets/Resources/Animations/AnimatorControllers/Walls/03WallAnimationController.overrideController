@@ -6,10 +6,10 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WallAnimationController
+  m_Name: 03WallAnimationController
   m_Controller: {fileID: 9100000, guid: 32a83df61f88dc94bb53d8a982ea2fd6, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 7e456a965f5c7104c8d43dbb378f5e65, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 27f7765811858e84892219433e61b6c9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 64bb6ca0d83c7574a8fcf520c2d44437, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 04344c174a5db6547a160e479b48eb64, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: eef888d4508386d489bce3cda6849677, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8097fd09a3d6f544cbd7a72c7a0c7c0a, type: 2}

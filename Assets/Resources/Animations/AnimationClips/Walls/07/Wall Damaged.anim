@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wall Idle 100
+  m_Name: Wall Damaged
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,7 +20,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 7987151303939760886, guid: e4429db727f96384994f6a5a4a64c32d,
+      value: {fileID: -7795444107844065276, guid: e4429db727f96384994f6a5a4a64c32d,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -41,7 +41,7 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 7987151303939760886, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+    - {fileID: -7795444107844065276, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

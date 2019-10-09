@@ -282,7 +282,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle equals 100 percent
+  m_Name: Idle Normal
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -544,7 +544,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle less 100 percent
+  m_Name: Idle Damaged
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
