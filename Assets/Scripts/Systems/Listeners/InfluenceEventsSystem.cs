@@ -44,7 +44,8 @@ namespace Client
                 var c1 = _collectEntities.Components1[i];
                 var c2 = _collectEntities.Components2[i];
 
-                c2.CurrentHealthPoint = Mathf.Min(c2.CurrentHealthPoint + c1.HealValue, c2.HealthPoint);
+                c2.HealthPoint += c1.BoostHealthValue;
+                c2.CurrentHealthPoint = Mathf.Min(c2.CurrentHealthPoint + c1.HealValue + c1.BoostHealthValue, c2.HealthPoint);
                 //Debug.Log("heal " + c1.HealValue);
             }
         }

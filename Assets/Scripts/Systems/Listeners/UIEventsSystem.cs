@@ -11,17 +11,21 @@ namespace Client
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerDataEntities = null;
         readonly EcsFilter<UIComponent> _uiEntities = null;
 
-        readonly GameObject canvasPrefab = Resources.Load<GameObject>("Prefabs/UICanvas");
-        readonly GameObject healtPointTextPrefab = Resources.Load<GameObject>("Prefabs/HealtPointText");
+        readonly GameObject canvasPrefab = Resources.Load<GameObject>("Prefabs/UI/UICanvas");
+        readonly GameObject healthPointTextPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthPointText");
+        readonly GameObject healthPointSliderPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthPointSlider");
         readonly GameObject cameraPrefab = Resources.Load<GameObject>("Prefabs/MainCamera");
 
         void IEcsInitSystem.Initialize()
         {
             var goCanvas = Object.Instantiate(canvasPrefab);
-            var goText = Object.Instantiate(healtPointTextPrefab, goCanvas.transform);
+            var goSlider = Object.Instantiate(healthPointSliderPrefab, goCanvas.transform);
+            var goText = Object.Instantiate(healthPointTextPrefab, goCanvas.transform);
+
             var goCamera = Object.Instantiate(cameraPrefab).transform;
 
             _world.CreateEntityWith(out UIComponent uiComponent);
+            uiComponent.UISlider = goSlider.GetComponent<UnityEngine.UI.Slider>();
             uiComponent.UIText = goText.GetComponent<UnityEngine.UI.Text>();
 
             _world.CreateEntityWith(out CameraComponent cameraComponent);
@@ -37,8 +41,11 @@ namespace Client
                 foreach (var j in _uiEntities)
                 {
                     var uic1 = _uiEntities.Components1[i];
+                    var cur = pc1.CurrentHealthPoint;
+                    var hp = pc1.HealthPoint;
 
-                    uic1.UIText.text = "LIVE: " + pc1.CurrentHealthPoint.ToString();
+                    uic1.UIText.text = $"HP: {cur} | {hp}";
+                    uic1.UISlider.value = (((float)pc1.CurrentHealthPoint / (float)pc1.HealthPoint) * 100f);
                 }
             }
         }

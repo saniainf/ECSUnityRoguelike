@@ -10,6 +10,7 @@ namespace Client
 
         readonly EcsFilter<PositionComponent, ActionPhaseComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
         readonly EcsFilter<PositionComponent, FoodComponent>.Exclude<GameObjectRemoveEvent> _foodEntities = null;
+        readonly EcsFilter<PositionComponent, BoostHPComponent>.Exclude<GameObjectRemoveEvent> _boostEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -30,6 +31,21 @@ namespace Client
                         c.HealValue = fc2.foodValue;
 
                         _world.AddComponent<GameObjectRemoveEvent>(fe);
+                    }
+                }
+
+                foreach (var j in _boostEntities)
+                {
+                    ref var be = ref _boostEntities.Entities[j];
+                    var bc1 = _boostEntities.Components1[j];
+                    var bc2 = _boostEntities.Components2[j];
+
+                    if (pc1.Coords == bc1.Coords)
+                    {
+                        var c = _world.EnsureComponent<CollectEvent>(pe, out _);
+                        c.BoostHealthValue = bc2.boostValue;
+
+                        _world.AddComponent<GameObjectRemoveEvent>(be);
                     }
                 }
             }
