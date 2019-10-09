@@ -11,7 +11,7 @@ namespace Client
 
         void IEcsInitSystem.Initialize()
         {
-            _world.CreateEntityWith(out WorldCreateEvent _);
+            CreateWorld();
         }
 
         void IEcsInitSystem.Destroy() { }
@@ -20,13 +20,27 @@ namespace Client
         {
             if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                _world.CreateEntityWith(out WorldCreateEvent _);
+                CreateWorld();
             }
 
             if (Input.GetKeyDown(KeyCode.Keypad8))
             {
-                _world.CreateEntityWith(out WorldDestroyEvent _);
+                DestroyWorld();
             }
+        }
+
+        void CreateWorld()
+        {
+            _world.CreateEntityWith(out WorldCreateEvent _);
+            _world.CreateEntityWith(out UIEnableEvent uIEnable);
+            uIEnable.UIType = UIType.LevelRun;
+        }
+
+        void DestroyWorld()
+        {
+            _world.CreateEntityWith(out WorldDestroyEvent _);
+            _world.CreateEntityWith(out UIDisableEvent uIDisable);
+            uIDisable.UIType = UIType.LevelRun;
         }
     }
 }

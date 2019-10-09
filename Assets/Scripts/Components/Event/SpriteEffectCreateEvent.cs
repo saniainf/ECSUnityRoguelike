@@ -7,13 +7,13 @@ namespace Client
     sealed class SpriteEffectCreateEvent : IEcsAutoResetComponent
     {
         public float LifeTime = 0f;
-        public SpriteEffect SpriteEffect = SpriteEffect.NONE;
+        public SpriteEffect SpriteEffect = SpriteEffect.None;
         public Vector2Int Position = Vector2Int.zero;
 
         void IEcsAutoResetComponent.Reset()
         {
             LifeTime = 0f;
-            SpriteEffect = SpriteEffect.NONE;
+            SpriteEffect = SpriteEffect.None;
         }
     }
 }

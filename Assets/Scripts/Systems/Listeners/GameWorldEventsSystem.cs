@@ -20,8 +20,8 @@ namespace Client
         readonly GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
         readonly GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
         readonly RuntimeAnimatorController playerAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/PlayerAnimatorController");
-        readonly RuntimeAnimatorController enemyAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy1AnimatorController");
-        readonly RuntimeAnimatorController enemy2Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
+        readonly RuntimeAnimatorController enemy01Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy1AnimatorController");
+        readonly RuntimeAnimatorController enemy02Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
 
         readonly RuntimeAnimatorController[] wallsAnimation = {
         Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/01WallAnimationController"),
@@ -92,13 +92,6 @@ namespace Client
 
             List<Vector2Int> emptyCells = new List<Vector2Int>();
 
-            GameObject go;
-            AnimationComponent animationComponent;
-            TurnComponent turnComponent;
-            GameObjectCreateEvent gameObjectCreateEvent;
-            EnemyComponent enemyComponent;
-            DataSheetComponent dataComponent;
-
             VExt.ReverseArray(ref levelArray);
 
             for (int i = 0; i < levelArray.GetLength(0); i++)
@@ -124,97 +117,27 @@ namespace Client
 
             for (int i = 0; i < boostCount; i++)
             {
-                var cell = VExt.NextFromList(emptyCells);
-
-                go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "boostHP", gameObjectsRoot, LayersName.Object.ToString(), boostSprite);
-                _world.CreateEntityWith(out gameObjectCreateEvent, out BoostHPComponent boostHPComponent);
-
-                gameObjectCreateEvent.Transform = go.transform;
-                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-
-                boostHPComponent.boostValue = boostHPValue;
-
-                emptyCells.Remove(cell);
+                LayoutBoostHPObject(ref emptyCells);
             }
 
             for (int i = 0; i < sodaCount; i++)
             {
-                var cell = VExt.NextFromList(emptyCells);
-
-                go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
-                _world.CreateEntityWith(out gameObjectCreateEvent, out FoodComponent foodComponent);
-
-                gameObjectCreateEvent.Transform = go.transform;
-                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-
-                foodComponent.foodValue = sodaFoodValue;
-
-                emptyCells.Remove(cell);
+                LayoutFoodObject(ref emptyCells);
             }
 
             for (int i = 0; i < wallCount; i++)
             {
-                var cell = VExt.NextFromList(emptyCells);
-
-                go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
-                var wall = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out WallComponent _);
-
-                gameObjectCreateEvent.Transform = go.transform;
-                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-
-                animationComponent.animator = go.GetComponent<Animator>();
-
-                dataComponent = _world.AddComponent<DataSheetComponent>(wall);
-                dataComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
-                dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
-
-                emptyCells.Remove(cell);
+                LayoutWallObject(ref emptyCells);
             }
 
             for (int i = 0; i < enemyCount; i++)
             {
-                var cell = VExt.NextFromList(emptyCells);
-
-                go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "enemy", gameObjectsRoot, LayersName.Character.ToString(), enemyAnimation);
-                var enemy1 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
-
-                gameObjectCreateEvent.Transform = go.transform;
-                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-
-                animationComponent.animator = go.GetComponent<Animator>();
-
-                dataComponent = _world.AddComponent<DataSheetComponent>(enemy1);
-                dataComponent.HealthPoint = 2;
-                dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
-                dataComponent.HitDamage = 1;
-
-                turnComponent = _world.AddComponent<TurnComponent>(enemy1);
-                turnComponent.Initiative = initiative++;
-
-                emptyCells.Remove(cell);
+                LayoutEnemyObject(ref emptyCells, ref initiative, "enemy01", enemy01Animation, 2, 1);
             }
 
             for (int i = 0; i < enemy2Count; i++)
             {
-                var cell = VExt.NextFromList(emptyCells);
-
-                go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "enemy2", gameObjectsRoot, LayersName.Character.ToString(), enemy2Animation);
-                var enemy2 = _world.CreateEntityWith(out gameObjectCreateEvent, out animationComponent, out enemyComponent);
-
-                gameObjectCreateEvent.Transform = go.transform;
-                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-
-                animationComponent.animator = go.GetComponent<Animator>();
-
-                dataComponent = _world.AddComponent<DataSheetComponent>(enemy2);
-                dataComponent.HealthPoint = 3;
-                dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
-                dataComponent.HitDamage = 2;
-
-                turnComponent = _world.AddComponent<TurnComponent>(enemy2);
-                turnComponent.Initiative = initiative++;
-
-                emptyCells.Remove(cell);
+                LayoutEnemyObject(ref emptyCells, ref initiative, "enemy02", enemy02Animation, 3, 2);
             }
         }
 
@@ -285,6 +208,78 @@ namespace Client
                 }
                 initiative++;
             }
+        }
+
+        void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
+        {
+            var cell = VExt.NextFromList(emptyCells);
+
+            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "boostHP", gameObjectsRoot, LayersName.Object.ToString(), boostSprite);
+            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out BoostHPComponent boostHPComponent);
+
+            gameObjectCreateEvent.Transform = go.transform;
+            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
+            boostHPComponent.boostValue = boostHPValue;
+
+            emptyCells.Remove(cell);
+        }
+
+        void LayoutFoodObject(ref List<Vector2Int> emptyCells)
+        {
+            var cell = VExt.NextFromList(emptyCells);
+
+            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
+            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out FoodComponent foodComponent);
+
+            gameObjectCreateEvent.Transform = go.transform;
+            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
+            foodComponent.foodValue = sodaFoodValue;
+
+            emptyCells.Remove(cell);
+        }
+
+        void LayoutWallObject(ref List<Vector2Int> emptyCells)
+        {
+            var cell = VExt.NextFromList(emptyCells);
+
+            var go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
+            var wall = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out WallComponent _);
+
+            gameObjectCreateEvent.Transform = go.transform;
+            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
+            animationComponent.animator = go.GetComponent<Animator>();
+
+            var dataComponent = _world.AddComponent<DataSheetComponent>(wall);
+            dataComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
+            dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
+
+            emptyCells.Remove(cell);
+        }
+
+        void LayoutEnemyObject(ref List<Vector2Int> emptyCells, ref int initiative, string goName, RuntimeAnimatorController animation, int hp, int damage)
+        {
+            var cell = VExt.NextFromList(emptyCells);
+
+            var go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, goName, gameObjectsRoot, LayersName.Character.ToString(), animation);
+            var enemy = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out EnemyComponent _);
+
+            gameObjectCreateEvent.Transform = go.transform;
+            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+
+            animationComponent.animator = go.GetComponent<Animator>();
+
+            var dataComponent = _world.AddComponent<DataSheetComponent>(enemy);
+            dataComponent.HealthPoint = hp;
+            dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
+            dataComponent.HitDamage = damage;
+
+            var turnComponent = _world.AddComponent<TurnComponent>(enemy);
+            turnComponent.Initiative = initiative++;
+
+            emptyCells.Remove(cell);
         }
     }
 }

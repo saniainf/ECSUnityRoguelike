@@ -126,7 +126,7 @@ namespace Client
                     result = true;
 
                     CreateAnimationEntity(entity, AnimationTriger.Chop);
-                    CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.CHOP, 0.3f);
+                    CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.Chop, 0.3f);
 
                     _world.EnsureComponent<ImpactEvent>(ce, out _).HitValue += dsc.HitDamage;
                 }

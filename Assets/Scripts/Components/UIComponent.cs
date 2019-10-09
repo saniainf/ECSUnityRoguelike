@@ -5,13 +5,15 @@ namespace Client
 {
     sealed class UIComponent:IEcsAutoResetComponent
     {
-        public UnityEngine.UI.Text UIText = null;
-        public UnityEngine.UI.Slider UISlider = null;
+        public UnityEngine.UI.Text UIHPText = null;
+        public UnityEngine.UI.Slider UIHPSlider = null;
+        public UnityEngine.UI.Text UILoadLevelText = null;
 
         void IEcsAutoResetComponent.Reset()
         {
-            UIText = null;
-            UISlider = null;
+            UIHPText = null;
+            UIHPSlider = null;
+            UILoadLevelText = null;
         }
     }
 }

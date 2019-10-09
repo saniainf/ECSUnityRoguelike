@@ -37,9 +37,9 @@ namespace Client
 
                 switch (c1.SpriteEffect)
                 {
-                    case SpriteEffect.NONE:
+                    case SpriteEffect.None:
                         break;
-                    case SpriteEffect.CHOP:
+                    case SpriteEffect.Chop:
                         go = VExt.LayoutSpriteObjects(prefabSprite, c1.Position.x, c1.Position.y, LayersName.Effect.ToString(), chopEffect);
                         break;
                     default:

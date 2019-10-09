@@ -16,8 +16,8 @@ namespace Client
 
     public enum SpriteEffect
     {
-        NONE,
-        CHOP
+        None,
+        Chop
     }
 
     public enum AnimationTriger
@@ -26,6 +26,13 @@ namespace Client
         Idle,
         Chop,
         Hit
+    }
+
+    public enum UIType
+    {
+        None,
+        LevelRun,
+        LevelLoad
     }
 
     public static class VExt
