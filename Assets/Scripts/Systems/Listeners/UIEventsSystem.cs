@@ -1,5 +1,6 @@
 using Leopotam.Ecs;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Client
 {
@@ -9,7 +10,6 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerDataEntities = null;
-        readonly EcsFilter<UIComponent> _uiLevelRunEntities = null;
 
         readonly EcsFilter<UIEnableEvent> _uiEnableEvent = null;
         readonly EcsFilter<UIDisableEvent> _uiDisableEvent = null;
@@ -22,25 +22,24 @@ namespace Client
 
         private GameObject levelRunCanvas;
         private GameObject levelLoadCanvas;
+        private Text UIHPText;
+        private Slider UIHPSlider;
+        private Text UILoadLevelText;
 
         void IEcsInitSystem.Initialize()
         {
             levelRunCanvas = Object.Instantiate(canvasPrefab);
-            var goSlider = Object.Instantiate(healthPointSliderPrefab, levelRunCanvas.transform);
-            var goText = Object.Instantiate(healthPointTextPrefab, levelRunCanvas.transform);
-
-            var goCamera = Object.Instantiate(cameraPrefab).transform;
-
-            _world.CreateEntityWith(out UIComponent uiComponent);
-            uiComponent.UIHPSlider = goSlider.GetComponent<UnityEngine.UI.Slider>();
-            uiComponent.UIHPText = goText.GetComponent<UnityEngine.UI.Text>();
-
-            _world.CreateEntityWith(out CameraComponent cameraComponent);
-            cameraComponent.Transform = goCamera.transform;
-
+            UIHPSlider = Object.Instantiate(healthPointSliderPrefab, levelRunCanvas.transform).GetComponent<Slider>();
+            UIHPText = Object.Instantiate(healthPointTextPrefab, levelRunCanvas.transform).GetComponent<Text>();
             levelRunCanvas.SetActive(false);
 
-            
+            levelLoadCanvas = Object.Instantiate(canvasPrefab);
+            UILoadLevelText = Object.Instantiate(levelLoadTextPrefab, levelLoadCanvas.transform).GetComponent<Text>();
+            levelLoadCanvas.SetActive(false);
+
+            var goCamera = Object.Instantiate(cameraPrefab).transform;
+            _world.CreateEntityWith(out CameraComponent cameraComponent);
+            cameraComponent.Transform = goCamera.transform;
         }
 
         void IEcsRunSystem.Run()
@@ -48,34 +47,50 @@ namespace Client
             foreach (var i in _uiEnableEvent)
             {
                 var c1 = _uiEnableEvent.Components1[i];
-                if (c1.UIType == UIType.LevelRun)
+
+                switch (c1.UIType)
                 {
-                    levelRunCanvas.SetActive(true);
+                    case UIType.None:
+                        break;
+                    case UIType.LevelRun:
+                        levelRunCanvas.SetActive(true);
+                        break;
+                    case UIType.LevelLoad:
+                        levelLoadCanvas.SetActive(true);
+                        UILoadLevelText.text = ($"Level {c1.LevelNumber.ToString()}");
+                        break;
+                    default:
+                        break;
                 }
             }
 
             foreach (var i in _uiDisableEvent)
             {
                 var c1 = _uiDisableEvent.Components1[i];
-                if (c1.UIType == UIType.LevelRun)
+
+                switch (c1.UIType)
                 {
-                    levelRunCanvas.SetActive(false);
+                    case UIType.None:
+                        break;
+                    case UIType.LevelRun:
+                        levelRunCanvas.SetActive(false);
+                        break;
+                    case UIType.LevelLoad:
+                        levelLoadCanvas.SetActive(false);
+                        break;
+                    default:
+                        break;
                 }
             }
 
             foreach (var i in _playerDataEntities)
             {
                 var pc1 = _playerDataEntities.Components1[i];
+                var cur = pc1.CurrentHealthPoint;
+                var hp = pc1.HealthPoint;
 
-                foreach (var j in _uiLevelRunEntities)
-                {
-                    var uic1 = _uiLevelRunEntities.Components1[i];
-                    var cur = pc1.CurrentHealthPoint;
-                    var hp = pc1.HealthPoint;
-
-                    uic1.UIHPText.text = $"HP: {cur} | {hp}";
-                    uic1.UIHPSlider.value = (((float)pc1.CurrentHealthPoint / (float)pc1.HealthPoint) * 100f);
-                }
+                UIHPText.text = $"HP: {cur} | {hp}";
+                UIHPSlider.value = (((float)pc1.CurrentHealthPoint / (float)pc1.HealthPoint) * 100f);
             }
         }
         void IEcsInitSystem.Destroy()

@@ -9,6 +9,8 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
+        private int levelNum = 1;
+
         void IEcsInitSystem.Initialize()
         {
             CreateWorld();
@@ -34,6 +36,9 @@ namespace Client
             _world.CreateEntityWith(out WorldCreateEvent _);
             _world.CreateEntityWith(out UIEnableEvent uIEnable);
             uIEnable.UIType = UIType.LevelRun;
+
+            _world.CreateEntityWith(out UIDisableEvent uIDisable);
+            uIDisable.UIType = UIType.LevelLoad;
         }
 
         void DestroyWorld()
@@ -41,6 +46,10 @@ namespace Client
             _world.CreateEntityWith(out WorldDestroyEvent _);
             _world.CreateEntityWith(out UIDisableEvent uIDisable);
             uIDisable.UIType = UIType.LevelRun;
+
+            _world.CreateEntityWith(out UIEnableEvent uIEnable);
+            uIEnable.UIType = UIType.LevelLoad;
+            uIEnable.LevelNumber = levelNum++;
         }
     }
 }
