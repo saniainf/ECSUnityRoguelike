@@ -19,7 +19,8 @@ namespace Client
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
 #endif
             _systems
-                .Add(new TurnInitSystem())
+                .Add(new ZonesSystem())
+                .Add(new LevelManagerSystem())
                 .Add(new GameWorldEventsSystem())
                 .Add(new UserInputSystem())
                 .Add(new AIEnemySystem())

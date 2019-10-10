@@ -9,6 +9,7 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<PositionComponent, ActionPhaseComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+
         readonly EcsFilter<PositionComponent, FoodComponent>.Exclude<GameObjectRemoveEvent> _foodEntities = null;
         readonly EcsFilter<PositionComponent, BoostHPComponent>.Exclude<GameObjectRemoveEvent> _boostEntities = null;
 

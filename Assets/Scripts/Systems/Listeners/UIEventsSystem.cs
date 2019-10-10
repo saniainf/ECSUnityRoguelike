@@ -18,7 +18,6 @@ namespace Client
         readonly GameObject healthPointTextPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthPointText");
         readonly GameObject healthPointSliderPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthPointSlider");
         readonly GameObject levelLoadTextPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelLoadText");
-        readonly GameObject cameraPrefab = Resources.Load<GameObject>("Prefabs/MainCamera");
 
         private GameObject levelRunCanvas;
         private GameObject levelLoadCanvas;
@@ -36,10 +35,6 @@ namespace Client
             levelLoadCanvas = Object.Instantiate(canvasPrefab);
             UILoadLevelText = Object.Instantiate(levelLoadTextPrefab, levelLoadCanvas.transform).GetComponent<Text>();
             levelLoadCanvas.SetActive(false);
-
-            var goCamera = Object.Instantiate(cameraPrefab).transform;
-            _world.CreateEntityWith(out CameraComponent cameraComponent);
-            cameraComponent.Transform = goCamera.transform;
         }
 
         void IEcsRunSystem.Run()

@@ -4,27 +4,34 @@ using UnityEngine;
 namespace Client
 {
     [EcsInject]
-    sealed class CameraSystem : IEcsRunSystem
+    sealed class CameraSystem : IEcsRunSystem, IEcsInitSystem
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<CameraComponent> _cameraEnities = null;
         readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+
+        readonly GameObject cameraPrefab = Resources.Load<GameObject>("Prefabs/MainCamera");
+
+        private Transform cameraTransform;
+
+        void IEcsInitSystem.Initialize()
+        {
+            cameraTransform = Object.Instantiate(cameraPrefab).transform;
+        }
 
         void IEcsRunSystem.Run()
         {
-            foreach (var i in _cameraEnities)
+            foreach (var i in _playerEntities)
             {
-                var cc1 = _cameraEnities.Components1[i];
-
-                foreach (var j in _playerEntities)
-                {
-                    var playerPosition = _playerEntities.Components1[i].Transform.position;
-                    playerPosition.z = -100f;
-                    cc1.Transform.position = playerPosition;
-                }
-
+                var playerPosition = _playerEntities.Components1[i].Transform.position;
+                playerPosition.z = -100f;
+                cameraTransform.position = playerPosition;
             }
+        }
+
+        void IEcsInitSystem.Destroy()
+        {
+
         }
     }
 }

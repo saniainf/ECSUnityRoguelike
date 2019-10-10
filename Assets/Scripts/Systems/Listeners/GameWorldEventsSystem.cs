@@ -40,7 +40,7 @@ namespace Client
             { '8','@','.','.','.','.','.','.','.','8','.','8' },
             { '8','.','.','.','.','.','.','.','.','8','.','8' },
             { '8','.','.','.','.','.','.','.','.','8','.','8' },
-            { '8','.','.','.','.','.','.','.','.','.','.','8' },
+            { '8','X','.','.','.','.','.','.','.','.','.','8' },
             { '8','8','.','8','8','.','.','.','.','8','.','8' },
             { '8','.','.','.','8','.','.','.','.','8','.','8' },
             { '8','.','.','.','.','.','.','.','.','8','.','8' },
@@ -51,14 +51,15 @@ namespace Client
         Sprite[] floorSprites;
         Sprite sodaSprite;
         Sprite boostSprite;
+        Sprite exitSprite;
         #endregion
 
         #region Settings
         int sodaCount = 3;
         int boostCount = 1;
         int wallCount = 5;
-        int enemyCount = 1;
-        int enemy2Count = 1;
+        int enemy01Count = 1;
+        int enemy02Count = 1;
 
         int boostHPValue = 3;
         int sodaFoodValue = 2;
@@ -87,6 +88,7 @@ namespace Client
             floorSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 32, 33, 34, 35, 36, 37, 38, 39 });
             sodaSprite = spriteSheet[18];
             boostSprite = spriteSheet[19];
+            exitSprite = spriteSheet[20];
 
             int initiative = 1;
 
@@ -106,6 +108,9 @@ namespace Client
                             break;
                         case '8':
                             LayoutObstacleObject(j, i);
+                            break;
+                        case 'X':
+                            LayoutExitObject(j, i);
                             break;
                         case '@':
                             LayoutPlayerObject(j, i, ref initiative);
@@ -130,12 +135,12 @@ namespace Client
                 LayoutWallObject(ref emptyCells);
             }
 
-            for (int i = 0; i < enemyCount; i++)
+            for (int i = 0; i < enemy01Count; i++)
             {
                 LayoutEnemyObject(ref emptyCells, ref initiative, "enemy01", enemy01Animation, 2, 1);
             }
 
-            for (int i = 0; i < enemy2Count; i++)
+            for (int i = 0; i < enemy02Count; i++)
             {
                 LayoutEnemyObject(ref emptyCells, ref initiative, "enemy02", enemy02Animation, 3, 2);
             }
@@ -174,6 +179,15 @@ namespace Client
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
         }
 
+        void LayoutExitObject(int x, int y)
+        {
+            var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "exit", gameObjectsRoot, LayersName.Object.ToString(), exitSprite);
+            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ZoneExitComponent _);
+
+            gameObjectCreateEvent.Transform = go.transform;
+            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+        }
+
         void LayoutPlayerObject(int x, int y, ref int initiative)
         {
             if (_playerEntity.GetEntitiesCount() == 0)
@@ -198,13 +212,16 @@ namespace Client
             }
             else
             {
-                foreach (var pi in _playerEntity)
+                foreach (var i in _playerEntity)
                 {
-                    var c1 = _playerEntity.Components1[pi];
+                    ref var entity = ref _playerEntity.Entities[i];
+                    var c1 = _playerEntity.Components1[i];
 
                     c1.Transform.gameObject.SetActive(true);
                     c1.Transform.localPosition = new Vector2(x, y);
                     c1.Coords = new Vector2Int(x, y);
+
+                    _world.EnsureComponent<InputPhaseComponent>(entity, out _);
                 }
                 initiative++;
             }
