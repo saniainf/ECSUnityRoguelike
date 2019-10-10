@@ -17,7 +17,9 @@ namespace Client
 
         void IEcsInitSystem.Initialize()
         {
-            LevelRun();
+            loadLevel = true;
+            loadLevelCurrentTime = loadLevelTime;
+            LevelLoad();
         }
 
         void IEcsRunSystem.Run()

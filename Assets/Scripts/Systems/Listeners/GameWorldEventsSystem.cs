@@ -1,3 +1,4 @@
+using System;
 using Leopotam.Ecs;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,18 +35,6 @@ namespace Client
 
         readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
-
-        char[,] levelArray = new char[,]{
-            { '8','8','8','8','8','8','8','8','8','8','8','8' },
-            { '8','@','.','.','.','.','.','.','.','8','.','8' },
-            { '8','.','.','.','.','.','.','.','.','8','.','8' },
-            { '8','.','.','.','.','.','.','.','.','8','.','8' },
-            { '8','X','.','.','.','.','.','.','.','.','.','8' },
-            { '8','8','.','8','8','.','.','.','.','8','.','8' },
-            { '8','.','.','.','8','.','.','.','.','8','.','8' },
-            { '8','.','.','.','.','.','.','.','.','8','.','8' },
-            { '8','.','.','.','8','.','.','.','.','8','.','8' },
-            { '8','8','8','8','8','8','8','8','8','8','8','8' }};
 
         Sprite[] obstacleSprites;
         Sprite[] floorSprites;
@@ -84,6 +73,14 @@ namespace Client
 
         void WorldCreate()
         {
+            var gameLevels = new GameLevels();
+
+            var levelArray = VExt.NextFromArray(gameLevels.LevelsArray);
+            Array.Reverse(levelArray);
+
+            int width = levelArray[0].Length;
+            int height = levelArray.Length; ;
+
             obstacleSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 25, 26, 28, 29 });
             floorSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 32, 33, 34, 35, 36, 37, 38, 39 });
             sodaSprite = spriteSheet[18];
@@ -94,25 +91,24 @@ namespace Client
 
             List<Vector2Int> emptyCells = new List<Vector2Int>();
 
-            VExt.ReverseArray(ref levelArray);
-
-            for (int i = 0; i < levelArray.GetLength(0); i++)
-                for (int j = 0; j < levelArray.GetLength(1); j++)
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < width; j++)
                 {
-                    LayoutFloorObject(j, i);
-
-                    switch (levelArray[i, j])
+                    switch (levelArray[i][j])
                     {
                         case '.':
+                            LayoutFloorObject(j, i);
                             emptyCells.Add(new Vector2Int(j, i));
                             break;
-                        case '8':
+                        case '#':
                             LayoutObstacleObject(j, i);
                             break;
                         case 'X':
+                            LayoutFloorObject(j, i);
                             LayoutExitObject(j, i);
                             break;
                         case '@':
+                            LayoutFloorObject(j, i);
                             LayoutPlayerObject(j, i, ref initiative);
                             break;
                         default:
@@ -270,7 +266,7 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(wall);
-            dataComponent.HealthPoint = Random.Range(minWallHP, maxWallHP + 1);
+            dataComponent.HealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
             dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
 
             emptyCells.Remove(cell);
