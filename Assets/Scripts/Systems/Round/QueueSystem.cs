@@ -24,23 +24,20 @@ namespace Client
 
         void NewRoundQueue()
         {
-#if UNITY_EDITOR
-            Debug.Log("new round");
-#endif
-            var sortedEntities = new List<(int, EcsEntity)>();
+            var sortedEntities = new List<Tuple<int, EcsEntity>>();
             int queue = 0;
 
             foreach (var i in _playerEntities)
             {
-                sortedEntities.Add((_playerEntities.Components1[i].Initiative, _playerEntities.Entities[i]));
+                sortedEntities.Add(new Tuple<int, EcsEntity>(_playerEntities.Components1[i].Initiative, _playerEntities.Entities[i]));
             }
 
             foreach (var i in _enemyEntities)
             {
-                sortedEntities.Add((_enemyEntities.Components1[i].Initiative, _enemyEntities.Entities[i]));
+                sortedEntities.Add(new Tuple<int, EcsEntity>(_enemyEntities.Components1[i].Initiative, _enemyEntities.Entities[i]));
             }
 
-            sortedEntities.Sort(a => a.Item1)
+            sortedEntities.Sort((a, b) => b.Item1.CompareTo(a.Item1));
 
             foreach (var e in sortedEntities)
             {

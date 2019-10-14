@@ -1,6 +1,7 @@
 using Leopotam.Ecs;
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace Client
 {
@@ -14,28 +15,22 @@ namespace Client
 
         void IEcsRunSystem.Run()
         {
-            if (_canTurnEntities.GetEntitiesCount() != 0 && _inputPhaseEntities.GetEntitiesCount() == 0 && _actionPhaseEntities.GetEntitiesCount() == 0)
+            if (_canTurnEntities.GetEntitiesCount() > 0 && _inputPhaseEntities.GetEntitiesCount() == 0 && _actionPhaseEntities.GetEntitiesCount() == 0)
                 nextEntity();
         }
 
         void nextEntity()
         {
-            int queue = 0;
-            ref var entity = ref _canTurnEntities.Entities[0];
+            var sortedEntities = new List<Tuple<int, EcsEntity>>();
 
             foreach (var i in _canTurnEntities)
             {
-                ref var e = ref _canTurnEntities.Entities[i];
-                var c1 = _canTurnEntities.Components1[i];
-
-                if (c1.Queue > queue)
-                {
-                    queue = c1.Queue;
-                    entity = e;
-                }
+                sortedEntities.Add(new Tuple<int, EcsEntity>(_canTurnEntities.Components1[i].Queue, _canTurnEntities.Entities[i]));
             }
 
-            _world.AddComponent<InputPhaseComponent>(entity);
+            sortedEntities.Sort((a, b) => a.Item1.CompareTo(b.Item1));
+
+            _world.AddComponent<InputPhaseComponent>(sortedEntities[0].Item2);
         }
     }
 }
