@@ -13,8 +13,8 @@ namespace Client
         readonly EcsFilter<WorldCreateEvent> _worldCreateEvent = null;
         readonly EcsFilter<WorldDestroyEvent> _worldDestroyEvent = null;
 
-        readonly EcsFilter<PositionComponent, PlayerComponent> _playerEntity = null;
-        readonly EcsFilter<PositionComponent>.Exclude<PlayerComponent> _transformEntities = null;
+        readonly EcsFilter<DataSheetComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+        readonly EcsFilter<PositionComponent>.Exclude<PlayerComponent, GameObjectRemoveEvent> _transformEntities = null;
 
         #region Resourses
         readonly Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
@@ -55,6 +55,10 @@ namespace Client
 
         int minWallHP = 2;
         int maxWallHP = 4;
+
+        (int HealthPoint, int CurrentHealthPoint, int HitDamage) playerSet = (10, 10, 1);
+        (int HealthPoint, int CurrentHealthPoint, int HitDamage) enemy01Set = (2, 2, 1);
+        (int HealthPoint, int CurrentHealthPoint, int HitDamage) enemy02Set = (3, 3, 2);
 
         #endregion
 
@@ -109,7 +113,7 @@ namespace Client
                             break;
                         case '@':
                             LayoutFloorObject(j, i);
-                            LayoutPlayerObject(j, i, ref initiative);
+                            LayoutPlayerObject(j, i, ref initiative, playerSet);
                             break;
                         default:
                             break;
@@ -133,12 +137,12 @@ namespace Client
 
             for (int i = 0; i < enemy01Count; i++)
             {
-                LayoutEnemyObject(ref emptyCells, ref initiative, "enemy01", enemy01Animation, 2, 1);
+                LayoutEnemyObject(ref emptyCells, ref initiative, "enemy01", enemy01Animation, enemy01Set);
             }
 
             for (int i = 0; i < enemy02Count; i++)
             {
-                LayoutEnemyObject(ref emptyCells, ref initiative, "enemy02", enemy02Animation, 3, 2);
+                LayoutEnemyObject(ref emptyCells, ref initiative, "enemy02", enemy02Animation, enemy02Set);
             }
         }
 
@@ -150,10 +154,14 @@ namespace Client
                 _world.AddComponent<GameObjectRemoveEvent>(e);
             }
 
-            foreach (var i in _playerEntity)
+            foreach (var i in _playerEntities)
             {
-                var c1 = _playerEntity.Components1[i];
-                c1.Transform.gameObject.SetActive(false);
+                ref var e = ref _playerEntities.Entities[i];
+                var c1 = _playerEntities.Components1[i];
+                playerSet.HealthPoint = c1.HealthPoint;
+                playerSet.CurrentHealthPoint = c1.CurrentHealthPoint;
+                playerSet.HitDamage = c1.HitDamage;
+                _world.AddComponent<GameObjectRemoveEvent>(e);
             }
         }
 
@@ -184,43 +192,28 @@ namespace Client
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
         }
 
-        void LayoutPlayerObject(int x, int y, ref int initiative)
+        void LayoutPlayerObject(int x, int y, ref int initiative, (int HealthPoint, int CurrentHealthPoint, int HitDamage) set)
         {
-            if (_playerEntity.GetEntitiesCount() == 0)
-            {
-                var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerAnimation);
-                var playerEntity = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
 
-                gameObjectCreateEvent.Transform = go.transform;
-                gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerAnimation);
+            var playerEntity = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
 
-                animationComponent.animator = go.GetComponent<Animator>();
+            gameObjectCreateEvent.Transform = go.transform;
+            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
-                var dataComponent = _world.AddComponent<DataSheetComponent>(playerEntity);
-                dataComponent.HealthPoint = 10;
-                dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
-                dataComponent.HitDamage = 1;
+            animationComponent.animator = go.GetComponent<Animator>();
 
-                var turnComponent = _world.AddComponent<TurnComponent>(playerEntity);
-                turnComponent.Initiative = initiative++;
+            var dataComponent = _world.AddComponent<DataSheetComponent>(playerEntity);
 
-                _world.AddComponent<InputPhaseComponent>(playerEntity);
-            }
-            else
-            {
-                foreach (var i in _playerEntity)
-                {
-                    ref var entity = ref _playerEntity.Entities[i];
-                    var c1 = _playerEntity.Components1[i];
+            dataComponent.HealthPoint = set.HealthPoint;
+            dataComponent.CurrentHealthPoint = set.CurrentHealthPoint;
+            dataComponent.HitDamage = set.HitDamage;
 
-                    c1.Transform.gameObject.SetActive(true);
-                    c1.Transform.localPosition = new Vector2(x, y);
-                    c1.Coords = new Vector2Int(x, y);
+            var turnComponent = _world.AddComponent<TurnComponent>(playerEntity);
+            turnComponent.Initiative = initiative++;
 
-                    _world.EnsureComponent<InputPhaseComponent>(entity, out _);
-                }
-                initiative++;
-            }
+            _world.AddComponent<InputPhaseComponent>(playerEntity);
+
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
@@ -272,7 +265,7 @@ namespace Client
             emptyCells.Remove(cell);
         }
 
-        void LayoutEnemyObject(ref List<Vector2Int> emptyCells, ref int initiative, string goName, RuntimeAnimatorController animation, int hp, int damage)
+        void LayoutEnemyObject(ref List<Vector2Int> emptyCells, ref int initiative, string goName, RuntimeAnimatorController animation, (int HealthPoint, int CurrentHealthPoint, int HitDamage) set)
         {
             var cell = VExt.NextFromList(emptyCells);
 
@@ -285,9 +278,9 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(enemy);
-            dataComponent.HealthPoint = hp;
-            dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
-            dataComponent.HitDamage = damage;
+            dataComponent.HealthPoint = set.HealthPoint;
+            dataComponent.CurrentHealthPoint = set.CurrentHealthPoint;
+            dataComponent.HitDamage = set.HitDamage;
 
             var turnComponent = _world.AddComponent<TurnComponent>(enemy);
             turnComponent.Initiative = initiative++;
