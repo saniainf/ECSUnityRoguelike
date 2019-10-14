@@ -16,6 +16,7 @@ namespace Client
 
             foreach (var i in _inputPhaseEntities)
             {
+                var ec1 = _inputPhaseEntities.Components1[i];
                 var ec2 = _inputPhaseEntities.Components2[i];
 
                 foreach (var j in _playerEntities)
@@ -50,7 +51,7 @@ namespace Client
                 ref var entity = ref _inputPhaseEntities.Entities[i];
                 var c = _world.AddComponent<InputDirectionComponent>(entity);
                 c.MoveDirection = direction;
-                _world.AddComponent<PhaseEndEvent>(entity);
+                ec1.PhaseEnd = true;
             }
         }
     }

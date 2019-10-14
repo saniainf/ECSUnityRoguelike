@@ -35,7 +35,6 @@ namespace Client
                 if (c1.RemoveTime <= 0)
                 {
                     var destroyGO = c2.Transform;
-                    //destroyGO.gameObject.SetActive(false);
                     Object.Destroy(destroyGO.gameObject);
                     _world.RemoveComponent<GameObjectRemoveEvent>(entity);
                     _world.RemoveEntity(entity);

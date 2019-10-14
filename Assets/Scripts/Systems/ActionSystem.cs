@@ -23,10 +23,6 @@ namespace Client
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
 
-        //readonly EcsFilter<PositionComponent, WallComponent>.Exclude<GameObjectRemoveEvent> _wallEntities = null;
-        //readonly EcsFilter<PositionComponent, EnemyComponent>.Exclude<GameObjectRemoveEvent> _enemyEntities = null;
-        //readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
-
         readonly EcsFilter<PositionComponent, DataSheetComponent> _collisionEntities = null;
         readonly EcsFilter<PositionComponent, ObstacleComponent> _obstacleEntities = null;
 
@@ -80,7 +76,8 @@ namespace Client
             {
                 foreach (var i in _actionPhaseEntities)
                 {
-                    _world.AddComponent<PhaseEndEvent>(_actionPhaseEntities.Entities[i]);
+                    var c1 = _actionPhaseEntities.Components1[i];
+                    c1.PhaseEnd = true;
                 }
             }
         }

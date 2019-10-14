@@ -30,11 +30,12 @@ namespace Client
 
                 foreach (var i in _inputPhaseEntities)
                 {
-                    ref var entity = ref _inputPhaseEntities.Entities[i];
-                    var c = _world.AddComponent<InputDirectionComponent>(entity);
+                    ref var e = ref _inputPhaseEntities.Entities[i];
+                    var c1 = _inputPhaseEntities.Components1[i];
+                    var c = _world.AddComponent<InputDirectionComponent>(e);
                     c.MoveDirection = direction;
 
-                    _world.AddComponent<PhaseEndEvent>(entity);
+                    c1.PhaseEnd = true;
                 }
             }
         }
