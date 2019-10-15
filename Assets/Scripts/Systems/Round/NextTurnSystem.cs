@@ -2,6 +2,7 @@ using Leopotam.Ecs;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Client
 {
@@ -21,16 +22,19 @@ namespace Client
 
         void nextEntity()
         {
-            var sortedEntities = new List<Tuple<int, EcsEntity>>();
+            var entity = new EcsEntity();
+            var queue = int.MaxValue;
 
             foreach (var i in _canTurnEntities)
             {
-                sortedEntities.Add(new Tuple<int, EcsEntity>(_canTurnEntities.Components1[i].Queue, _canTurnEntities.Entities[i]));
+                if (_canTurnEntities.Components1[i].Queue < queue)
+                {
+                    queue = _canTurnEntities.Components1[i].Queue;
+                    entity = _canTurnEntities.Entities[i];
+                }
             }
 
-            sortedEntities.Sort((a, b) => a.Item1.CompareTo(b.Item1));
-
-            _world.AddComponent<InputPhaseComponent>(sortedEntities[0].Item2);
+            _world.AddComponent<InputPhaseComponent>(entity);
         }
     }
 }
