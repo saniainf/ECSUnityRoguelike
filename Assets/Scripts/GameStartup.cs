@@ -26,6 +26,7 @@ namespace Client
                 .Add(new ZonesSystem())
                 .Add(new LevelManagerSystem())
                 .Add(new UserInputSystem())
+                .Add(new GameOverSystem())
                 .Add(new GameWorldEventsSystem())
                 .Add(new AIEnemySystem())
                 .Add(new ActionSystem())

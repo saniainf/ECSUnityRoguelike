@@ -18,12 +18,15 @@ namespace Client
         readonly GameObject healthPointTextPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthPointText");
         readonly GameObject healthPointSliderPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthPointSlider");
         readonly GameObject levelLoadTextPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelLoadText");
+        readonly GameObject gameOverTextPrefab = Resources.Load<GameObject>("Prefabs/UI/GameOverText");
 
         private GameObject levelRunCanvas;
         private GameObject levelLoadCanvas;
+        private GameObject gameOverCanvas;
         private Text UIHPText;
         private Slider UIHPSlider;
         private Text UILoadLevelText;
+        private Text UIGameOverText;
 
         void IEcsInitSystem.Initialize()
         {
@@ -35,6 +38,10 @@ namespace Client
             levelLoadCanvas = Object.Instantiate(canvasPrefab);
             UILoadLevelText = Object.Instantiate(levelLoadTextPrefab, levelLoadCanvas.transform).GetComponent<Text>();
             levelLoadCanvas.SetActive(false);
+
+            gameOverCanvas = Object.Instantiate(canvasPrefab);
+            UIGameOverText = Object.Instantiate(gameOverTextPrefab, gameOverCanvas.transform).GetComponent<Text>();
+            gameOverCanvas.SetActive(false);
         }
 
         void IEcsRunSystem.Run()
@@ -53,6 +60,9 @@ namespace Client
                     case UIType.LevelLoad:
                         levelLoadCanvas.SetActive(true);
                         UILoadLevelText.text = ($"Level {c1.LevelNumber.ToString()}");
+                        break;
+                    case UIType.GameOver:
+                        gameOverCanvas.SetActive(true);
                         break;
                     default:
                         break;

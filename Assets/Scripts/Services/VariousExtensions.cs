@@ -32,7 +32,8 @@ namespace Client
     {
         None,
         LevelRun,
-        LevelLoad
+        LevelLoad,
+        GameOver
     }
 
     public static class VExt
