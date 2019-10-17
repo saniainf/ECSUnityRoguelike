@@ -9,10 +9,14 @@ namespace Client
         EcsWorld _world;
         EcsSystems _systems;
 
+        WorldStatus _worldStatus;
+
         void OnEnable()
         {
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
+
+            _worldStatus = new WorldStatus();
 
 #if UNITY_EDITOR
             Leopotam.Ecs.UnityIntegration.EcsWorldObserver.Create(_world);
@@ -38,8 +42,11 @@ namespace Client
                 .Add(new GameObjectEventsSystem())
                 .Add(new AppearanceSystem())
                 .Add(new UIEventsSystem())
-                .Add(new CameraSystem())
-                ;
+                .Add(new CameraSystem());
+
+            _systems
+                .Inject(_worldStatus);
+
             _systems.Initialize();
         }
 

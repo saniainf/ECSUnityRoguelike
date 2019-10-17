@@ -1,7 +1,14 @@
+using Leopotam.Ecs;
+
 namespace Client
 {
-    sealed class ZoneExitComponent
+    sealed class ZoneExitComponent : IEcsAutoResetComponent
     {
-        
+        public bool ZoneStepOn = false;
+
+        void IEcsAutoResetComponent.Reset()
+        {
+            ZoneStepOn = false;
+        }
     }
 }

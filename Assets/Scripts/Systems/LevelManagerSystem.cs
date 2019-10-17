@@ -8,7 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<LevelEndEvent> _levelEndEvent = null;
+        readonly EcsFilter<ZoneExitComponent> _zoneExitEntities = null;
 
         private int levelNum = 1;
         private float loadLevelTime = 2f;
@@ -24,11 +24,16 @@ namespace Client
 
         void IEcsRunSystem.Run()
         {
-            if (_levelEndEvent.GetEntitiesCount() != 0 && !loadLevel)
+            foreach (var i in _zoneExitEntities)
             {
-                loadLevel = true;
-                loadLevelCurrentTime = loadLevelTime;
-                LevelLoad();
+                var c1 = _zoneExitEntities.Components1[i];
+
+                if (c1.ZoneStepOn && !loadLevel)
+                {
+                    loadLevel = true;
+                    loadLevelCurrentTime = loadLevelTime;
+                    LevelLoad();
+                }
             }
 
             if (loadLevel)
@@ -40,6 +45,7 @@ namespace Client
                     LevelRun();
                 }
             }
+
         }
 
         void LevelRun()
