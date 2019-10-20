@@ -36,6 +36,16 @@ namespace Client
         GameOver
     }
 
+    public enum GameStatus
+    {
+        None,
+        Start,
+        LevelRun,
+        LevelLoad,
+        LevelEnd,
+        GameOver
+    }
+
     public static class VExt
     {
         public static string IdleHealthPercent = "HealthPercent";

@@ -8,65 +8,70 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<ZoneExitComponent> _zoneExitEntities = null;
+        readonly WorldStatus _worldStatus = null;
 
         private int levelNum = 1;
         private float loadLevelTime = 2f;
         private float loadLevelCurrentTime = 0f;
-        private bool loadLevel = false;
 
         void IEcsInitSystem.Initialize()
         {
-            loadLevel = true;
-            loadLevelCurrentTime = loadLevelTime;
-            LevelLoad();
+            _worldStatus.GameStatus = GameStatus.Start;
         }
 
         void IEcsRunSystem.Run()
         {
-            foreach (var i in _zoneExitEntities)
+            switch (_worldStatus.GameStatus)
             {
-                var c1 = _zoneExitEntities.Components1[i];
-
-                if (c1.ZoneStepOn && !loadLevel)
-                {
-                    loadLevel = true;
-                    loadLevelCurrentTime = loadLevelTime;
+                case GameStatus.None:
+                    break;
+                case GameStatus.Start:
+                    StartGame();
+                    break;
+                case GameStatus.LevelRun:
+                    break;
+                case GameStatus.LevelLoad:
                     LevelLoad();
-                }
+                    break;
+                case GameStatus.LevelEnd:
+                    LevelEnd();
+                    break;
+                case GameStatus.GameOver:
+                    GameOver();
+                    break;
+                default:
+                    break;
             }
-
-            if (loadLevel)
-            {
-                loadLevelCurrentTime -= Time.deltaTime;
-                if (loadLevelCurrentTime <= 0f)
-                {
-                    loadLevel = false;
-                    LevelRun();
-                }
-            }
-
         }
 
-        void LevelRun()
+        void StartGame()
         {
-            _world.CreateEntityWith(out WorldCreateEvent _);
-            _world.CreateEntityWith(out UIEnableEvent uIEnable);
-            uIEnable.UIType = UIType.LevelRun;
-
-            _world.CreateEntityWith(out UIDisableEvent uIDisable);
-            uIDisable.UIType = UIType.LevelLoad;
+            _worldStatus.GameStatus = GameStatus.LevelLoad;
+            _worldStatus.LevelNum = levelNum++;
+            loadLevelCurrentTime = loadLevelTime;
         }
 
         void LevelLoad()
         {
-            _world.CreateEntityWith(out WorldDestroyEvent _);
-            _world.CreateEntityWith(out UIDisableEvent uIDisable);
-            uIDisable.UIType = UIType.LevelRun;
+            loadLevelCurrentTime -= Time.deltaTime;
+            if (loadLevelCurrentTime <= 0f)
+            {
+                _worldStatus.GameStatus = GameStatus.LevelRun;
+                _world.CreateEntityWith<WorldCreateEvent>(out _);
+            }
+        }
 
-            _world.CreateEntityWith(out UIEnableEvent uIEnable);
-            uIEnable.UIType = UIType.LevelLoad;
-            uIEnable.LevelNumber = levelNum++;
+        void LevelEnd()
+        {
+            _worldStatus.GameStatus = GameStatus.LevelLoad;
+            _worldStatus.LevelNum = levelNum++;
+            loadLevelCurrentTime = loadLevelTime;
+            _world.CreateEntityWith<WorldDestroyEvent>(out _);
+        }
+
+        void GameOver()
+        {
+            _world.CreateEntityWith<WorldDestroyEvent>(out _);
         }
 
         void IEcsInitSystem.Destroy()

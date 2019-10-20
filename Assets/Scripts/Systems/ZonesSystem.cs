@@ -8,8 +8,9 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<PositionComponent, PlayerComponent> _playerEntities = null;
-
         readonly EcsFilter<PositionComponent, ZoneExitComponent> _zoneExitEntities = null;
+
+        readonly WorldStatus _worldStatus = null;
 
         void IEcsRunSystem.Run()
         {
@@ -20,15 +21,10 @@ namespace Client
                 foreach (var j in _zoneExitEntities)
                 {
                     var zc1 = _zoneExitEntities.Components1[i];
-                    var zc2 = _zoneExitEntities.Components2[i];
 
                     if (pc1.Coords == zc1.Coords)
                     {
-                        zc2.ZoneStepOn = true;
-                    }
-                    else
-                    {
-                        zc2.ZoneStepOn = false;
+                        _worldStatus.GameStatus = GameStatus.LevelEnd;
                     }
                 }
             }

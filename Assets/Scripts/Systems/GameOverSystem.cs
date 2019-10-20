@@ -6,30 +6,23 @@ namespace Client
     sealed class GameOverSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
+        readonly WorldStatus _worldStatus = null;
 
-        readonly EcsFilter<PlayerComponent> _playerEntities = null;
-
-        readonly EcsFilter<WorldCreateEvent> _worldCreateEvent = null;
-        readonly EcsFilter<WorldDestroyEvent> _worldDestroyEvent = null;
-
-        bool levelRun = false;
+        readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
 
         void IEcsRunSystem.Run()
         {
-            if (_worldCreateEvent.GetEntitiesCount() > 0)
-                levelRun = true;
-
-            if (_worldDestroyEvent.GetEntitiesCount() > 0)
-                levelRun = false;
-
-            if (levelRun && _playerEntities.GetEntitiesCount() == 0)
+            if (_worldStatus.GameStatus == GameStatus.LevelRun)
             {
-                _world.CreateEntityWith(out WorldDestroyEvent _);
-                _world.CreateEntityWith(out UIDisableEvent uIDisable);
-                uIDisable.UIType = UIType.LevelRun;
+                foreach (var i in _playerEntities)
+                {
+                    var c1 = _playerEntities.Components1[i];
 
-                _world.CreateEntityWith(out UIEnableEvent uIEnable);
-                uIEnable.UIType = UIType.GameOver;
+                    if (c1.CurrentHealthPoint <= 0)
+                    {
+                        _worldStatus.GameStatus = GameStatus.GameOver;
+                    }
+                }
             }
         }
     }

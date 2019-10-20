@@ -56,7 +56,7 @@ namespace Client
         int minWallHP = 2;
         int maxWallHP = 4;
 
-        (int HP, int currentHP, int hitDamage, int initiative) playerSet = (10, 10, 1, 10);
+        (int HP, int currentHP, int hitDamage, int initiative) playerSet = (3, 3, 1, 10);
         (int HP, int currentHP, int hitDamage, int initiative) enemy01Set = (2, 2, 1, 1);
         (int HP, int currentHP, int hitDamage, int initiative) enemy02Set = (3, 3, 2, 2);
 

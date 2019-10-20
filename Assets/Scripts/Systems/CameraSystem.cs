@@ -8,7 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+        readonly EcsFilter<PositionComponent, PlayerComponent> _playerEntities = null;
 
         readonly GameObject cameraPrefab = Resources.Load<GameObject>("Prefabs/MainCamera");
 
