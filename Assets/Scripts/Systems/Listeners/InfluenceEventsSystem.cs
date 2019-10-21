@@ -29,8 +29,6 @@ namespace Client
                     animator.SetBool("Damaged", true);
                 }
 
-                //Debug.Log("damage " + c1.HitValue);
-
                 if (c2.CurrentHealthPoint <= 0)
                 {
                     var c = _world.AddComponent<GameObjectRemoveEvent>(entity);
@@ -46,7 +44,6 @@ namespace Client
 
                 c2.HealthPoint += c1.BoostHealthValue;
                 c2.CurrentHealthPoint = Mathf.Min(c2.CurrentHealthPoint + c1.HealValue + c1.BoostHealthValue, c2.HealthPoint);
-                //Debug.Log("heal " + c1.HealValue);
             }
         }
     }

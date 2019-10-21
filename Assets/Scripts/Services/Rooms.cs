@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    class GameLevels
+    class Rooms
     {
-        public string[][] LevelsArray = new string[][] {
+        public string[][] RoomsArray = new string[][] {
 
         new string[]{
         "############",

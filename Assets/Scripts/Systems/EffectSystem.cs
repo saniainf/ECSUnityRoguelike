@@ -7,6 +7,7 @@ namespace Client
     sealed class EffectSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
+        readonly WorldStatus _worldStatus = null;
 
         readonly EcsFilter<SpriteEffectCreateEvent> _createEffectEntities = null;
         readonly EcsFilter<SpriteEffectComponent> _effectEntities = null;
@@ -40,7 +41,7 @@ namespace Client
                     case SpriteEffect.None:
                         break;
                     case SpriteEffect.Chop:
-                        go = VExt.LayoutSpriteObjects(prefabSprite, c1.Position.x, c1.Position.y, LayersName.Effect.ToString(), chopEffect);
+                        go = VExt.LayoutSpriteObjects(prefabSprite, c1.Position.x, c1.Position.y, _worldStatus.ParentOtherObject, LayersName.Effect.ToString(), chopEffect);
                         break;
                     default:
                         break;

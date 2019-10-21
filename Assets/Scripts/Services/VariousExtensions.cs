@@ -50,13 +50,11 @@ namespace Client
     {
         public static string IdleHealthPercent = "HealthPercent";
 
-        private static Transform GameObjectsOther = new GameObject("GameObjectsOther").transform;
-
-        public static GameObject LayoutSpriteObjects(GameObject prefab, int x, int y, string sortingLayer, Sprite sprite)
+        public static GameObject LayoutSpriteObjects(GameObject prefab, int x, int y, Transform parent, string sortingLayer, Sprite sprite)
         {
             string name = Guid.NewGuid().ToString();
             GameObject go = UnityEngine.Object.Instantiate(prefab);
-            go.transform.SetParent(GameObjectsOther);
+            go.transform.SetParent(parent);
             go.transform.localPosition = new Vector2(x, y);
             go.name = ($"{name}_(x{go.transform.localPosition.x}, y{go.transform.localPosition.y})");
 

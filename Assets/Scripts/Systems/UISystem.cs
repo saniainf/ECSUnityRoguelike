@@ -31,38 +31,31 @@ namespace Client
             levelRunCanvas = Object.Instantiate(canvasPrefab);
             UIHPSlider = Object.Instantiate(healthPointSliderPrefab, levelRunCanvas.transform).GetComponent<Slider>();
             UIHPText = Object.Instantiate(healthPointTextPrefab, levelRunCanvas.transform).GetComponent<Text>();
-            levelRunCanvas.SetActive(false);
 
             levelLoadCanvas = Object.Instantiate(canvasPrefab);
             UILoadLevelText = Object.Instantiate(levelLoadTextPrefab, levelLoadCanvas.transform).GetComponent<Text>();
-            levelLoadCanvas.SetActive(false);
 
             gameOverCanvas = Object.Instantiate(canvasPrefab);
             UIGameOverText = Object.Instantiate(gameOverTextPrefab, gameOverCanvas.transform).GetComponent<Text>();
-            gameOverCanvas.SetActive(false);
+
+            SetActive(false);
         }
 
         void IEcsRunSystem.Run()
         {
             switch (_worldStatus.GameStatus)
             {
-                case GameStatus.None:
-                    break;
-                case GameStatus.Start:
-                    break;
                 case GameStatus.LevelRun:
-                    levelLoadCanvas.SetActive(false);
+                    SetActive(false);
                     levelRunCanvas.SetActive(true);
                     break;
                 case GameStatus.LevelLoad:
-                    levelRunCanvas.SetActive(false);
+                    SetActive(false);
                     levelLoadCanvas.SetActive(true);
                     UILoadLevelText.text = ($"Level {_worldStatus.LevelNum}");
                     break;
-                case GameStatus.LevelEnd:
-                    break;
                 case GameStatus.GameOver:
-                    levelRunCanvas.SetActive(false);
+                    SetActive(false);
                     gameOverCanvas.SetActive(true);
                     break;
                 default:
@@ -72,12 +65,19 @@ namespace Client
             foreach (var i in _playerDataEntities)
             {
                 var pc1 = _playerDataEntities.Components1[i];
-                var cur = pc1.CurrentHealthPoint;
+                var cur = Mathf.Max(0, pc1.CurrentHealthPoint);
                 var hp = pc1.HealthPoint;
 
                 UIHPText.text = $"HP: {cur} | {hp}";
                 UIHPSlider.value = (((float)pc1.CurrentHealthPoint / (float)pc1.HealthPoint) * 100f);
             }
+        }
+
+        void SetActive(bool value)
+        {
+            levelLoadCanvas.SetActive(value);
+            levelRunCanvas.SetActive(value);
+            gameOverCanvas.SetActive(value);
         }
 
         void IEcsInitSystem.Destroy()

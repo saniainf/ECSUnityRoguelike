@@ -1,20 +1,13 @@
+﻿using Leopotam.Ecs;
 using System;
-using Leopotam.Ecs;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Client
 {
-    [EcsInject]
-    sealed class GameWorldEventsSystem : IEcsRunSystem
+    class GameLevel
     {
-        readonly EcsWorld _world = null;
-
-        readonly EcsFilter<WorldCreateEvent> _worldCreateEvent = null;
-        readonly EcsFilter<WorldDestroyEvent> _worldDestroyEvent = null;
-
-        readonly EcsFilter<DataSheetComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
-        readonly EcsFilter<PositionComponent>.Exclude<PlayerComponent, GameObjectRemoveEvent> _transformEntities = null;
+        private EcsWorld _world;
 
         #region Resourses
         readonly Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
@@ -35,6 +28,7 @@ namespace Client
 
         readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
+        public Transform GameObjectsOther = new GameObject("GameObjectsOther").transform;
 
         Sprite[] obstacleSprites;
         Sprite[] floorSprites;
@@ -56,34 +50,28 @@ namespace Client
         int minWallHP = 2;
         int maxWallHP = 4;
 
-        (int HP, int currentHP, int hitDamage, int initiative) playerSet = (3, 3, 1, 10);
+        (int HP, int currentHP, int hitDamage, int initiative) playerSet;
         (int HP, int currentHP, int hitDamage, int initiative) enemy01Set = (2, 2, 1, 1);
         (int HP, int currentHP, int hitDamage, int initiative) enemy02Set = (3, 3, 2, 2);
-
         #endregion
 
-        void IEcsRunSystem.Run()
+        public GameLevel(EcsWorld world, (int HP, int currentHP, int hitDamage, int initiative) playerSet)
         {
-            if (_worldCreateEvent.GetEntitiesCount() > 0)
-            {
-                WorldCreate();
-            }
+            _world = world;
+            this.playerSet = playerSet;
 
-            if (_worldDestroyEvent.GetEntitiesCount() > 0)
-            {
-                WorldDestroy();
-            }
+            SetActive(false);
         }
 
-        void WorldCreate()
+        public void LevelCreate()
         {
-            var gameLevels = new GameLevels();
+            var rooms = new Rooms();
 
-            var levelArray = VExt.NextFromArray(gameLevels.LevelsArray);
-            Array.Reverse(levelArray);
+            var roomsArray = VExt.NextFromArray(rooms.RoomsArray);
+            Array.Reverse(roomsArray);
 
-            int width = levelArray[0].Length;
-            int height = levelArray.Length; ;
+            int width = roomsArray[0].Length;
+            int height = roomsArray.Length; ;
 
             obstacleSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 25, 26, 28, 29 });
             floorSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 32, 33, 34, 35, 36, 37, 38, 39 });
@@ -96,7 +84,7 @@ namespace Client
             for (int i = 0; i < height; i++)
                 for (int j = 0; j < width; j++)
                 {
-                    switch (levelArray[i][j])
+                    switch (roomsArray[i][j])
                     {
                         case '.':
                             LayoutFloorObject(j, i);
@@ -144,25 +132,22 @@ namespace Client
             }
         }
 
-        void WorldDestroy()
+        public void LevelDestroy()
         {
-            foreach (var i in _transformEntities)
-            {
-                ref var e = ref _transformEntities.Entities[i];
-                _world.AddComponent<GameObjectRemoveEvent>(e);
-            }
-
-            foreach (var i in _playerEntities)
-            {
-                ref var e = ref _playerEntities.Entities[i];
-                var c1 = _playerEntities.Components1[i];
-                playerSet.HP = c1.HealthPoint;
-                playerSet.currentHP= c1.CurrentHealthPoint;
-                playerSet.hitDamage = c1.HitDamage;
-                _world.AddComponent<GameObjectRemoveEvent>(e);
-            }
+            UnityEngine.Object.Destroy(gameBoardRoot.gameObject);
+            UnityEngine.Object.Destroy(gameObjectsRoot.gameObject);
+            UnityEngine.Object.Destroy(GameObjectsOther.gameObject);
+            _world = null;
         }
 
+        public void SetActive(bool value)
+        {
+            gameBoardRoot.gameObject.SetActive(value);
+            gameObjectsRoot.gameObject.SetActive(value);
+            GameObjectsOther.gameObject.SetActive(value);
+        }
+
+        #region Layout
         void LayoutFloorObject(int x, int y)
         {
             var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
@@ -278,5 +263,6 @@ namespace Client
 
             emptyCells.Remove(cell);
         }
+        #endregion
     }
 }

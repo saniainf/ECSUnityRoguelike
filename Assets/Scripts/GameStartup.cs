@@ -28,10 +28,8 @@ namespace Client
                 .Add(new PhaseManagerSystem())
                 .Add(new NextTurnSystem())
                 .Add(new ZonesSystem())
-                .Add(new GameOverSystem())
                 .Add(new LevelManagerSystem())
                 .Add(new UserInputSystem())
-                .Add(new GameWorldEventsSystem())
                 .Add(new AIEnemySystem())
                 .Add(new ActionSystem())
                 .Add(new ActionMoveSystem())
@@ -41,6 +39,7 @@ namespace Client
                 .Add(new InfluenceEventsSystem())
                 .Add(new GameObjectEventsSystem())
                 .Add(new AppearanceSystem())
+                .Add(new GameOverSystem())
                 .Add(new UISystem())
                 .Add(new CameraSystem());
 
