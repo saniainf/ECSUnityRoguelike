@@ -8,6 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
+        readonly WorldObjects _worldObjects = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
         readonly EcsFilter<PositionComponent>.Exclude<PlayerComponent> _transformEntities = null;
@@ -68,7 +69,7 @@ namespace Client
 
             if (loadLevelCurrentTime <= 0f)
             {
-                gameLevel = new GameLevel(_world, playerSet);
+                gameLevel = new GameLevel(_world, _worldObjects, playerSet);
                 gameLevel.LevelCreate();
                 gameLevel.SetActive(true);
                 _worldStatus.ParentOtherObject = gameLevel.GameObjectsOther;

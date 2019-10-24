@@ -8,6 +8,7 @@ namespace Client
     class GameLevel
     {
         private EcsWorld _world;
+        private WorldObjects _worldObjects;
 
         #region Resourses
         readonly Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
@@ -55,9 +56,10 @@ namespace Client
         (int HP, int currentHP, int hitDamage, int initiative) enemy02Set = (3, 3, 2, 2);
         #endregion
 
-        public GameLevel(EcsWorld world, (int HP, int currentHP, int hitDamage, int initiative) playerSet)
+        public GameLevel(EcsWorld world, WorldObjects worldObjects, (int HP, int currentHP, int hitDamage, int initiative) playerSet)
         {
             _world = world;
+            _worldObjects = worldObjects;
             this.playerSet = playerSet;
 
             SetActive(false);
@@ -178,7 +180,7 @@ namespace Client
         void LayoutPlayerObject(int x, int y, (int HP, int currentHP, int hitDamage, int initiative) set)
         {
 
-            var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerAnimation);
+            var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), _worldObjects.PlayerPreset.Animation);
             var playerEntity = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
 
             gameObjectCreateEvent.Transform = go.transform;

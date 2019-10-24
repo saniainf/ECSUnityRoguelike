@@ -6,9 +6,10 @@ namespace Client
 {
     sealed class GameStartup : MonoBehaviour
     {
+        public WorldObjects WorldObjects;
+
         EcsWorld _world;
         EcsSystems _systems;
-
         WorldStatus _worldStatus;
 
         void OnEnable()
@@ -44,7 +45,8 @@ namespace Client
                 .Add(new CameraSystem());
 
             _systems
-                .Inject(_worldStatus);
+                .Inject(_worldStatus)
+                .Inject(WorldObjects);
 
             _systems.Initialize();
         }
