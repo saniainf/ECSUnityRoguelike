@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Client
 {
-    [CreateAssetMenu(menuName = "EcsRoguelike/PlayerPreset", fileName = "PlayerPreset")]
-    public class PlayerObject : ScriptableObject
+    [CreateAssetMenu(menuName = "EcsRoguelike/EnemyPreset", fileName = "EnemyPreset")]
+    public class EnemyObject : ScriptableObject
     {
         public RuntimeAnimatorController Animation;
         public int HealthPoint;

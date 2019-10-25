@@ -18,14 +18,19 @@ namespace Client
         private float loadLevelCurrentTime = 0f;
         private float gameOverTime = 2f;
         private float gameOvetCurrentTime = 0f;
-        private GameLevel gameLevel = null;
 
-        (int HP, int currentHP, int hitDamage, int initiative) startPlayerSet = (3, 3, 1, 10);
+        private GameLevel gameLevel = null;
+        private PlayerObject playerPreset;
+
+        (int HP, int currentHP, int hitDamage, int initiative) startPlayerSet;
         (int HP, int currentHP, int hitDamage, int initiative) playerSet;
 
         void IEcsInitSystem.Initialize()
         {
+            playerPreset = _worldObjects.PlayerPreset;
+
             _worldStatus.GameStatus = GameStatus.Start;
+            startPlayerSet = (playerPreset.HealthPoint, playerPreset.HealthPoint, playerPreset.HitDamage, playerPreset.Initiative);
         }
 
         void IEcsRunSystem.Run()

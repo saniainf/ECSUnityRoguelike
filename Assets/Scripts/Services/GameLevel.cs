@@ -8,24 +8,17 @@ namespace Client
     class GameLevel
     {
         private EcsWorld _world;
-        private WorldObjects _worldObjects;
+        private readonly WorldObjects _worldObjects;
 
         #region Resourses
-        readonly Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
-        readonly GameObject prefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
-        readonly GameObject prefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
-        readonly RuntimeAnimatorController playerAnimation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/PlayerAnimatorController");
-        readonly RuntimeAnimatorController enemy01Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy1AnimatorController");
-        readonly RuntimeAnimatorController enemy02Animation = Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Enemy2AnimatorController");
+        private readonly Sprite[] spriteSheet;
+        private readonly GameObject prefabSprite;
+        private readonly GameObject prefabAnimation;
 
-        readonly RuntimeAnimatorController[] wallsAnimation = {
-        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/01WallAnimationController"),
-        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/02WallAnimationController"),
-        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/03WallAnimationController"),
-        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/04WallAnimationController"),
-        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/05WallAnimationController"),
-        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/06WallAnimationController"),
-        Resources.Load<RuntimeAnimatorController>("Animations/AnimatorControllers/Walls/07WallAnimationController")};
+        private readonly EnemyObject enemy01Pres;
+        private readonly EnemyObject enemy02Pres;
+        private readonly PlayerObject playerPres;
+        private readonly RuntimeAnimatorController[] wallsAnimation;
 
         readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -52,8 +45,7 @@ namespace Client
         int maxWallHP = 4;
 
         (int HP, int currentHP, int hitDamage, int initiative) playerSet;
-        (int HP, int currentHP, int hitDamage, int initiative) enemy01Set = (2, 2, 1, 1);
-        (int HP, int currentHP, int hitDamage, int initiative) enemy02Set = (3, 3, 2, 2);
+
         #endregion
 
         public GameLevel(EcsWorld world, WorldObjects worldObjects, (int HP, int currentHP, int hitDamage, int initiative) playerSet)
@@ -61,6 +53,15 @@ namespace Client
             _world = world;
             _worldObjects = worldObjects;
             this.playerSet = playerSet;
+
+            wallsAnimation = worldObjects.WallsPresets.Animation;
+            enemy01Pres = worldObjects.Enemy01Preset;
+            enemy02Pres = worldObjects.Enemy02Preset;
+            playerPres = worldObjects.PlayerPreset;
+
+            this.spriteSheet = worldObjects.ResourcesPresets.SpriteSheet;
+            this.prefabSprite = worldObjects.ResourcesPresets.PrefabSprite;
+            this.prefabAnimation = worldObjects.ResourcesPresets.PrefabAnimation;
 
             SetActive(false);
         }
@@ -125,12 +126,12 @@ namespace Client
 
             for (int i = 0; i < enemy01Count; i++)
             {
-                LayoutEnemyObject(ref emptyCells, "enemy01", enemy01Animation, enemy01Set);
+                LayoutEnemyObject(ref emptyCells, "enemy01", enemy01Pres.Animation, (enemy01Pres.HealthPoint, enemy01Pres.HealthPoint, enemy01Pres.HitDamage, enemy01Pres.Initiative));
             }
 
             for (int i = 0; i < enemy02Count; i++)
             {
-                LayoutEnemyObject(ref emptyCells, "enemy02", enemy02Animation, enemy02Set);
+                LayoutEnemyObject(ref emptyCells, "enemy02", enemy02Pres.Animation, (enemy02Pres.HealthPoint, enemy02Pres.HealthPoint, enemy02Pres.HitDamage, enemy02Pres.Initiative));
             }
         }
 
@@ -180,7 +181,7 @@ namespace Client
         void LayoutPlayerObject(int x, int y, (int HP, int currentHP, int hitDamage, int initiative) set)
         {
 
-            var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), _worldObjects.PlayerPreset.Animation);
+            var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
             var playerEntity = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
 
             gameObjectCreateEvent.Transform = go.transform;

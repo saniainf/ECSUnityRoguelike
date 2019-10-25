@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7cc07806a2739246a7f7b3de633d075, type: 3}
+  m_Name: WallsPreset
+  m_EditorClassIdentifier: 
+  Animation:
+  - {fileID: 22100000, guid: bfc2426f55ebbb94189db67068636cd9, type: 2}
+  - {fileID: 22100000, guid: 1b133989313edf34eafa8cf053cfea69, type: 2}
+  - {fileID: 22100000, guid: 79546ac3b8564464c884d4df53f44394, type: 2}
+  - {fileID: 22100000, guid: 2a14ada6412d8fb4dad0236be307efe8, type: 2}
+  - {fileID: 22100000, guid: 2c21da964ac8fa44e88adda8c1f451a5, type: 2}
+  - {fileID: 22100000, guid: daaf076c511656c47b1d31ff09e7d796, type: 2}
+  - {fileID: 22100000, guid: af771774e015c914c95891827ba2cb71, type: 2}
