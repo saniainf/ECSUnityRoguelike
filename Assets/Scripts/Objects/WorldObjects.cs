@@ -8,9 +8,17 @@ namespace Client
     class WorldObjects : ScriptableObject
     {
         public ResourcesObjects ResourcesPresets;
+        [Space(10)]
         public WallsObject WallsPresets;
+        public SpritesObject ObstaclePresets;
+        public SpritesObject FloorPresets;
+        public SpritesObject ExitPointPreset;
+        [Space(10)]
         public PlayerObject PlayerPreset;
         public EnemyObject Enemy01Preset;
         public EnemyObject Enemy02Preset;
+        [Space(10)]
+        public CollectItemObject HealItemPreset;
+        public CollectItemObject BoostHPItemPreset;
     }
 }

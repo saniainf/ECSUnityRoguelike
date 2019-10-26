@@ -46,6 +46,13 @@ namespace Client
         GameOver
     }
 
+    public enum CollectItemType
+    {
+        None,
+        Heal,
+        BoostHP
+    }
+
     public static class VExt
     {
         public static string IdleHealthPercent = "HealthPercent";

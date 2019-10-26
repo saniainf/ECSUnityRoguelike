@@ -11,7 +11,7 @@ namespace Client
         private readonly WorldObjects _worldObjects;
 
         #region Resourses
-        private readonly Sprite[] spriteSheet;
+        //private readonly Sprite[] spriteSheet;
         private readonly GameObject prefabSprite;
         private readonly GameObject prefabAnimation;
 
@@ -24,11 +24,11 @@ namespace Client
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
         public Transform GameObjectsOther = new GameObject("GameObjectsOther").transform;
 
-        Sprite[] obstacleSprites;
-        Sprite[] floorSprites;
-        Sprite sodaSprite;
-        Sprite boostSprite;
-        Sprite exitSprite;
+        private Sprite[] obstacleSprites;
+        private Sprite[] floorSprites;
+        private Sprite sodaSprite;
+        private Sprite boostSprite;
+        private Sprite exitSprite;
         #endregion
 
         #region Settings
@@ -59,7 +59,7 @@ namespace Client
             enemy02Pres = worldObjects.Enemy02Preset;
             playerPres = worldObjects.PlayerPreset;
 
-            this.spriteSheet = worldObjects.ResourcesPresets.SpriteSheet;
+            //this.spriteSheet = worldObjects.ResourcesPresets.SpriteSheet;
             this.prefabSprite = worldObjects.ResourcesPresets.PrefabSprite;
             this.prefabAnimation = worldObjects.ResourcesPresets.PrefabAnimation;
 
@@ -76,11 +76,11 @@ namespace Client
             int width = roomsArray[0].Length;
             int height = roomsArray.Length; ;
 
-            obstacleSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 25, 26, 28, 29 });
-            floorSprites = VExt.ExtractSubArray(spriteSheet, new int[] { 32, 33, 34, 35, 36, 37, 38, 39 });
-            sodaSprite = spriteSheet[18];
-            boostSprite = spriteSheet[19];
-            exitSprite = spriteSheet[20];
+            obstacleSprites = _worldObjects.ObstaclePresets.spritesArray;
+            floorSprites = _worldObjects.FloorPresets.spritesArray;
+            sodaSprite = _worldObjects.HealItemPreset.Sprite;
+            boostSprite = _worldObjects.BoostHPItemPreset.Sprite;
+            exitSprite = _worldObjects.ExitPointPreset.spriteSingle;
 
             List<Vector2Int> emptyCells = new List<Vector2Int>();
 
@@ -202,12 +202,13 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "boostHP", gameObjectsRoot, LayersName.Object.ToString(), boostSprite);
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out BoostHPComponent boostHPComponent);
+            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out CollectItemComponent collectItemComponent);
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
-            boostHPComponent.boostValue = boostHPValue;
+            collectItemComponent.Type = CollectItemType.BoostHP;
+            collectItemComponent.Value = _worldObjects.BoostHPItemPreset.Value;
 
             emptyCells.Remove(cell);
         }
@@ -217,12 +218,13 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out FoodComponent foodComponent);
+            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out CollectItemComponent collectItemComponent);
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
-            foodComponent.foodValue = sodaFoodValue;
+            collectItemComponent.Type = CollectItemType.Heal;
+            collectItemComponent.Value = _worldObjects.HealItemPreset.Value;
 
             emptyCells.Remove(cell);
         }

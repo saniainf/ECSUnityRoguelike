@@ -9,9 +9,7 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<PositionComponent, ActionPhaseComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
-
-        readonly EcsFilter<PositionComponent, FoodComponent>.Exclude<GameObjectRemoveEvent> _foodEntities = null;
-        readonly EcsFilter<PositionComponent, BoostHPComponent>.Exclude<GameObjectRemoveEvent> _boostEntities = null;
+        readonly EcsFilter<PositionComponent, CollectItemComponent> _collectItemEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -20,33 +18,27 @@ namespace Client
                 ref var pe = ref _playerEntities.Entities[i];
                 var pc1 = _playerEntities.Components1[i];
 
-                foreach (var j in _foodEntities)
+                foreach (var j in _collectItemEntities)
                 {
-                    ref var fe = ref _foodEntities.Entities[j];
-                    var fc1 = _foodEntities.Components1[j];
-                    var fc2 = _foodEntities.Components2[j];
+                    ref var ce = ref _collectItemEntities.Entities[j];
+                    var cc1 = _collectItemEntities.Components1[j];
+                    var cc2 = _collectItemEntities.Components2[j];
 
-                    if (pc1.Coords == fc1.Coords)
+                    if (pc1.Coords == cc1.Coords)
                     {
-                        var c = _world.EnsureComponent<CollectEvent>(pe, out _);
-                        c.HealValue = fc2.foodValue;
-
-                        _world.AddComponent<GameObjectRemoveEvent>(fe);
-                    }
-                }
-
-                foreach (var j in _boostEntities)
-                {
-                    ref var be = ref _boostEntities.Entities[j];
-                    var bc1 = _boostEntities.Components1[j];
-                    var bc2 = _boostEntities.Components2[j];
-
-                    if (pc1.Coords == bc1.Coords)
-                    {
-                        var c = _world.EnsureComponent<CollectEvent>(pe, out _);
-                        c.BoostHealthValue = bc2.boostValue;
-
-                        _world.AddComponent<GameObjectRemoveEvent>(be);
+                        switch (cc2.Type)
+                        {
+                            case CollectItemType.Heal:
+                                _world.EnsureComponent<CollectEvent>(pe, out _).HealValue = cc2.Value;
+                                _world.AddComponent<GameObjectRemoveEvent>(ce);
+                                break;
+                            case CollectItemType.BoostHP:
+                                _world.EnsureComponent<CollectEvent>(pe, out _).BoostHealthValue = cc2.Value;
+                                _world.AddComponent<GameObjectRemoveEvent>(ce);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
             }
