@@ -18,6 +18,11 @@ namespace Client
                 var c1 = _animationEntities.Components1[i];
                 var c2 = _animationEntities.Components2[i];
 
+                if (c2.animator.GetBool("ChopMiddle"))
+                {
+                    Debug.Log("middle");
+                }
+
                 if (!c1.Run)
                 {
                     var clips = c2.animator.GetCurrentAnimatorClipInfo(0);
