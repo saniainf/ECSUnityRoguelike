@@ -23,9 +23,11 @@ namespace Client
     public enum AnimationTriger
     {
         None,
-        Idle,
-        Chop,
-        Hit
+        Damaged,
+        AnimationAtack,
+        AnimationTakeDamage,
+        ActionRun,
+        ActionOnAtack
     }
 
     public enum UIType

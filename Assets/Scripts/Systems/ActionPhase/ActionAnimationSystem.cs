@@ -18,29 +18,14 @@ namespace Client
                 var c1 = _animationEntities.Components1[i];
                 var c2 = _animationEntities.Components2[i];
 
-                if (c2.animator.GetBool("ChopMiddle"))
-                {
-                    Debug.Log("middle");
-                }
-
                 if (!c1.Run)
                 {
-                    var clips = c2.animator.GetCurrentAnimatorClipInfo(0);
-                    if (clips.Length > 0)
-                    {
-                        c1.StartClip = clips[0].clip.name;
-                        c2.animator.SetTrigger(c1.Animation.ToString());
-                        c1.Run = true;
-                    }
+                    c2.animator.SetTrigger(c1.Animation.ToString());
+                    c1.Run = true;
                 }
-                else
+                else if (!c2.animator.GetBool(AnimationTriger.ActionRun.ToString()))
                 {
-                    var clips = c2.animator.GetCurrentAnimatorClipInfo(0);
-                    if (clips.Length > 0)
-                    {
-                        if (c1.StartClip == clips[0].clip.name)
-                            _world.RemoveComponent<ActionAnimationComponent>(entity);
-                    }
+                    _world.RemoveComponent<ActionAnimationComponent>(entity);
                 }
             }
         }

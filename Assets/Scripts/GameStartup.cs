@@ -34,6 +34,7 @@ namespace Client
                 .Add(new AIEnemySystem())
                 .Add(new ActionSystem())
                 .Add(new ActionMoveSystem())
+                .Add(new ActionAtackSystem())
                 .Add(new ActionAnimationSystem())
                 .Add(new CollectSystem())
                 .Add(new EffectSystem())

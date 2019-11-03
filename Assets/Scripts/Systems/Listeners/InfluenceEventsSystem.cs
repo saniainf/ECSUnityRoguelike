@@ -20,14 +20,7 @@ namespace Client
                 var c2 = _impactEntities.Components2[i];
 
                 c2.CurrentHealthPoint -= c1.HitValue;
-                _world.EnsureComponent<ActionAnimationComponent>(entity, out _).Animation = AnimationTriger.Hit;
-
-                var animator = _world.GetComponent<AnimationComponent>(entity).animator;
-                var cur = animator.GetBool("Damaged");
-                if ((c2.HealthPoint != c2.CurrentHealthPoint) != cur)
-                {
-                    animator.SetBool("Damaged", true);
-                }
+                _world.EnsureComponent<ActionAnimationComponent>(entity, out _).Animation = AnimationTriger.AnimationTakeDamage;
 
                 if (c2.CurrentHealthPoint <= 0)
                 {

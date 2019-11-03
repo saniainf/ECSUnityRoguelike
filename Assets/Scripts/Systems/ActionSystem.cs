@@ -86,7 +86,7 @@ namespace Client
         {
             if (!CheckObstacleCollision(entity, endPosition) && !CheckCollision(entity, endPosition))
             {
-                CreateMoveEntity(entity, endPosition);
+                MoveEntity(entity, endPosition);
             }
         }
 
@@ -116,16 +116,14 @@ namespace Client
             {
                 ref var ce = ref _collisionEntities.Entities[i];
                 var c1 = _collisionEntities.Components1[i];
-                var dsc = _world.GetComponent<DataSheetComponent>(entity);
 
                 if (c1.Coords == endPosition)
                 {
                     result = true;
 
-                    CreateAnimationEntity(entity, AnimationTriger.Chop);
-                    CreateEffect(new Vector2Int(endPosition.x, endPosition.y), SpriteEffect.Chop, 0.3f);
-
-                    _world.EnsureComponent<ImpactEvent>(ce, out _).HitValue += dsc.HitDamage;
+                    var c = _world.AddComponent<ActionAtackComponent>(entity);
+                    c.TargetPosition = endPosition;
+                    c.Target = ce;
                 }
             }
 
@@ -140,13 +138,13 @@ namespace Client
             spriteEffect.LifeTime = lifeTime;
         }
 
-        void CreateAnimationEntity(EcsEntity entity, AnimationTriger animation)
+        void RunAnimation(EcsEntity entity, AnimationTriger animation)
         {
             var c = _world.EnsureComponent<ActionAnimationComponent>(entity, out _);
             c.Animation = animation;
         }
 
-        void CreateMoveEntity(EcsEntity entity, Vector2Int endPosition)
+        void MoveEntity(EcsEntity entity, Vector2Int endPosition)
         {
             var c = _world.EnsureComponent<ActionMoveComponent>(entity, out _);
             c.EndPosition = endPosition;

@@ -16,11 +16,8 @@ namespace Client
             {
                 var c1 = _aspectEntities.Components1[i];
                 var c2 = _aspectEntities.Components2[i];
-                var cur = c1.animator.GetBool("Damaged");
-                if ((c2.HealthPoint != c2.CurrentHealthPoint) != cur)
-                {
-                    c1.animator.SetBool("Damaged", true);
-                }
+
+                c1.animator.SetBool(AnimationTriger.Damaged.ToString(), (c2.HealthPoint != c2.CurrentHealthPoint));
             }
         }
     }

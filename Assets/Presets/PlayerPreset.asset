@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerPreset
   m_EditorClassIdentifier: 
   Animation: {fileID: 22100000, guid: 87df35688b2c03c4dba04ae3fe4b4487, type: 2}
-  HealthPoint: 3
+  HealthPoint: 20
   HitDamage: 1
   Initiative: 10
