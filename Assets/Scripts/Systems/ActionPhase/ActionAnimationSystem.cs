@@ -23,7 +23,7 @@ namespace Client
                     c2.animator.SetTrigger(c1.Animation.ToString());
                     c1.Run = true;
                 }
-                else if (!c2.animator.GetBool(AnimationTriger.ActionRun.ToString()))
+                else if (!c2.animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     _world.RemoveComponent<ActionAnimationComponent>(entity);
                 }

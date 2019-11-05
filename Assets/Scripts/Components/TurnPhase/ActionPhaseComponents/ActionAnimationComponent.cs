@@ -4,7 +4,7 @@ namespace Client
 {
     sealed class ActionAnimationComponent:IEcsAutoResetComponent
     {
-        public AnimationTriger Animation = AnimationTriger.None;
+        public AnimatorField Animation = AnimatorField.None;
         public bool Run = false;
 
         void IEcsAutoResetComponent.Reset()

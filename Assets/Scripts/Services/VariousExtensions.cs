@@ -20,14 +20,15 @@ namespace Client
         Chop
     }
 
-    public enum AnimationTriger
+    public enum AnimatorField
     {
         None,
         Damaged,
         AnimationAtack,
         AnimationTakeDamage,
         ActionRun,
-        ActionOnAtack
+        ActionOnAtack,
+        ActionTime
     }
 
     public enum UIType

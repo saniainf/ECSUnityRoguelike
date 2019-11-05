@@ -10,6 +10,8 @@ namespace Client
 
         EcsFilter<ActionAtackComponent, AnimationComponent, DataSheetComponent> _atackEntities = null;
 
+        private float atackTime = 0.5f;
+
         void IEcsRunSystem.Run()
         {
             foreach (var i in _atackEntities)
@@ -22,16 +24,18 @@ namespace Client
                 if (!c1.Run)
                 {
                     c1.Run = true;
-
                     var c = _world.AddComponent<ActionAnimationComponent>(e);
-                    c.Animation = AnimationTriger.AnimationAtack;
+                    c.Animation = AnimatorField.AnimationAtack;
                 }
-                else if (c2.animator.GetBool(AnimationTriger.ActionOnAtack.ToString()))
+
+                if (c1.Run && !c1.OnAtack && c2.animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
                 {
+                    c1.OnAtack = true;
                     CreateEffect(new Vector2Int(c1.TargetPosition.x, c1.TargetPosition.y), SpriteEffect.Chop, 0.3f);
                     _world.EnsureComponent<ImpactEvent>(c1.Target, out _).HitValue += c3.HitDamage;
                 }
-                else if (!c2.animator.GetBool(AnimationTriger.ActionRun.ToString()))
+
+                if (c1.Run && c1.OnAtack && !c2.animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     _world.RemoveComponent<ActionAtackComponent>(e);
                 }

@@ -22,6 +22,7 @@ namespace Client
 
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
+        readonly EcsFilter<ActionAtackComponent> _atackEntities = null;
 
         readonly EcsFilter<PositionComponent, DataSheetComponent> _collisionEntities = null;
         readonly EcsFilter<PositionComponent, ObstacleComponent> _obstacleEntities = null;
@@ -72,7 +73,7 @@ namespace Client
                 }
             }
 
-            if (_moveEntities.GetEntitiesCount() == 0 && _animationEntities.GetEntitiesCount() == 0)
+            if (_moveEntities.GetEntitiesCount() == 0 && _animationEntities.GetEntitiesCount() == 0 && _atackEntities.GetEntitiesCount() == 0)
             {
                 foreach (var i in _actionPhaseEntities)
                 {
@@ -138,7 +139,7 @@ namespace Client
             spriteEffect.LifeTime = lifeTime;
         }
 
-        void RunAnimation(EcsEntity entity, AnimationTriger animation)
+        void RunAnimation(EcsEntity entity, AnimatorField animation)
         {
             var c = _world.EnsureComponent<ActionAnimationComponent>(entity, out _);
             c.Animation = animation;
