@@ -22,3 +22,4 @@ MonoBehaviour:
   Enemy02Preset: {fileID: 11400000, guid: bdd27a7cbd0258345887bc5b5cb108ce, type: 2}
   HealItemPreset: {fileID: 11400000, guid: 86b01c1525999de4e81b41ffbd5fc4e4, type: 2}
   BoostHPItemPreset: {fileID: 11400000, guid: 199d396d8284ad04d82cefe1d880ad1b, type: 2}
+  ArrowPreset: {fileID: 11400000, guid: c154426d8b549434ebe9c090973f1d6d, type: 2}

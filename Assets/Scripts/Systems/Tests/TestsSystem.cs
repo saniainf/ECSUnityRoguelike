@@ -7,38 +7,32 @@ namespace Client
     sealed class TestsSystem : IEcsInitSystem, IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-
-        readonly EcsFilter<InputPhaseComponent> _inputEntities = null;
-        readonly EcsFilter<ActionPhaseComponent> _actionEntities = null;
+        readonly WorldObjects _worldObjects = null;
+        readonly WorldStatus _worldStatus = null;
 
         void IEcsInitSystem.Initialize()
         {
-            for (int i = 0; i < 5; i++)
-            {
-                var e = _world.CreateEntityWith(out EnemyComponent enemyComponent, out DataSheetComponent dataSheetComponent);
-                dataSheetComponent.Initiative = Random.Range(0, 20);
-            }
-
-            for (int i = 0; i < 5; i++)
-            {
-                var e = _world.CreateEntityWith(out PlayerComponent playerComponent, out DataSheetComponent dataSheetComponent);
-                dataSheetComponent.Initiative = Random.Range(0, 20);
-            }
+            LayoutProjectile();
         }
-
-        void IEcsInitSystem.Destroy() { }
 
         void IEcsRunSystem.Run()
         {
-            foreach (var i in _inputEntities)
-            {
-                _inputEntities.Components1[i].PhaseEnd = true;
-            }
 
-            foreach (var i in _actionEntities)
-            {
-                _actionEntities.Components1[i].PhaseEnd = true;
-            }
         }
+
+        void IEcsInitSystem.Destroy()
+        {
+
+        }
+
+        void LayoutProjectile()
+        {
+            var go = VExt.LayoutSpriteObjects(_worldObjects.ResourcesPresets.PrefabSprite, 3, 3, "arrow", _worldStatus.ParentOtherObject, LayersName.Object.ToString(), _worldObjects.ArrowPreset.spriteSingle);
+            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent);
+
+            gameObjectCreateEvent.Transform = go.transform;
+            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+        }
+
     }
 }

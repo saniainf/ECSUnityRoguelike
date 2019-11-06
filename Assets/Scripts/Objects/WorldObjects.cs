@@ -20,5 +20,7 @@ namespace Client
         [Space(10)]
         public CollectItemObject HealItemPreset;
         public CollectItemObject BoostHPItemPreset;
+        [Space(10)]
+        public SpritesObject ArrowPreset;
     }
 }
