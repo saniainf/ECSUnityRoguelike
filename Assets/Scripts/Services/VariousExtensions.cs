@@ -60,7 +60,7 @@ namespace Client
     {
         public static string IdleHealthPercent = "HealthPercent";
 
-        public static GameObject LayoutSpriteObjects(GameObject prefab, int x, int y, Transform parent, string sortingLayer, Sprite sprite)
+        public static GameObject LayoutSpriteObjects(GameObject prefab, float x, float y, Transform parent, string sortingLayer, Sprite sprite)
         {
             string name = Guid.NewGuid().ToString();
             GameObject go = UnityEngine.Object.Instantiate(prefab);
@@ -75,7 +75,7 @@ namespace Client
             return go;
         }
 
-        public static GameObject LayoutSpriteObjects(GameObject prefab, int x, int y, string name, Transform parent, string sortingLayer, Sprite sprite)
+        public static GameObject LayoutSpriteObjects(GameObject prefab, float x, float y, string name, Transform parent, string sortingLayer, Sprite sprite)
         {
             GameObject go = UnityEngine.Object.Instantiate(prefab);
             go.transform.SetParent(parent);
@@ -89,7 +89,7 @@ namespace Client
             return go;
         }
 
-        public static GameObject LayoutAnimationObjects(GameObject prefab, int x, int y, string name, Transform parent, string sortingLayer, RuntimeAnimatorController controller)
+        public static GameObject LayoutAnimationObjects(GameObject prefab, float x, float y, string name, Transform parent, string sortingLayer, RuntimeAnimatorController controller)
         {
             GameObject go = LayoutSpriteObjects(prefab, x, y, name, parent, sortingLayer, null);
 

@@ -31,7 +31,7 @@ namespace Client
                 if (c1.Run && !c1.OnAtack && c2.animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
                 {
                     c1.OnAtack = true;
-                    CreateEffect(new Vector2Int(c1.TargetPosition.x, c1.TargetPosition.y), SpriteEffect.Chop, 0.3f);
+                    CreateEffect(new Vector2(c1.TargetPosition.x, c1.TargetPosition.y), SpriteEffect.Chop, 0.3f);
                     _world.EnsureComponent<ImpactEvent>(c1.Target, out _).HitValue += c3.HitDamage;
                 }
 
@@ -42,7 +42,7 @@ namespace Client
             }
         }
 
-        void CreateEffect(Vector2Int position, SpriteEffect effect, float lifeTime)
+        void CreateEffect(Vector2 position, SpriteEffect effect, float lifeTime)
         {
             _world.CreateEntityWith(out SpriteEffectCreateEvent spriteEffect);
             spriteEffect.Position = position;

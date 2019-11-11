@@ -8,7 +8,7 @@ namespace Client
     {
         public float LifeTime = 0f;
         public SpriteEffect SpriteEffect = SpriteEffect.None;
-        public Vector2Int Position = Vector2Int.zero;
+        public Vector2 Position = Vector2.zero;
 
         void IEcsAutoResetComponent.Reset()
         {

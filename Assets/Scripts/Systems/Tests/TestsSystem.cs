@@ -35,7 +35,7 @@ namespace Client
 
         }
 
-        void LayoutProjectile(int x, int y)
+        void LayoutProjectile(float x, float y)
         {
             var go = VExt.LayoutSpriteObjects(_worldObjects.ResourcesPresets.PrefabSprite, x, y, "arrow", _worldStatus.ParentOtherObject, LayersName.Object.ToString(), _worldObjects.ArrowPreset.spriteSingle);
             _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ActionMoveComponent actionMoveComponent);
@@ -44,9 +44,11 @@ namespace Client
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
             var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2Int endPosition = Vector2Int.RoundToInt(worldPos);
+            var endPosition = worldPos;
+            var direction = new Vector2(worldPos.x, worldPos.y) - new Vector2(x, y).normalized;
 
-            actionMoveComponent.EndPosition = endPosition;
+            actionMoveComponent.GoalDirection = new Vector2(1, 0);
+            actionMoveComponent.Speed = 10f;
         }
 
     }
