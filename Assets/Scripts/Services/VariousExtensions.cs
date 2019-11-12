@@ -95,9 +95,11 @@ namespace Client
 
             Animator animator = go.GetComponent<Animator>();
             animator.runtimeAnimatorController = controller;
-
+            
             return go;
         }
+
+        
 
         public static Vector2Int ToInt2(this Vector2 v)
         {

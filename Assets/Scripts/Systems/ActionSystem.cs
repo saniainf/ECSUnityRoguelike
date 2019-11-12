@@ -39,30 +39,30 @@ namespace Client
                 var c2 = _inputEntities.Components2[i];
 
                 SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
-                Vector2 endPosition;
+                Vector2 goalPosition;
 
                 switch (c2.MoveDirection)
                 {
                     case MoveDirection.UP:
-                        endPosition = new Vector2(c1.Coords.x, c1.Coords.y + 1);
+                        goalPosition = new Vector2(c1.Coords.x, c1.Coords.y + 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(0, 1)), endPosition);
+                        CreateAction(entity, goalPosition);
                         break;
                     case MoveDirection.DOWN:
-                        endPosition = new Vector2(c1.Coords.x, c1.Coords.y - 1);
+                        goalPosition = new Vector2(c1.Coords.x, c1.Coords.y - 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(0, -1)), endPosition);
+                        CreateAction(entity, goalPosition);
                         break;
                     case MoveDirection.LEFT:
-                        endPosition = new Vector2(c1.Coords.x - 1, c1.Coords.y);
+                        goalPosition = new Vector2(c1.Coords.x - 1, c1.Coords.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(-1, 0)), endPosition);
+                        CreateAction(entity, goalPosition);
                         sr.flipX = true;
                         break;
                     case MoveDirection.RIGHT:
-                        endPosition = new Vector2(c1.Coords.x + 1, c1.Coords.y);
+                        goalPosition = new Vector2(c1.Coords.x + 1, c1.Coords.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(1, 0)), endPosition);
+                        CreateAction(entity, goalPosition);
                         sr.flipX = false;
                         break;
                     case MoveDirection.NONE:
@@ -83,15 +83,15 @@ namespace Client
             }
         }
 
-        void CreateAction(EcsEntity entity, Ray2D ray, Vector2 endPosition)
+        void CreateAction(EcsEntity entity, Vector2 goalPosition)
         {
-            if (!CheckObstacleCollision(entity, ray, endPosition) && !CheckCollision(entity, endPosition))
+            if (!CheckObstacleCollision(entity, goalPosition) && !CheckCollision(entity, goalPosition))
             {
-                MoveEntity(entity, endPosition);
+                MoveEntity(entity, goalPosition);
             }
         }
 
-        bool CheckObstacleCollision(EcsEntity entity, Ray2D ray, Vector2 endPosition)
+        bool CheckObstacleCollision(EcsEntity entity, Vector2 goalPosition)
         {
             bool result = false;
 
@@ -100,9 +100,7 @@ namespace Client
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
                 var c1 = _obstacleEntities.Components1[i];
 
-                
-
-                if (c1.Coords == endPosition)
+                if (c1.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
                     _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
@@ -111,7 +109,7 @@ namespace Client
             return result;
         }
 
-        bool CheckCollision(EcsEntity entity, Vector2 endPosition)
+        bool CheckCollision(EcsEntity entity, Vector2 goalPosition)
         {
             bool result = false;
 
@@ -120,12 +118,12 @@ namespace Client
                 ref var ce = ref _collisionEntities.Entities[i];
                 var c1 = _collisionEntities.Components1[i];
 
-                if (c1.Coords == endPosition)
+                if (c1.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
 
                     var c = _world.AddComponent<ActionAtackComponent>(entity);
-                    c.TargetPosition = endPosition;
+                    c.TargetPosition = goalPosition;
                     c.Target = ce;
                 }
             }
@@ -147,10 +145,10 @@ namespace Client
             c.Animation = animation;
         }
 
-        void MoveEntity(EcsEntity entity, Vector2 endPosition)
+        void MoveEntity(EcsEntity entity, Vector2 goalPosition)
         {
             var c = _world.EnsureComponent<ActionMoveComponent>(entity, out _);
-            c.GoalInt = endPosition.ToInt2();
+            c.GoalInt = goalPosition.ToInt2();
             c.Speed = speed;
         }
     }
