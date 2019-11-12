@@ -46,23 +46,23 @@ namespace Client
                     case MoveDirection.UP:
                         endPosition = new Vector2(c1.Coords.x, c1.Coords.y + 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, endPosition);
+                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(0, 1)), endPosition);
                         break;
                     case MoveDirection.DOWN:
                         endPosition = new Vector2(c1.Coords.x, c1.Coords.y - 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, endPosition);
+                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(0, -1)), endPosition);
                         break;
                     case MoveDirection.LEFT:
                         endPosition = new Vector2(c1.Coords.x - 1, c1.Coords.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, endPosition);
+                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(-1, 0)), endPosition);
                         sr.flipX = true;
                         break;
                     case MoveDirection.RIGHT:
                         endPosition = new Vector2(c1.Coords.x + 1, c1.Coords.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, endPosition);
+                        CreateAction(entity, new Ray2D(c1.Rigidbody.position, new Vector2(1, 0)), endPosition);
                         sr.flipX = false;
                         break;
                     case MoveDirection.NONE:
@@ -83,15 +83,15 @@ namespace Client
             }
         }
 
-        void CreateAction(EcsEntity entity, Vector2 endPosition)
+        void CreateAction(EcsEntity entity, Ray2D ray, Vector2 endPosition)
         {
-            if (!CheckObstacleCollision(entity, endPosition) && !CheckCollision(entity, endPosition))
+            if (!CheckObstacleCollision(entity, ray, endPosition) && !CheckCollision(entity, endPosition))
             {
                 MoveEntity(entity, endPosition);
             }
         }
 
-        bool CheckObstacleCollision(EcsEntity entity, Vector2 endPosition)
+        bool CheckObstacleCollision(EcsEntity entity, Ray2D ray, Vector2 endPosition)
         {
             bool result = false;
 
@@ -99,6 +99,8 @@ namespace Client
             {
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
                 var c1 = _obstacleEntities.Components1[i];
+
+                
 
                 if (c1.Coords == endPosition)
                 {

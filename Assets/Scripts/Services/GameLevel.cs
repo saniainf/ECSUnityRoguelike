@@ -167,6 +167,7 @@ namespace Client
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
         }
 
         void LayoutExitObject(int x, int y)
@@ -186,6 +187,7 @@ namespace Client
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
@@ -238,6 +240,7 @@ namespace Client
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
@@ -257,6 +260,7 @@ namespace Client
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
