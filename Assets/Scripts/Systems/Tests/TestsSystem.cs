@@ -59,31 +59,32 @@ namespace Client
         void IEcsRunSystem.Run()
         {
             var worldPos3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var worldPos2D = new Vector2(worldPos3D.x, worldPos3D.y);
 
-            foreach (var i in _player)
+            foreach (var i in _collisionEntities)
             {
-                var pc1 = _player.Components1[i];
-                Debug.DrawRay(pc1.Rigidbody.position, (worldPos2D - pc1.Rigidbody.position));
+                var c1 = _collisionEntities.Components1[i];
 
-                RaycastHit2D[] hit2D = Physics2D.RaycastAll(pc1.Rigidbody.position, (worldPos2D - pc1.Rigidbody.position));
+                c1.SpriteRenderer.color = Color.white;
 
-                foreach (var j in _collisionEntities)
+                if (c1.Collider.OverlapPoint(worldPos3D))
                 {
-                    var cc1 = _collisionEntities.Components1[j];
-                    var sr = cc1.Transform.gameObject.GetComponent<SpriteRenderer>();
+                    var targetPoint = c1.Rigidbody.position;
+                    var playerPoint = _player.Components1[0].Rigidbody.position;
+                    var playerColider = _player.Components1[0].Collider;
+                    RaycastHit2D[] hit = new RaycastHit2D[1];
 
-                    foreach (var item in hit2D)
+                    var count = playerColider.Raycast(targetPoint - playerPoint, hit);
+
+                    if (count != 0)
                     {
-                        if (item.collider == cc1.Collider)
+                        Debug.DrawLine(playerPoint, hit[0].point);
+                        if (hit[0].collider == c1.Collider)
                         {
-                            sr.color = Color.red;
+                            c1.SpriteRenderer.color = Color.red;
                         }
                     }
-
                 }
             }
-
         }
 
         void IEcsInitSystem.Destroy()

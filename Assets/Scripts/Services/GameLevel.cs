@@ -90,18 +90,18 @@ namespace Client
                     switch (roomsArray[i][j])
                     {
                         case '.':
-                            LayoutFloorObject(j, i);
+                            //LayoutFloorObject(j, i);
                             emptyCells.Add(new Vector2Int(j, i));
                             break;
                         case '#':
                             LayoutObstacleObject(j, i);
                             break;
                         case 'X':
-                            LayoutFloorObject(j, i);
+                            //LayoutFloorObject(j, i);
                             LayoutExitObject(j, i);
                             break;
                         case '@':
-                            LayoutFloorObject(j, i);
+                            //LayoutFloorObject(j, i);
                             LayoutPlayerObject(j, i, playerSet);
                             break;
                         default:
@@ -158,6 +158,7 @@ namespace Client
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            go.layer = 2;
         }
 
         void LayoutObstacleObject(int x, int y)
@@ -168,6 +169,7 @@ namespace Client
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
+            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
         }
 
         void LayoutExitObject(int x, int y)
@@ -188,6 +190,7 @@ namespace Client
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
+            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
@@ -241,6 +244,7 @@ namespace Client
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
+            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
@@ -261,6 +265,7 @@ namespace Client
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
+            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
