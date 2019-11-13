@@ -72,8 +72,11 @@ namespace Client
                     var playerPoint = _player.Components1[0].Rigidbody.position;
                     var playerColider = _player.Components1[0].Collider;
                     RaycastHit2D[] hit = new RaycastHit2D[1];
+                    ContactFilter2D filter2D = new ContactFilter2D();
+                    filter2D.SetLayerMask(LayerMask.GetMask("collide object"));
+                    filter2D.useTriggers = true;
 
-                    var count = playerColider.Raycast(targetPoint - playerPoint, hit);
+                    var count = playerColider.Raycast(targetPoint - playerPoint, filter2D, hit);
 
                     if (count != 0)
                     {

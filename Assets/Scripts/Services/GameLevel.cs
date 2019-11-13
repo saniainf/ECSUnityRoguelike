@@ -59,7 +59,6 @@ namespace Client
             enemy02Pres = worldObjects.Enemy02Preset;
             playerPres = worldObjects.PlayerPreset;
 
-            //this.spriteSheet = worldObjects.ResourcesPresets.SpriteSheet;
             this.prefabSprite = worldObjects.ResourcesPresets.PrefabSprite;
             this.prefabAnimation = worldObjects.ResourcesPresets.PrefabAnimation;
 
@@ -90,18 +89,18 @@ namespace Client
                     switch (roomsArray[i][j])
                     {
                         case '.':
-                            //LayoutFloorObject(j, i);
+                            LayoutFloorObject(j, i);
                             emptyCells.Add(new Vector2Int(j, i));
                             break;
                         case '#':
                             LayoutObstacleObject(j, i);
                             break;
                         case 'X':
-                            //LayoutFloorObject(j, i);
+                            LayoutFloorObject(j, i);
                             LayoutExitObject(j, i);
                             break;
                         case '@':
-                            //LayoutFloorObject(j, i);
+                            LayoutFloorObject(j, i);
                             LayoutPlayerObject(j, i, playerSet);
                             break;
                         default:
@@ -158,14 +157,13 @@ namespace Client
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            go.layer = 2;
         }
 
         void LayoutObstacleObject(int x, int y)
         {
             var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(obstacleSprites));
             _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ObstacleComponent _);
-
+            go.layer = 8;
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
@@ -186,7 +184,7 @@ namespace Client
 
             var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
             var playerEntity = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
-
+            go.layer = 8;
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
@@ -240,7 +238,7 @@ namespace Client
 
             var go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
             var wall = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out WallComponent _);
-
+            go.layer = 8;
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
@@ -261,7 +259,7 @@ namespace Client
 
             var go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, goName, gameObjectsRoot, LayersName.Character.ToString(), animation);
             var enemy = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out EnemyComponent _);
-
+            go.layer = 8;
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
