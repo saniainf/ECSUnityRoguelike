@@ -73,3 +73,7 @@ MonoBehaviour:
     type: 3}
   PrefabAnimation: {fileID: 1609624262450889742, guid: 339e38197dc4c1341ab47c75732d05f1,
     type: 3}
+  PrefabPhysicsSprite: {fileID: 6278394357931296151, guid: 2ef7a58f949ba9443b25b679ab618edc,
+    type: 3}
+  PrefabPhysicsAnimation: {fileID: 1609624262450889742, guid: 0e46410061cb48643aa51943acbf9402,
+    type: 3}

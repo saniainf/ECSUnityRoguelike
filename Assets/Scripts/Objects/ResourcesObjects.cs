@@ -10,5 +10,7 @@ namespace Client
         public Sprite[] SpriteSheet;
         public GameObject PrefabSprite;
         public GameObject PrefabAnimation;
+        public GameObject PrefabPhysicsSprite;
+        public GameObject PrefabPhysicsAnimation;
     }
 }

@@ -11,9 +11,10 @@ namespace Client
         private readonly WorldObjects _worldObjects;
 
         #region Resourses
-        //private readonly Sprite[] spriteSheet;
         private readonly GameObject prefabSprite;
         private readonly GameObject prefabAnimation;
+        private readonly GameObject prefabPhysicsSprite;
+        private readonly GameObject prefabPhysicsAnimation;
 
         private readonly EnemyObject enemy01Pres;
         private readonly EnemyObject enemy02Pres;
@@ -59,8 +60,10 @@ namespace Client
             enemy02Pres = worldObjects.Enemy02Preset;
             playerPres = worldObjects.PlayerPreset;
 
-            this.prefabSprite = worldObjects.ResourcesPresets.PrefabSprite;
-            this.prefabAnimation = worldObjects.ResourcesPresets.PrefabAnimation;
+            prefabSprite = worldObjects.ResourcesPresets.PrefabSprite;
+            prefabAnimation = worldObjects.ResourcesPresets.PrefabAnimation;
+            prefabPhysicsSprite = worldObjects.ResourcesPresets.PrefabPhysicsSprite;
+            prefabPhysicsAnimation = worldObjects.ResourcesPresets.PrefabPhysicsAnimation;
 
             SetActive(false);
         }
@@ -156,14 +159,13 @@ namespace Client
             _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent);
 
             gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
         }
 
         void LayoutObstacleObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(obstacleSprites));
+            var go = VExt.LayoutSpriteObjects(prefabPhysicsSprite, x, y, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(obstacleSprites));
             _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ObstacleComponent _);
-            go.layer = 8;
+            
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
@@ -176,15 +178,14 @@ namespace Client
             _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ZoneExitComponent _);
 
             gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
         }
 
         void LayoutPlayerObject(int x, int y, (int HP, int currentHP, int hitDamage, int initiative) set)
         {
 
-            var go = VExt.LayoutAnimationObjects(prefabAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
-            var playerEntity = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
-            go.layer = 8;
+            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
+            var e = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
+            
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
@@ -192,7 +193,7 @@ namespace Client
 
             animationComponent.animator = go.GetComponent<Animator>();
 
-            var dataComponent = _world.AddComponent<DataSheetComponent>(playerEntity);
+            var dataComponent = _world.AddComponent<DataSheetComponent>(e);
 
             dataComponent.HealthPoint = set.HP;
             dataComponent.CurrentHealthPoint = set.currentHP;
@@ -208,7 +209,6 @@ namespace Client
             _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out CollectItemComponent collectItemComponent);
 
             gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
             collectItemComponent.Type = CollectItemType.BoostHP;
             collectItemComponent.Value = _worldObjects.BoostHPItemPreset.Value;
@@ -224,7 +224,6 @@ namespace Client
             _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out CollectItemComponent collectItemComponent);
 
             gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
 
             collectItemComponent.Type = CollectItemType.Heal;
             collectItemComponent.Value = _worldObjects.HealItemPreset.Value;
@@ -236,9 +235,9 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
-            var wall = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out WallComponent _);
-            go.layer = 8;
+            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
+            var e = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out WallComponent _);
+            
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
@@ -246,7 +245,7 @@ namespace Client
 
             animationComponent.animator = go.GetComponent<Animator>();
 
-            var dataComponent = _world.AddComponent<DataSheetComponent>(wall);
+            var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.HealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
             dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
 
@@ -257,9 +256,9 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutAnimationObjects(prefabAnimation, cell.x, cell.y, goName, gameObjectsRoot, LayersName.Character.ToString(), animation);
-            var enemy = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out EnemyComponent _);
-            go.layer = 8;
+            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, goName, gameObjectsRoot, LayersName.Character.ToString(), animation);
+            var e = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out EnemyComponent _);
+            
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
             gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
@@ -267,7 +266,7 @@ namespace Client
 
             animationComponent.animator = go.GetComponent<Animator>();
 
-            var dataComponent = _world.AddComponent<DataSheetComponent>(enemy);
+            var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.HealthPoint = set.HP;
             dataComponent.CurrentHealthPoint = set.currentHP;
             dataComponent.HitDamage = set.hitDamage;

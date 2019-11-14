@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Leopotam.Ecs;
 using Random = UnityEngine.Random;
 
 namespace Client
@@ -58,8 +59,6 @@ namespace Client
 
     public static class VExt
     {
-        public static string IdleHealthPercent = "HealthPercent";
-
         public static GameObject LayoutSpriteObjects(GameObject prefab, float x, float y, Transform parent, string sortingLayer, Sprite sprite)
         {
             string name = Guid.NewGuid().ToString();
@@ -95,11 +94,26 @@ namespace Client
 
             Animator animator = go.GetComponent<Animator>();
             animator.runtimeAnimatorController = controller;
-            
+
             return go;
         }
 
-        
+        //public static EcsEntity CreateEntity(EcsWorld world, EcsEntity entity, Transform transform, Rigidbody2D rigidbody, BoxCollider2D collider, SpriteRenderer renderer)
+        //{
+        //    var newGO = _createEvents.Components1[i].Transform;
+        //    var newRB = _createEvents.Components1[i].Rigidbody;
+        //    var newCollider = _createEvents.Components1[i].Collider;
+        //    var newSR = _createEvents.Components1[i].SpriteRenderer;
+        //    ref var entity = ref _createEvents.Entities[i];
+
+        //    var c = _world.AddComponent<PositionComponent>(entity);
+        //    c.Transform = newGO;
+        //    c.Rigidbody = newRB;
+        //    c.Collider = newCollider;
+        //    c.SpriteRenderer = newSR;
+        //    c.Coords.x = (int)newGO.transform.localPosition.x;
+        //    c.Coords.y = (int)newGO.transform.localPosition.y;
+        //}
 
         public static Vector2Int ToInt2(this Vector2 v)
         {
