@@ -156,40 +156,40 @@ namespace Client
         void LayoutFloorObject(int x, int y)
         {
             var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent);
+            _world.CreateEntityWith(out GameObjectComponent goComponent);
 
-            gameObjectCreateEvent.Transform = go.transform;
+            goComponent.Transform = go.transform;
         }
 
         void LayoutObstacleObject(int x, int y)
         {
             var go = VExt.LayoutSpriteObjects(prefabPhysicsSprite, x, y, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(obstacleSprites));
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ObstacleComponent _);
-            
-            gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
-            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
+            _world.CreateEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
+
+            goComponent.Transform = go.transform;
+            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            goComponent.Collider = go.GetComponent<BoxCollider2D>();
+            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
         }
 
         void LayoutExitObject(int x, int y)
         {
             var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "exit", gameObjectsRoot, LayersName.Object.ToString(), exitSprite);
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ZoneExitComponent _);
+            _world.CreateEntityWith(out GameObjectComponent goComponent, out ZoneExitComponent _);
 
-            gameObjectCreateEvent.Transform = go.transform;
+            goComponent.Transform = go.transform;
         }
 
         void LayoutPlayerObject(int x, int y, (int HP, int currentHP, int hitDamage, int initiative) set)
         {
 
             var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
-            var e = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out PlayerComponent player);
+            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out PlayerComponent player);
             
-            gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
-            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
+            goComponent.Transform = go.transform;
+            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            goComponent.Collider = go.GetComponent<BoxCollider2D>();
+            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
@@ -206,9 +206,9 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "boostHP", gameObjectsRoot, LayersName.Object.ToString(), boostSprite);
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out CollectItemComponent collectItemComponent);
+            _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
 
-            gameObjectCreateEvent.Transform = go.transform;
+            goComponent.Transform = go.transform;
 
             collectItemComponent.Type = CollectItemType.BoostHP;
             collectItemComponent.Value = _worldObjects.BoostHPItemPreset.Value;
@@ -221,9 +221,9 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out CollectItemComponent collectItemComponent);
+            _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
 
-            gameObjectCreateEvent.Transform = go.transform;
+            goComponent.Transform = go.transform;
 
             collectItemComponent.Type = CollectItemType.Heal;
             collectItemComponent.Value = _worldObjects.HealItemPreset.Value;
@@ -236,12 +236,12 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
-            var e = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out WallComponent _);
+            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out WallComponent _);
             
-            gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
-            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
+            goComponent.Transform = go.transform;
+            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            goComponent.Collider = go.GetComponent<BoxCollider2D>();
+            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 
@@ -257,12 +257,12 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, goName, gameObjectsRoot, LayersName.Character.ToString(), animation);
-            var e = _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out AnimationComponent animationComponent, out EnemyComponent _);
+            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out EnemyComponent _);
             
-            gameObjectCreateEvent.Transform = go.transform;
-            gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            gameObjectCreateEvent.Collider = go.GetComponent<BoxCollider2D>();
-            gameObjectCreateEvent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
+            goComponent.Transform = go.transform;
+            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
+            goComponent.Collider = go.GetComponent<BoxCollider2D>();
+            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
 
             animationComponent.animator = go.GetComponent<Animator>();
 

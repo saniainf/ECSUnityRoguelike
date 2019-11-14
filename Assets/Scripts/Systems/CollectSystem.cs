@@ -8,8 +8,8 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<PositionComponent, ActionPhaseComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
-        readonly EcsFilter<PositionComponent, CollectItemComponent> _collectItemEntities = null;
+        readonly EcsFilter<GameObjectComponent, ActionPhaseComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<GameObjectComponent, CollectItemComponent> _collectItemEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -24,17 +24,17 @@ namespace Client
                     var cc1 = _collectItemEntities.Components1[j];
                     var cc2 = _collectItemEntities.Components2[j];
 
-                    if (pc1.Coords == cc1.Coords)
+                    if (pc1.Transform.position == cc1.Transform.position)
                     {
                         switch (cc2.Type)
                         {
                             case CollectItemType.Heal:
                                 _world.EnsureComponent<CollectEvent>(pe, out _).HealValue = cc2.Value;
-                                _world.AddComponent<GameObjectRemoveEvent>(ce);
+                                _world.RemoveGOEntity(ce);
                                 break;
                             case CollectItemType.BoostHP:
                                 _world.EnsureComponent<CollectEvent>(pe, out _).BoostHealthValue = cc2.Value;
-                                _world.AddComponent<GameObjectRemoveEvent>(ce);
+                                _world.RemoveGOEntity(ce);
                                 break;
                             default:
                                 break;

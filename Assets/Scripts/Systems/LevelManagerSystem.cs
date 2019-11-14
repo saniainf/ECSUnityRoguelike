@@ -11,7 +11,7 @@ namespace Client
         readonly WorldObjects _worldObjects = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
-        readonly EcsFilter<PositionComponent>.Exclude<PlayerComponent> _transformEntities = null;
+        readonly EcsFilter<GameObjectComponent>.Exclude<PlayerComponent> _transformEntities = null;
 
         private int levelNum = 1;
         private float loadLevelTime = 2f;
@@ -120,7 +120,7 @@ namespace Client
             foreach (var i in _transformEntities)
             {
                 ref var e = ref _transformEntities.Entities[i];
-                _world.RemoveEntity(e);
+                _world.RemoveGOEntity(e);
             }
 
             foreach (var i in _playerEntities)
@@ -130,7 +130,7 @@ namespace Client
                 playerSet.HP = c1.HealthPoint;
                 playerSet.currentHP = c1.CurrentHealthPoint;
                 playerSet.hitDamage = c1.HitDamage;
-                _world.RemoveEntity(e);
+                _world.RemoveGOEntity(e);
             }
         }
 

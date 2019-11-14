@@ -6,9 +6,9 @@ namespace Client
     [EcsInject]
     sealed class TestsSystem : IEcsInitSystem, IEcsRunSystem
     {
-        readonly EcsFilter<PositionComponent, DataSheetComponent> _collisionEntities = null;
-        readonly EcsFilter<PositionComponent, PlayerComponent> _player = null;
-        readonly EcsFilter<PositionComponent, ObstacleComponent> _obstacleEntities = null;
+        readonly EcsFilter<GameObjectComponent, DataSheetComponent> _collisionEntities = null;
+        readonly EcsFilter<GameObjectComponent, PlayerComponent> _player = null;
+        readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
 
         /*
         readonly EcsWorld _world = null;
@@ -29,7 +29,7 @@ namespace Client
                 {
                     var c1 = _player.Components1[i];
 
-                    LayoutProjectile(c1.Coords.x, c1.Coords.y);
+                    LayoutProjectile(c1.Transform.position.x, c1.Transform.position.y);
                 }
             }
         }

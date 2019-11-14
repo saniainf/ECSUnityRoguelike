@@ -39,7 +39,6 @@ namespace Client
                 .Add(new CollectSystem())
                 .Add(new EffectSystem())
                 .Add(new InfluenceEventsSystem())
-                .Add(new GameObjectEventsSystem())
                 .Add(new AppearanceSystem())
                 .Add(new GameOverSystem())
                 .Add(new UISystem())

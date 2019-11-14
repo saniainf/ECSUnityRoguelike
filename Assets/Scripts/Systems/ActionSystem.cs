@@ -17,15 +17,15 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<ActionPhaseComponent>.Exclude<GameObjectRemoveEvent> _actionPhaseEntities = null;
-        readonly EcsFilter<PositionComponent, InputDirectionComponent>.Exclude<GameObjectRemoveEvent> _inputEntities = null;
+        readonly EcsFilter<ActionPhaseComponent> _actionPhaseEntities = null;
+        readonly EcsFilter<GameObjectComponent, InputDirectionComponent> _inputEntities = null;
 
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
         readonly EcsFilter<ActionAtackComponent> _atackEntities = null;
 
-        readonly EcsFilter<PositionComponent, DataSheetComponent> _collisionEntities = null;
-        readonly EcsFilter<PositionComponent, ObstacleComponent> _obstacleEntities = null;
+        readonly EcsFilter<GameObjectComponent, DataSheetComponent> _collisionEntities = null;
+        readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
 
         //TODO брать из настроек
         readonly float speed = 7f;
@@ -44,23 +44,23 @@ namespace Client
                 switch (c2.MoveDirection)
                 {
                     case MoveDirection.UP:
-                        goalPosition = new Vector2(c1.Coords.x, c1.Coords.y + 1);
+                        goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y + 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
                         break;
                     case MoveDirection.DOWN:
-                        goalPosition = new Vector2(c1.Coords.x, c1.Coords.y - 1);
+                        goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y - 1);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
                         break;
                     case MoveDirection.LEFT:
-                        goalPosition = new Vector2(c1.Coords.x - 1, c1.Coords.y);
+                        goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
                         sr.flipX = true;
                         break;
                     case MoveDirection.RIGHT:
-                        goalPosition = new Vector2(c1.Coords.x + 1, c1.Coords.y);
+                        goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
                         sr.flipX = false;

@@ -7,8 +7,8 @@ namespace Client
     sealed class AIEnemySystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<InputPhaseComponent, PositionComponent, EnemyComponent>.Exclude<GameObjectRemoveEvent> _inputPhaseEntities = null;
-        readonly EcsFilter<PositionComponent, PlayerComponent>.Exclude<GameObjectRemoveEvent> _playerEntities = null;
+        readonly EcsFilter<InputPhaseComponent, GameObjectComponent, EnemyComponent> _inputPhaseEntities = null;
+        readonly EcsFilter<GameObjectComponent, PlayerComponent> _playerEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -23,24 +23,24 @@ namespace Client
                 {
                     var pc1 = _playerEntities.Components1[j];
 
-                    if (ec2.Coords.y == pc1.Coords.y)
+                    if (ec2.Transform.position.y == pc1.Transform.position.y)
                     {
-                        if (ec2.Coords.x - 1 == pc1.Coords.x)
+                        if (ec2.Transform.position.x - 1 == pc1.Transform.position.x)
                         {
                             direction = MoveDirection.LEFT;
                         }
-                        if (ec2.Coords.x + 1 == pc1.Coords.x)
+                        if (ec2.Transform.position.x + 1 == pc1.Transform.position.x)
                         {
                             direction = MoveDirection.RIGHT;
                         }
                     }
-                    if (ec2.Coords.x == pc1.Coords.x)
+                    if (ec2.Transform.position.x == pc1.Transform.position.x)
                     {
-                        if (ec2.Coords.y - 1 == pc1.Coords.y)
+                        if (ec2.Transform.position.y - 1 == pc1.Transform.position.y)
                         {
                             direction = MoveDirection.DOWN;
                         }
-                        if (ec2.Coords.y + 1 == pc1.Coords.y)
+                        if (ec2.Transform.position.y + 1 == pc1.Transform.position.y)
                         {
                             direction = MoveDirection.UP;
                         }

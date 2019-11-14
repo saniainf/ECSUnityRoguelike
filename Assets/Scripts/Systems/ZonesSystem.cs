@@ -7,8 +7,8 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<PositionComponent, PlayerComponent> _playerEntities = null;
-        readonly EcsFilter<PositionComponent, ZoneExitComponent> _zoneExitEntities = null;
+        readonly EcsFilter<GameObjectComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<GameObjectComponent, ZoneExitComponent> _zoneExitEntities = null;
 
         readonly WorldStatus _worldStatus = null;
 
@@ -22,7 +22,7 @@ namespace Client
                 {
                     var zc1 = _zoneExitEntities.Components1[i];
 
-                    if (pc1.Coords == zc1.Coords)
+                    if (pc1.Transform.position == zc1.Transform.position)
                     {
                         _worldStatus.GameStatus = GameStatus.LevelEnd;
                     }

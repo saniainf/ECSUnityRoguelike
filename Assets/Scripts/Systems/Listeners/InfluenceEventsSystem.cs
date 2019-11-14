@@ -24,8 +24,7 @@ namespace Client
 
                 if (c2.CurrentHealthPoint <= 0)
                 {
-                    var c = _world.AddComponent<GameObjectRemoveEvent>(entity);
-                    c.RemoveTime = 0.3f;
+                    _world.RemoveGOEntity(entity, 0.3f);
                 }
             }
 

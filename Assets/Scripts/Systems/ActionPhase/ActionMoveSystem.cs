@@ -8,7 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<ActionMoveComponent, PositionComponent>.Exclude<GameObjectRemoveEvent> _moveEntities = null;
+        readonly EcsFilter<ActionMoveComponent, GameObjectComponent> _moveEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -43,7 +43,6 @@ namespace Client
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
                         c2.Rigidbody.position = c1.GoalInt;
-                        c2.Coords = c1.GoalInt;
 
                         _world.RemoveComponent<ActionMoveComponent>(e);
                     }
@@ -59,7 +58,7 @@ namespace Client
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
                         c2.Rigidbody.position = c1.GoalFloat;
-                        c2.Coords = c1.GoalFloat;
+                        c2.Transform.position = c1.GoalFloat;
 
                         _world.RemoveComponent<ActionMoveComponent>(e);
                     }

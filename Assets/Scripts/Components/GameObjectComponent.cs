@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace Client
 {
-    [EcsOneFrame]
-    sealed class GameObjectCreateEvent : IEcsAutoResetComponent
+    sealed class GameObjectComponent : IEcsAutoResetComponent
     {
         public Transform Transform = null;
         public Rigidbody2D Rigidbody = null;

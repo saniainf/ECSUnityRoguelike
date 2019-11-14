@@ -26,7 +26,7 @@ namespace Client
 
                 if (c1.LifeTime <= 0)
                 {
-                    _world.AddComponent<GameObjectRemoveEvent>(entity);
+                    _world.RemoveGOEntity(entity);
                 }
             }
 
@@ -47,8 +47,8 @@ namespace Client
                         break;
                 }
 
-                _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out SpriteEffectComponent effect);
-                gameObjectCreateEvent.Transform = go.transform;
+                _world.CreateEntityWith(out GameObjectComponent goComponent, out SpriteEffectComponent effect);
+                goComponent.Transform = go.transform;
                 effect.LifeTime = c1.LifeTime;
             }
         }

@@ -8,7 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<AnimationComponent, DataSheetComponent>.Exclude<GameObjectRemoveEvent> _aspectEntities = null;
+        readonly EcsFilter<AnimationComponent, DataSheetComponent> _aspectEntities = null;
 
         void IEcsRunSystem.Run()
         {
