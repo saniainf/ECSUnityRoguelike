@@ -26,7 +26,7 @@ namespace Client
 
                 if (c1.LifeTime <= 0)
                 {
-                    _world.RemoveGOEntity(entity);
+                    _world.RLRemoveGOEntity(entity);
                 }
             }
 

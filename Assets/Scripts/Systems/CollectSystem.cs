@@ -8,7 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<GameObjectComponent, ActionPhaseComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<GameObjectComponent, DataSheetComponent, PlayerComponent> _playerEntities = null;
         readonly EcsFilter<GameObjectComponent, CollectItemComponent> _collectItemEntities = null;
 
         void IEcsRunSystem.Run()
@@ -17,6 +17,7 @@ namespace Client
             {
                 ref var pe = ref _playerEntities.Entities[i];
                 var pc1 = _playerEntities.Components1[i];
+                var pc2 = _playerEntities.Components2[i];
 
                 foreach (var j in _collectItemEntities)
                 {
@@ -24,21 +25,10 @@ namespace Client
                     var cc1 = _collectItemEntities.Components1[j];
                     var cc2 = _collectItemEntities.Components2[j];
 
-                    if (pc1.Transform.position == cc1.Transform.position)
+                    if (pc1.Collider.OverlapPoint(cc1.Transform.position))
                     {
-                        switch (cc2.Type)
-                        {
-                            case CollectItemType.Heal:
-                                _world.EnsureComponent<CollectEvent>(pe, out _).HealValue = cc2.Value;
-                                _world.RemoveGOEntity(ce);
-                                break;
-                            case CollectItemType.BoostHP:
-                                _world.EnsureComponent<CollectEvent>(pe, out _).BoostHealthValue = cc2.Value;
-                                _world.RemoveGOEntity(ce);
-                                break;
-                            default:
-                                break;
-                        }
+                        cc2.CollectItem.OnCollect(pc2);
+                        _world.RLRemoveGOEntity(ce);
                     }
                 }
             }

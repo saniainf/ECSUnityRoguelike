@@ -120,7 +120,7 @@ namespace Client
             foreach (var i in _transformEntities)
             {
                 ref var e = ref _transformEntities.Entities[i];
-                _world.RemoveGOEntity(e);
+                _world.RLRemoveGOEntity(e);
             }
 
             foreach (var i in _playerEntities)
@@ -130,7 +130,7 @@ namespace Client
                 playerSet.HP = c1.HealthPoint;
                 playerSet.currentHP = c1.CurrentHealthPoint;
                 playerSet.hitDamage = c1.HitDamage;
-                _world.RemoveGOEntity(e);
+                _world.RLRemoveGOEntity(e);
             }
         }
 

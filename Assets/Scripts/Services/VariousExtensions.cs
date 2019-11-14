@@ -50,13 +50,6 @@ namespace Client
         GameOver
     }
 
-    public enum CollectItemType
-    {
-        None,
-        Heal,
-        BoostHP
-    }
-
     public static class VExt
     {
         public static GameObject LayoutSpriteObjects(GameObject prefab, float x, float y, Transform parent, string sortingLayer, Sprite sprite)
@@ -98,7 +91,7 @@ namespace Client
             return go;
         }
 
-        public static void RemoveGOEntity(this EcsWorld world, EcsEntity entity, float time = 0)
+        public static void RLRemoveGOEntity(this EcsWorld world, EcsEntity entity, float time = 0)
         {
             var c = world.GetComponent<GameObjectComponent>(entity);
             if (c != null)

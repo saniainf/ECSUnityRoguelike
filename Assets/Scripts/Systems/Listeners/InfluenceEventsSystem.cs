@@ -9,7 +9,6 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<ImpactEvent, DataSheetComponent> _impactEntities = null;
-        readonly EcsFilter<CollectEvent, DataSheetComponent> _collectEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -24,18 +23,8 @@ namespace Client
 
                 if (c2.CurrentHealthPoint <= 0)
                 {
-                    _world.RemoveGOEntity(entity, 0.3f);
+                    _world.RLRemoveGOEntity(entity, 0.3f);
                 }
-            }
-
-            foreach (var i in _collectEntities)
-            {
-                ref var entity = ref _collectEntities.Entities[i];
-                var c1 = _collectEntities.Components1[i];
-                var c2 = _collectEntities.Components2[i];
-
-                c2.HealthPoint += c1.BoostHealthValue;
-                c2.CurrentHealthPoint = Mathf.Min(c2.CurrentHealthPoint + c1.HealValue + c1.BoostHealthValue, c2.HealthPoint);
             }
         }
     }

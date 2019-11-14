@@ -27,20 +27,20 @@ namespace Client
 
         private Sprite[] obstacleSprites;
         private Sprite[] floorSprites;
-        private Sprite sodaSprite;
-        private Sprite boostSprite;
+        private Sprite healSprite;
+        private Sprite boostHPSprite;
         private Sprite exitSprite;
         #endregion
 
         #region Settings
-        int sodaCount = 3;
-        int boostCount = 1;
+        int healCount = 3;
+        int boostHPCount = 1;
         int wallCount = 5;
         int enemy01Count = 2;
         int enemy02Count = 1;
 
         int boostHPValue = 3;
-        int sodaFoodValue = 2;
+        int healValue = 2;
 
         int minWallHP = 2;
         int maxWallHP = 4;
@@ -80,8 +80,8 @@ namespace Client
 
             obstacleSprites = _worldObjects.ObstaclePresets.spritesArray;
             floorSprites = _worldObjects.FloorPresets.spritesArray;
-            sodaSprite = _worldObjects.HealItemPreset.Sprite;
-            boostSprite = _worldObjects.BoostHPItemPreset.Sprite;
+            healSprite = _worldObjects.HealItemPreset.Sprite;
+            boostHPSprite = _worldObjects.BoostHPItemPreset.Sprite;
             exitSprite = _worldObjects.ExitPointPreset.spriteSingle;
 
             List<Vector2Int> emptyCells = new List<Vector2Int>();
@@ -111,14 +111,14 @@ namespace Client
                     }
                 }
 
-            for (int i = 0; i < boostCount; i++)
+            for (int i = 0; i < boostHPCount; i++)
             {
                 LayoutBoostHPObject(ref emptyCells);
             }
 
-            for (int i = 0; i < sodaCount; i++)
+            for (int i = 0; i < healCount; i++)
             {
-                LayoutFoodObject(ref emptyCells);
+                LayoutHealObject(ref emptyCells);
             }
 
             for (int i = 0; i < wallCount; i++)
@@ -185,7 +185,7 @@ namespace Client
 
             var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out PlayerComponent player);
-            
+
             goComponent.Transform = go.transform;
             goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
             goComponent.Collider = go.GetComponent<BoxCollider2D>();
@@ -205,28 +205,28 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "boostHP", gameObjectsRoot, LayersName.Object.ToString(), boostSprite);
+            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "boostHP", gameObjectsRoot, LayersName.Object.ToString(), boostHPSprite);
             _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
 
             goComponent.Transform = go.transform;
 
-            collectItemComponent.Type = CollectItemType.BoostHP;
-            collectItemComponent.Value = _worldObjects.BoostHPItemPreset.Value;
+            CollectItemBoostHP itemBoostHP = new CollectItemBoostHP(_worldObjects.BoostHPItemPreset.Value);
+            collectItemComponent.CollectItem = itemBoostHP;
 
             emptyCells.Remove(cell);
         }
 
-        void LayoutFoodObject(ref List<Vector2Int> emptyCells)
+        void LayoutHealObject(ref List<Vector2Int> emptyCells)
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "soda", gameObjectsRoot, LayersName.Object.ToString(), sodaSprite);
+            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "heal", gameObjectsRoot, LayersName.Object.ToString(), healSprite);
             _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
 
             goComponent.Transform = go.transform;
 
-            collectItemComponent.Type = CollectItemType.Heal;
-            collectItemComponent.Value = _worldObjects.HealItemPreset.Value;
+            CollectItemHeal itemHeal = new CollectItemHeal(_worldObjects.HealItemPreset.Value);
+            collectItemComponent.CollectItem = itemHeal;
 
             emptyCells.Remove(cell);
         }
@@ -237,7 +237,7 @@ namespace Client
 
             var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out WallComponent _);
-            
+
             goComponent.Transform = go.transform;
             goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
             goComponent.Collider = go.GetComponent<BoxCollider2D>();
@@ -258,7 +258,7 @@ namespace Client
 
             var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, goName, gameObjectsRoot, LayersName.Character.ToString(), animation);
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out EnemyComponent _);
-            
+
             goComponent.Transform = go.transform;
             goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
             goComponent.Collider = go.GetComponent<BoxCollider2D>();
