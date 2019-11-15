@@ -47,5 +47,10 @@ namespace Client
                 value = c.MaxHealthPoint;
             return value;
         }
+
+        public static void RLCreateEffect(this EcsWorld world, Vector2 position, SpriteEffect effect, float lifeTime)
+        {
+
+        }
     }
 }

@@ -44,9 +44,9 @@ namespace Client
 
         void CreateEffect(Vector2 position, SpriteEffect effect, float lifeTime)
         {
-            _world.CreateEntityWith(out SpriteEffectCreateEvent spriteEffect);
-            spriteEffect.Position = position;
+            _world.CreateEntityWith(out SpriteEffectComponent spriteEffect);
             spriteEffect.SpriteEffect = effect;
+            spriteEffect.Position = position;
             spriteEffect.LifeTime = lifeTime;
         }
     }

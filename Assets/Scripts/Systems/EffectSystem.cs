@@ -9,7 +9,6 @@ namespace Client
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
 
-        readonly EcsFilter<SpriteEffectCreateEvent> _createEffectEntities = null;
         readonly EcsFilter<SpriteEffectComponent> _effectEntities = null;
 
         readonly Sprite chopEffect = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet")[55];
@@ -22,34 +21,35 @@ namespace Client
                 ref var entity = ref _effectEntities.Entities[i];
                 var c1 = _effectEntities.Components1[i];
 
-                c1.LifeTime -= Time.deltaTime;
-
-                if (c1.LifeTime <= 0)
+                if (!c1.Run)
                 {
-                    _world.RLRemoveGOEntity(entity);
+                    c1.Run = true;
+
+                    GameObject go = null;
+
+                    switch (c1.SpriteEffect)
+                    {
+                        case SpriteEffect.None:
+                            break;
+                        case SpriteEffect.Chop:
+                            go = VExt.LayoutSpriteObjects(prefabSprite, c1.Position.x, c1.Position.y, _worldStatus.ParentOtherObject, LayersName.Effect.ToString(), chopEffect);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    var c2 = _world.AddComponent<GameObjectComponent>(entity);
+                    c2.Transform = go.transform;
                 }
-            }
-
-            foreach (var i in _createEffectEntities)
-            {
-                ref var entity = ref _createEffectEntities.Entities[i];
-                var c1 = _createEffectEntities.Components1[i];
-                GameObject go = null;
-
-                switch (c1.SpriteEffect)
+                else
                 {
-                    case SpriteEffect.None:
-                        break;
-                    case SpriteEffect.Chop:
-                        go = VExt.LayoutSpriteObjects(prefabSprite, c1.Position.x, c1.Position.y, _worldStatus.ParentOtherObject, LayersName.Effect.ToString(), chopEffect);
-                        break;
-                    default:
-                        break;
-                }
+                    c1.LifeTime -= Time.deltaTime;
 
-                _world.CreateEntityWith(out GameObjectComponent goComponent, out SpriteEffectComponent effect);
-                goComponent.Transform = go.transform;
-                effect.LifeTime = c1.LifeTime;
+                    if (c1.LifeTime <= 0)
+                    {
+                        _world.RLRemoveGOEntity(entity);
+                    }
+                }
             }
         }
     }
