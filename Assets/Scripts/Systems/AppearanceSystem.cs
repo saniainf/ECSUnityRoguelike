@@ -17,7 +17,7 @@ namespace Client
                 var c1 = _aspectEntities.Components1[i];
                 var c2 = _aspectEntities.Components2[i];
 
-                c1.animator.SetBool(AnimatorField.Damaged.ToString(), (c2.HealthPoint != c2.CurrentHealthPoint));
+                c1.animator.SetBool(AnimatorField.Damaged.ToString(), (c2.MaxHealthPoint != c2.HealthPoint));
             }
         }
     }

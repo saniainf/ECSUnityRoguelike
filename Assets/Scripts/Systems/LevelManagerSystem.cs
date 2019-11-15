@@ -127,8 +127,8 @@ namespace Client
             {
                 ref var e = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Components1[i];
-                playerSet.HP = c1.HealthPoint;
-                playerSet.currentHP = c1.CurrentHealthPoint;
+                playerSet.HP = c1.MaxHealthPoint;
+                playerSet.currentHP = c1.HealthPoint;
                 playerSet.hitDamage = c1.HitDamage;
                 _world.RLRemoveGOEntity(e);
             }

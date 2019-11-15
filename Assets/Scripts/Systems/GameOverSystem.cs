@@ -18,7 +18,7 @@ namespace Client
                 {
                     var c1 = _playerEntities.Components1[i];
 
-                    if (c1.CurrentHealthPoint <= 0)
+                    if (c1.HealthPoint <= 0)
                     {
                         _worldStatus.GameStatus = GameStatus.GameOver;
                     }

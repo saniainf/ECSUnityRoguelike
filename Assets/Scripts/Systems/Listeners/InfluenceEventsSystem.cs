@@ -18,10 +18,10 @@ namespace Client
                 var c1 = _impactEntities.Components1[i];
                 var c2 = _impactEntities.Components2[i];
 
-                c2.CurrentHealthPoint -= c1.HitValue;
+                c2.HealthPoint -= c1.HitValue;
                 _world.EnsureComponent<ActionAnimationComponent>(entity, out _).Animation = AnimatorField.AnimationTakeDamage;
 
-                if (c2.CurrentHealthPoint <= 0)
+                if (c2.HealthPoint <= 0)
                 {
                     _world.RLRemoveGOEntity(entity, 0.3f);
                 }

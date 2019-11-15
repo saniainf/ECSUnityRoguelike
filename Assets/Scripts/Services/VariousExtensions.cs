@@ -91,14 +91,6 @@ namespace Client
             return go;
         }
 
-        public static void RLRemoveGOEntity(this EcsWorld world, EcsEntity entity, float time = 0)
-        {
-            var c = world.GetComponent<GameObjectComponent>(entity);
-            if (c != null)
-                UnityEngine.Object.Destroy(c.Transform.gameObject, time);
-            world.RemoveEntity(entity);
-        }
-
         public static Vector2Int ToInt2(this Vector2 v)
         {
             return new Vector2Int((int)v.x, (int)v.y);

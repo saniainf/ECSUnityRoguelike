@@ -195,8 +195,8 @@ namespace Client
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
 
-            dataComponent.HealthPoint = set.HP;
-            dataComponent.CurrentHealthPoint = set.currentHP;
+            dataComponent.MaxHealthPoint = set.HP;
+            dataComponent.HealthPoint = set.currentHP;
             dataComponent.HitDamage = set.hitDamage;
             dataComponent.Initiative = set.initiative;
         }
@@ -246,8 +246,8 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-            dataComponent.HealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
-            dataComponent.CurrentHealthPoint = dataComponent.HealthPoint;
+            dataComponent.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
+            dataComponent.HealthPoint = dataComponent.MaxHealthPoint;
 
             emptyCells.Remove(cell);
         }
@@ -267,8 +267,8 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-            dataComponent.HealthPoint = set.HP;
-            dataComponent.CurrentHealthPoint = set.currentHP;
+            dataComponent.MaxHealthPoint = set.HP;
+            dataComponent.HealthPoint = set.currentHP;
             dataComponent.HitDamage = set.hitDamage;
             dataComponent.Initiative = set.initiative;
 

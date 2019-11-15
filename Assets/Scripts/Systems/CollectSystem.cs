@@ -27,7 +27,7 @@ namespace Client
 
                     if (pc1.Collider.OverlapPoint(cc1.Transform.position))
                     {
-                        cc2.CollectItem.OnCollect(pc2);
+                        cc2.CollectItem.OnCollect(_world, pe);
                         _world.RLRemoveGOEntity(ce);
                     }
                 }

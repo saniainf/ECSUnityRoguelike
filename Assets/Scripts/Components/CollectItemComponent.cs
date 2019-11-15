@@ -19,7 +19,7 @@ namespace Client
 
     interface ICollectItem
     {
-        void OnCollect(DataSheetComponent dataSheet);
+        void OnCollect(EcsWorld world, EcsEntity entity);
     }
 
     class CollectItemHeal : ICollectItem
@@ -31,9 +31,9 @@ namespace Client
             this.value = value;
         }
 
-        void ICollectItem.OnCollect(DataSheetComponent dataSheet)
+        void ICollectItem.OnCollect(EcsWorld world, EcsEntity entity)
         {
-            dataSheet.CurrentHealthPoint = Math.Min(dataSheet.CurrentHealthPoint + value, dataSheet.HealthPoint);
+            world.RLSetHealth(entity, world.RLGetHealth(entity) + value);
         }
     }
 
@@ -46,10 +46,11 @@ namespace Client
             this.value = value;
         }
 
-        void ICollectItem.OnCollect(DataSheetComponent dataSheet)
+        void ICollectItem.OnCollect(EcsWorld world, EcsEntity entity)
         {
-            dataSheet.CurrentHealthPoint += value;
-            dataSheet.HealthPoint += value;
+            world.RLSetMaxHealth(entity, world.RLGetMaxHealth(entity) + value);
+            world.RLSetHealth(entity, world.RLGetHealth(entity) + value);
+
         }
     }
 }

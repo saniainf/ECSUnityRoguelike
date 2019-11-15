@@ -4,18 +4,18 @@ namespace Client
 {
     sealed class DataSheetComponent:IEcsAutoResetComponent
     {
-        public int HealthPoint = 0;
+        public int MaxHealthPoint = 0;
         public int HitDamage = 0;
         public int Initiative = 0;
 
-        public int CurrentHealthPoint = 0;
+        public int HealthPoint = 0;
 
         void IEcsAutoResetComponent.Reset()
         {
-            HealthPoint = 666;
+            MaxHealthPoint = 666;
             HitDamage = 666;
             Initiative = 666;
-            CurrentHealthPoint = 666;
+            HealthPoint = 666;
         }
     }
 }
