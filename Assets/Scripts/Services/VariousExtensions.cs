@@ -50,8 +50,9 @@ namespace Client
         GameOver
     }
 
-    public static class VExt
+    static class VExt
     {
+        public static WorldObjects WorldObjects;
         public static GameObject LayoutSpriteObjects(GameObject prefab, float x, float y, Transform parent, string sortingLayer, Sprite sprite)
         {
             string name = Guid.NewGuid().ToString();

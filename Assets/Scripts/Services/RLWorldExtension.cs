@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Leopotam.Ecs;
-using Random = UnityEngine.Random;
 
 namespace Client
 {
@@ -48,9 +47,26 @@ namespace Client
             return value;
         }
 
+        public static void RLApplyDamage(this EcsWorld world, EcsEntity entity, int value)
+        {
+            var c = world.GetComponent<DataSheetComponent>(entity);
+            if (c != null)
+                c.HealthPoint -= value;
+        }
+
         public static void RLCreateEffect(this EcsWorld world, Vector2 position, SpriteEffect effect, float lifeTime)
         {
-
+            switch (effect)
+            {
+                case SpriteEffect.None:
+                    break;
+                case SpriteEffect.Chop:
+                    var go = VExt.LayoutSpriteObjects(VExt.WorldObjects.ResourcesPresets.PrefabSprite, position.x, position.y, ObjectData.GameObjectsOther, LayersName.Effect.ToString(), ObjectData.ChopEffect.spriteSingle);
+                    UnityEngine.Object.Destroy(go, lifeTime);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

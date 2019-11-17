@@ -9,6 +9,8 @@ namespace Client
         readonly WorldStatus _worldStatus = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<DataSheetComponent> _dataSheetEntities = null;
+
 
         void IEcsRunSystem.Run()
         {
@@ -21,6 +23,16 @@ namespace Client
                     if (c1.HealthPoint <= 0)
                     {
                         _worldStatus.GameStatus = GameStatus.GameOver;
+                    }
+                }
+
+                foreach (var i in _dataSheetEntities)
+                {
+                    var c1 = _dataSheetEntities.Components1[i];
+
+                    if (c1.HealthPoint <= 0)
+                    {
+                        _world.RLRemoveGOEntity(_dataSheetEntities.Entities[i]);
                     }
                 }
             }

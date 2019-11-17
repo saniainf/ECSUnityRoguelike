@@ -19,7 +19,6 @@ namespace Client
         private readonly EnemyObject enemy01Pres;
         private readonly EnemyObject enemy02Pres;
         private readonly PlayerObject playerPres;
-        private readonly RuntimeAnimatorController[] wallsAnimation;
 
         readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
         readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -55,7 +54,6 @@ namespace Client
             _worldObjects = worldObjects;
             this.playerSet = playerSet;
 
-            wallsAnimation = worldObjects.WallsPresets.Animation;
             enemy01Pres = worldObjects.Enemy01Preset;
             enemy02Pres = worldObjects.Enemy02Preset;
             playerPres = worldObjects.PlayerPreset;
@@ -184,7 +182,7 @@ namespace Client
         {
 
             var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
-            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out PlayerComponent player);
+            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out PlayerComponent _);
 
             goComponent.Transform = go.transform;
             goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
@@ -199,6 +197,9 @@ namespace Client
             dataComponent.HealthPoint = set.currentHP;
             dataComponent.HitDamage = set.hitDamage;
             dataComponent.Initiative = set.initiative;
+
+            var weaponItem = _world.AddComponent<WeaponItemComponent>(e);
+            weaponItem.WeaponItem = new WeaponItemChopper(set.hitDamage);
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
@@ -235,7 +236,7 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(wallsAnimation));
+            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(ObjectData.WallsPresets.Animation));
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out WallComponent _);
 
             goComponent.Transform = go.transform;
@@ -271,6 +272,9 @@ namespace Client
             dataComponent.HealthPoint = set.currentHP;
             dataComponent.HitDamage = set.hitDamage;
             dataComponent.Initiative = set.initiative;
+
+            var weaponItem = _world.AddComponent<WeaponItemComponent>(e);
+            weaponItem.WeaponItem = new WeaponItemChopper(set.hitDamage);
 
             emptyCells.Remove(cell);
         }

@@ -14,6 +14,8 @@ namespace Client
 
         void OnEnable()
         {
+            VExt.WorldObjects = WorldObjects;
+            
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
@@ -38,7 +40,6 @@ namespace Client
                 .Add(new ActionAnimationSystem())
                 .Add(new CollectSystem())
                 .Add(new EffectSystem())
-                .Add(new InfluenceEventsSystem())
                 .Add(new AppearanceSystem())
                 .Add(new GameOverSystem())
                 .Add(new UISystem())

@@ -8,7 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        EcsFilter<ActionAtackComponent, AnimationComponent, DataSheetComponent> _atackEntities = null;
+        EcsFilter<ActionAtackComponent, AnimationComponent, WeaponItemComponent> _atackEntities = null;
 
         private float atackTime = 0.5f;
 
@@ -31,8 +31,8 @@ namespace Client
                 if (c1.Run && !c1.OnAtack && c2.animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
                 {
                     c1.OnAtack = true;
-                    CreateEffect(new Vector2(c1.TargetPosition.x, c1.TargetPosition.y), SpriteEffect.Chop, 0.3f);
-                    _world.EnsureComponent<ImpactEvent>(c1.Target, out _).HitValue += c3.HitDamage;
+                    _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
+                    c3.WeaponItem.OnAtack(_world, e, c1.Target);
                 }
 
                 if (c1.Run && c1.OnAtack && !c2.animator.GetBool(AnimatorField.ActionRun.ToString()))
@@ -40,14 +40,6 @@ namespace Client
                     _world.RemoveComponent<ActionAtackComponent>(e);
                 }
             }
-        }
-
-        void CreateEffect(Vector2 position, SpriteEffect effect, float lifeTime)
-        {
-            _world.CreateEntityWith(out SpriteEffectComponent spriteEffect);
-            spriteEffect.SpriteEffect = effect;
-            spriteEffect.Position = position;
-            spriteEffect.LifeTime = lifeTime;
         }
     }
 }
