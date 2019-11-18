@@ -21,15 +21,21 @@ namespace Client
         private GameLevel gameLevel = null;
         private PlayerObject playerPreset;
 
-        (int maxHP, int HP, int hitDamage, int initiative) startPlayerSet;
-        (int maxHP, int HP, int hitDamage, int initiative) playerSet;
+        private NPCDataSheet playerData;
+        private NPCDataSheet playerStartData;
 
         void IEcsInitSystem.Initialize()
         {
             playerPreset = ObjData.p_PlayerPreset;
 
             _worldStatus.GameStatus = GameStatus.Start;
-            startPlayerSet = (playerPreset.HealthPoint, playerPreset.HealthPoint, playerPreset.HitDamage, playerPreset.Initiative);
+            playerStartData = new NPCDataSheet
+            {
+                HealthPoint = ObjData.p_PlayerPreset.HealthPoint,
+                MaxHealthPoint = ObjData.p_PlayerPreset.HealthPoint,
+                Initiative = ObjData.p_PlayerPreset.Initiative,
+                WeaponItem = new WeaponItemChopper(ObjData.p_WeaponChopperPreset.Damage)
+            };
         }
 
         void IEcsRunSystem.Run()
@@ -60,7 +66,7 @@ namespace Client
         void StartGame()
         {
             levelNum = 1;
-            playerSet = startPlayerSet;
+            playerData = playerStartData;
             _worldStatus.GameStatus = GameStatus.LevelLoad;
             _worldStatus.LevelNum = levelNum++;
             loadLevelCurrentTime = loadLevelTime;
@@ -73,7 +79,7 @@ namespace Client
 
             if (loadLevelCurrentTime <= 0f)
             {
-                gameLevel = new GameLevel(_world, playerSet);
+                gameLevel = new GameLevel(_world, playerData);
                 gameLevel.LevelCreate();
                 gameLevel.SetActive(true);
                 _worldStatus.ParentOtherObject = ObjData.t_GameObjectsOther;
@@ -126,9 +132,8 @@ namespace Client
             {
                 ref var e = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Components1[i];
-                playerSet.maxHP = c1.MaxHealthPoint;
-                playerSet.HP = c1.HealthPoint;
-                playerSet.hitDamage = c1.HitDamage;
+                playerData.MaxHealthPoint = c1.MaxHealthPoint;
+                playerData.HealthPoint = c1.HealthPoint;
                 _world.RLRemoveGOEntity(e);
             }
         }

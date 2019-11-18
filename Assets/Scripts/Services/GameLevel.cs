@@ -110,7 +110,12 @@ namespace Client
                     ref emptyCells,
                     "enemy02",
                     ObjData.p_Enemy02Preset.Animation,
-                    (ObjData.p_Enemy02Preset.HealthPoint, ObjData.p_Enemy02Preset.HealthPoint, ObjData.p_Enemy02Preset.HitDamage, ObjData.p_Enemy02Preset.Initiative));
+                    new NPCDataSheet
+                    {
+                        MaxHealthPoint = ObjData.p_Enemy02Preset.HealthPoint,
+                        HealthPoint = ObjData.p_Enemy02Preset.HealthPoint,
+                        Initiative = ObjData.p_Enemy02Preset.Initiative
+                    });
             }
         }
 
@@ -202,7 +207,7 @@ namespace Client
             dataComponent.Initiative = data.Initiative;
 
             var weaponItem = _world.AddComponent<WeaponItemComponent>(e);
-            weaponItem.WeaponItem = new WeaponItemChopper(set.hitDamage);
+            weaponItem.WeaponItem = new WeaponItemChopper(ObjData.p_WeaponChopperPreset.Damage);
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
@@ -270,7 +275,7 @@ namespace Client
             emptyCells.Remove(cell);
         }
 
-        void LayoutEnemyObject(ref List<Vector2Int> emptyCells, string goName, RuntimeAnimatorController animation, (int HP, int currentHP, int hitDamage, int initiative) set)
+        void LayoutEnemyObject(ref List<Vector2Int> emptyCells, string goName, RuntimeAnimatorController animation, NPCDataSheet data)
         {
             var cell = VExt.NextFromList(emptyCells);
 
@@ -285,13 +290,12 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-            dataComponent.MaxHealthPoint = set.HP;
-            dataComponent.HealthPoint = set.currentHP;
-            dataComponent.HitDamage = set.hitDamage;
-            dataComponent.Initiative = set.initiative;
+            dataComponent.MaxHealthPoint = data.HealthPoint;
+            dataComponent.HealthPoint = data.HealthPoint;
+            dataComponent.Initiative = data.Initiative;
 
             var weaponItem = _world.AddComponent<WeaponItemComponent>(e);
-            weaponItem.WeaponItem = new WeaponItemChopper(set.hitDamage);
+            weaponItem.WeaponItem = new WeaponItemChopper(ObjData.p_Enemy01Preset.HitDamage);
 
             emptyCells.Remove(cell);
         }
