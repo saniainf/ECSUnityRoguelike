@@ -77,7 +77,7 @@ namespace Client
                 gameLevel = new GameLevel(_world, _worldObjects, playerSet);
                 gameLevel.LevelCreate();
                 gameLevel.SetActive(true);
-                _worldStatus.ParentOtherObject = gameLevel.GameObjectsOther;
+                _worldStatus.ParentOtherObject = ObjData.t_GameObjectsOther;
                 _worldStatus.GameStatus = GameStatus.LevelRun;
             }
         }

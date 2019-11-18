@@ -61,7 +61,7 @@ namespace Client
                 case SpriteEffect.None:
                     break;
                 case SpriteEffect.Chop:
-                    var go = VExt.LayoutSpriteObjects(VExt.WorldObjects.ResourcesPresets.PrefabSprite, position.x, position.y, ObjectData.GameObjectsOther, LayersName.Effect.ToString(), ObjectData.ChopEffect.spriteSingle);
+                    var go = VExt.LayoutSpriteObjects(VExt.WorldObjects.ResourcesPresets.PrefabSprite, position.x, position.y, ObjData.t_GameObjectsOther, LayersName.Effect.ToString(), ObjData.p_ChopEffect.spriteSingle);
                     UnityEngine.Object.Destroy(go, lifeTime);
                     break;
                 default:

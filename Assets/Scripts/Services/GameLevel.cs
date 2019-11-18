@@ -8,28 +8,6 @@ namespace Client
     class GameLevel
     {
         private EcsWorld _world;
-        private readonly WorldObjects _worldObjects;
-
-        #region Resourses
-        private readonly GameObject prefabSprite;
-        private readonly GameObject prefabAnimation;
-        private readonly GameObject prefabPhysicsSprite;
-        private readonly GameObject prefabPhysicsAnimation;
-
-        private readonly EnemyObject enemy01Pres;
-        private readonly EnemyObject enemy02Pres;
-        private readonly PlayerObject playerPres;
-
-        readonly Transform gameBoardRoot = new GameObject("GameBoardRoot").transform;
-        readonly Transform gameObjectsRoot = new GameObject("GameObjectsRoot").transform;
-        public Transform GameObjectsOther = new GameObject("GameObjectsOther").transform;
-
-        private Sprite[] obstacleSprites;
-        private Sprite[] floorSprites;
-        private Sprite healSprite;
-        private Sprite boostHPSprite;
-        private Sprite exitSprite;
-        #endregion
 
         #region Settings
         int healCount = 3;
@@ -44,24 +22,19 @@ namespace Client
         int minWallHP = 2;
         int maxWallHP = 4;
 
-        (int HP, int currentHP, int hitDamage, int initiative) playerSet;
+        (int maxHP, int HP, int hitDamage, int initiative) playerSet;
 
         #endregion
 
-        public GameLevel(EcsWorld world, WorldObjects worldObjects, (int HP, int currentHP, int hitDamage, int initiative) playerSet)
+        public GameLevel(EcsWorld world, WorldObjects worldObjects, (int maxHP, int HP, int hitDamage, int initiative) playerSet)
         {
             _world = world;
-            _worldObjects = worldObjects;
+
             this.playerSet = playerSet;
 
-            enemy01Pres = worldObjects.Enemy01Preset;
-            enemy02Pres = worldObjects.Enemy02Preset;
-            playerPres = worldObjects.PlayerPreset;
-
-            prefabSprite = worldObjects.ResourcesPresets.PrefabSprite;
-            prefabAnimation = worldObjects.ResourcesPresets.PrefabAnimation;
-            prefabPhysicsSprite = worldObjects.ResourcesPresets.PrefabPhysicsSprite;
-            prefabPhysicsAnimation = worldObjects.ResourcesPresets.PrefabPhysicsAnimation;
+            ObjData.t_GameBoardRoot = new GameObject("GameBoardRoot").transform;
+            ObjData.t_GameObjectsRoot = new GameObject("GameObjectsRoot").transform;
+            ObjData.t_GameObjectsOther = new GameObject("GameObjectsOther").transform;
 
             SetActive(false);
         }
@@ -75,12 +48,6 @@ namespace Client
 
             int width = roomsArray[0].Length;
             int height = roomsArray.Length; ;
-
-            obstacleSprites = _worldObjects.ObstaclePresets.spritesArray;
-            floorSprites = _worldObjects.FloorPresets.spritesArray;
-            healSprite = _worldObjects.HealItemPreset.Sprite;
-            boostHPSprite = _worldObjects.BoostHPItemPreset.Sprite;
-            exitSprite = _worldObjects.ExitPointPreset.spriteSingle;
 
             List<Vector2Int> emptyCells = new List<Vector2Int>();
 
@@ -126,44 +93,65 @@ namespace Client
 
             for (int i = 0; i < enemy01Count; i++)
             {
-                LayoutEnemyObject(ref emptyCells, "enemy01", enemy01Pres.Animation, (enemy01Pres.HealthPoint, enemy01Pres.HealthPoint, enemy01Pres.HitDamage, enemy01Pres.Initiative));
+                LayoutEnemyObject(
+                    ref emptyCells,
+                    "enemy01",
+                    ObjData.p_Enemy01Preset.Animation,
+                    (ObjData.p_Enemy01Preset.HealthPoint, ObjData.p_Enemy01Preset.HealthPoint, ObjData.p_Enemy01Preset.HitDamage, ObjData.p_Enemy01Preset.Initiative));
             }
 
             for (int i = 0; i < enemy02Count; i++)
             {
-                LayoutEnemyObject(ref emptyCells, "enemy02", enemy02Pres.Animation, (enemy02Pres.HealthPoint, enemy02Pres.HealthPoint, enemy02Pres.HitDamage, enemy02Pres.Initiative));
+                LayoutEnemyObject(
+                    ref emptyCells,
+                    "enemy02",
+                    ObjData.p_Enemy02Preset.Animation,
+                    (ObjData.p_Enemy02Preset.HealthPoint, ObjData.p_Enemy02Preset.HealthPoint, ObjData.p_Enemy02Preset.HitDamage, ObjData.p_Enemy02Preset.Initiative));
             }
         }
 
         public void LevelDestroy()
         {
-            UnityEngine.Object.Destroy(gameBoardRoot.gameObject);
-            UnityEngine.Object.Destroy(gameObjectsRoot.gameObject);
-            UnityEngine.Object.Destroy(GameObjectsOther.gameObject);
+            UnityEngine.Object.Destroy(ObjData.t_GameBoardRoot.gameObject);
+            UnityEngine.Object.Destroy(ObjData.t_GameObjectsRoot.gameObject);
+            UnityEngine.Object.Destroy(ObjData.t_GameObjectsOther.gameObject);
+
             _world = null;
         }
 
         public void SetActive(bool value)
         {
-            gameBoardRoot.gameObject.SetActive(value);
-            gameObjectsRoot.gameObject.SetActive(value);
-            GameObjectsOther.gameObject.SetActive(value);
+            ObjData.t_GameBoardRoot.gameObject.SetActive(value);
+            ObjData.t_GameObjectsRoot.gameObject.SetActive(value);
+            ObjData.t_GameObjectsOther.gameObject.SetActive(value);
         }
 
         #region Layout
         void LayoutFloorObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "floor", gameBoardRoot, LayersName.Floor.ToString(), VExt.NextFromArray(floorSprites));
-            _world.CreateEntityWith(out GameObjectComponent goComponent);
+            var go = VExt.LayoutSpriteObjects(
+                ObjData.r_PrefabSprite,
+                x, y,
+                "floor",
+                ObjData.t_GameObjectsRoot,
+                LayersName.Floor.ToString(),
+                VExt.NextFromArray(ObjData.p_FloorPresets.spritesArray));
 
+            _world.CreateEntityWith(out GameObjectComponent goComponent);
             goComponent.Transform = go.transform;
         }
 
         void LayoutObstacleObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObjects(prefabPhysicsSprite, x, y, "obstacle", gameBoardRoot, LayersName.Wall.ToString(), VExt.NextFromArray(obstacleSprites));
-            _world.CreateEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
+            var go = VExt.LayoutSpriteObjects(
+                ObjData.r_PrefabPhysicsSprite,
+                x, y,
+                "obstacle",
+                ObjData.t_GameBoardRoot,
+                LayersName.Wall.ToString(),
+                VExt.NextFromArray(ObjData.p_ObstaclePresets.spritesArray));
 
+            _world.CreateEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
             goComponent.Transform = go.transform;
             goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
             goComponent.Collider = go.GetComponent<BoxCollider2D>();
@@ -172,16 +160,29 @@ namespace Client
 
         void LayoutExitObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObjects(prefabSprite, x, y, "exit", gameObjectsRoot, LayersName.Object.ToString(), exitSprite);
-            _world.CreateEntityWith(out GameObjectComponent goComponent, out ZoneExitComponent _);
+            var go = VExt.LayoutSpriteObjects(
+                ObjData.r_PrefabSprite,
+                x, y,
+                "exit",
+                ObjData.t_GameObjectsRoot,
+                LayersName.Object.ToString(),
+                ObjData.p_ExitPointPreset.spriteSingle);
 
+            _world.CreateEntityWith(out GameObjectComponent goComponent, out ZoneExitComponent _);
             goComponent.Transform = go.transform;
         }
 
-        void LayoutPlayerObject(int x, int y, (int HP, int currentHP, int hitDamage, int initiative) set)
+        void LayoutPlayerObject(int x, int y, (int maxHP, int HP, int hitDamage, int initiative) set)
         {
 
-            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, x, y, "player", gameObjectsRoot, LayersName.Character.ToString(), playerPres.Animation);
+            var go = VExt.LayoutAnimationObjects(
+                ObjData.r_PrefabPhysicsAnimation,
+                x, y,
+                "player",
+                ObjData.t_GameObjectsRoot,
+                LayersName.Character.ToString(),
+                ObjData.p_PlayerPreset.Animation);
+
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out PlayerComponent _);
 
             goComponent.Transform = go.transform;
@@ -192,9 +193,8 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-
-            dataComponent.MaxHealthPoint = set.HP;
-            dataComponent.HealthPoint = set.currentHP;
+            dataComponent.MaxHealthPoint = set.maxHP;
+            dataComponent.HealthPoint = set.HP;
             dataComponent.HitDamage = set.hitDamage;
             dataComponent.Initiative = set.initiative;
 
@@ -206,13 +206,16 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "boostHP", gameObjectsRoot, LayersName.Object.ToString(), boostHPSprite);
+            var go = VExt.LayoutSpriteObjects(
+                ObjData.r_PrefabSprite,
+                cell.x, cell.y,
+                "boostHP",
+                ObjData.t_GameObjectsRoot,
+                LayersName.Object.ToString(), ObjData.p_BoostHPItemPreset.Sprite);
+
             _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
-
             goComponent.Transform = go.transform;
-
-            CollectItemBoostHP itemBoostHP = new CollectItemBoostHP(_worldObjects.BoostHPItemPreset.Value);
-            collectItemComponent.CollectItem = itemBoostHP;
+            collectItemComponent.CollectItem = new CollectItemBoostHP(ObjData.p_BoostHPItemPreset.Value);
 
             emptyCells.Remove(cell);
         }
@@ -221,13 +224,17 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutSpriteObjects(prefabSprite, cell.x, cell.y, "heal", gameObjectsRoot, LayersName.Object.ToString(), healSprite);
+            var go = VExt.LayoutSpriteObjects(
+                ObjData.r_PrefabSprite,
+                cell.x, cell.y,
+                "heal",
+                ObjData.t_GameObjectsRoot,
+                LayersName.Object.ToString(),
+                ObjData.p_HealItemPreset.Sprite);
+
             _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
-
             goComponent.Transform = go.transform;
-
-            CollectItemHeal itemHeal = new CollectItemHeal(_worldObjects.HealItemPreset.Value);
-            collectItemComponent.CollectItem = itemHeal;
+            collectItemComponent.CollectItem = new CollectItemHeal(ObjData.p_HealItemPreset.Value);
 
             emptyCells.Remove(cell);
         }
@@ -236,7 +243,14 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, "wall", gameObjectsRoot, LayersName.Object.ToString(), VExt.NextFromArray(ObjectData.WallsPresets.Animation));
+            var go = VExt.LayoutAnimationObjects(
+                ObjData.r_PrefabPhysicsAnimation,
+                cell.x, cell.y,
+                "wall",
+                ObjData.t_GameObjectsRoot,
+                LayersName.Object.ToString(),
+                VExt.NextFromArray(ObjData.p_WallsPresets.Animation));
+
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out WallComponent _);
 
             goComponent.Transform = go.transform;
@@ -257,7 +271,7 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutAnimationObjects(prefabPhysicsAnimation, cell.x, cell.y, goName, gameObjectsRoot, LayersName.Character.ToString(), animation);
+            var go = VExt.LayoutAnimationObjects(ObjData.r_PrefabPhysicsAnimation, cell.x, cell.y, goName, ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), animation);
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out EnemyComponent _);
 
             goComponent.Transform = go.transform;
