@@ -21,16 +21,15 @@ namespace Client
 
         int minWallHP = 2;
         int maxWallHP = 4;
-
-        (int maxHP, int HP, int hitDamage, int initiative) playerSet;
-
         #endregion
 
-        public GameLevel(EcsWorld world, WorldObjects worldObjects, (int maxHP, int HP, int hitDamage, int initiative) playerSet)
+        NPCDataSheet playerData;
+
+        public GameLevel(EcsWorld world, NPCDataSheet playerData)
         {
             _world = world;
 
-            this.playerSet = playerSet;
+            this.playerData = playerData;
 
             ObjData.t_GameBoardRoot = new GameObject("GameBoardRoot").transform;
             ObjData.t_GameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -69,7 +68,7 @@ namespace Client
                             break;
                         case '@':
                             LayoutFloorObject(j, i);
-                            LayoutPlayerObject(j, i, playerSet);
+                            LayoutPlayerObject(j, i, playerData);
                             break;
                         default:
                             break;
@@ -97,7 +96,12 @@ namespace Client
                     ref emptyCells,
                     "enemy01",
                     ObjData.p_Enemy01Preset.Animation,
-                    (ObjData.p_Enemy01Preset.HealthPoint, ObjData.p_Enemy01Preset.HealthPoint, ObjData.p_Enemy01Preset.HitDamage, ObjData.p_Enemy01Preset.Initiative));
+                    new NPCDataSheet
+                    {
+                        MaxHealthPoint = ObjData.p_Enemy01Preset.HealthPoint,
+                        HealthPoint = ObjData.p_Enemy01Preset.HealthPoint,
+                        Initiative = ObjData.p_Enemy01Preset.Initiative
+                    });
             }
 
             for (int i = 0; i < enemy02Count; i++)
@@ -172,7 +176,7 @@ namespace Client
             goComponent.Transform = go.transform;
         }
 
-        void LayoutPlayerObject(int x, int y, (int maxHP, int HP, int hitDamage, int initiative) set)
+        void LayoutPlayerObject(int x, int y, NPCDataSheet data)
         {
 
             var go = VExt.LayoutAnimationObjects(
@@ -193,10 +197,9 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-            dataComponent.MaxHealthPoint = set.maxHP;
-            dataComponent.HealthPoint = set.HP;
-            dataComponent.HitDamage = set.hitDamage;
-            dataComponent.Initiative = set.initiative;
+            dataComponent.MaxHealthPoint = data.MaxHealthPoint;
+            dataComponent.HealthPoint = data.HealthPoint;
+            dataComponent.Initiative = data.Initiative;
 
             var weaponItem = _world.AddComponent<WeaponItemComponent>(e);
             weaponItem.WeaponItem = new WeaponItemChopper(set.hitDamage);

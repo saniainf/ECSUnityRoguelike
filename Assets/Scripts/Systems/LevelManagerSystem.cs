@@ -8,7 +8,6 @@ namespace Client
     {
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
-        readonly WorldObjects _worldObjects = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
         readonly EcsFilter<GameObjectComponent>.Exclude<PlayerComponent> _transformEntities = null;
@@ -22,12 +21,12 @@ namespace Client
         private GameLevel gameLevel = null;
         private PlayerObject playerPreset;
 
-        (int HP, int currentHP, int hitDamage, int initiative) startPlayerSet;
-        (int HP, int currentHP, int hitDamage, int initiative) playerSet;
+        (int maxHP, int HP, int hitDamage, int initiative) startPlayerSet;
+        (int maxHP, int HP, int hitDamage, int initiative) playerSet;
 
         void IEcsInitSystem.Initialize()
         {
-            playerPreset = _worldObjects.PlayerPreset;
+            playerPreset = ObjData.p_PlayerPreset;
 
             _worldStatus.GameStatus = GameStatus.Start;
             startPlayerSet = (playerPreset.HealthPoint, playerPreset.HealthPoint, playerPreset.HitDamage, playerPreset.Initiative);
@@ -74,7 +73,7 @@ namespace Client
 
             if (loadLevelCurrentTime <= 0f)
             {
-                gameLevel = new GameLevel(_world, _worldObjects, playerSet);
+                gameLevel = new GameLevel(_world, playerSet);
                 gameLevel.LevelCreate();
                 gameLevel.SetActive(true);
                 _worldStatus.ParentOtherObject = ObjData.t_GameObjectsOther;
@@ -127,8 +126,8 @@ namespace Client
             {
                 ref var e = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Components1[i];
-                playerSet.HP = c1.MaxHealthPoint;
-                playerSet.currentHP = c1.HealthPoint;
+                playerSet.maxHP = c1.MaxHealthPoint;
+                playerSet.HP = c1.HealthPoint;
                 playerSet.hitDamage = c1.HitDamage;
                 _world.RLRemoveGOEntity(e);
             }

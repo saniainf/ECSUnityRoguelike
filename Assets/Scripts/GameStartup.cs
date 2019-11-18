@@ -6,16 +6,12 @@ namespace Client
 {
     sealed class GameStartup : MonoBehaviour
     {
-        public WorldObjects WorldObjects;
-
         EcsWorld _world;
         EcsSystems _systems;
         WorldStatus _worldStatus;
 
         void OnEnable()
         {
-            VExt.WorldObjects = WorldObjects;
-            
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
@@ -26,7 +22,7 @@ namespace Client
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
 #endif
             _systems
-                .Add(new TestsSystem())
+                //.Add(new TestsSystem())
                 .Add(new QueueSystem())
                 .Add(new PhaseManagerSystem())
                 .Add(new NextTurnSystem())
@@ -46,8 +42,7 @@ namespace Client
                 .Add(new CameraSystem());
 
             _systems
-                .Inject(_worldStatus)
-                .Inject(WorldObjects);
+                .Inject(_worldStatus);
 
             _systems.Initialize();
         }
