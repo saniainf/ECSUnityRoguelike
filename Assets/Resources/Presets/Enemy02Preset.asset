@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animation: {fileID: 22100000, guid: 942f6f5cfeb9df4409ad1d5d0139c21d, type: 2}
   HealthPoint: 3
-  HitDamage: 2
   Initiative: 2
+  WeaponItem: {fileID: 11400000, guid: c3be5d7a5fd77b84ebee605dc80082d3, type: 2}

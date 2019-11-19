@@ -19,14 +19,14 @@ namespace Client
         {
             var c = world.GetComponent<DataSheetComponent>(entity);
             if (c != null)
-                c.HealthPoint = Mathf.Min(value, c.MaxHealthPoint);
+                c.Stats.HealthPoint = Mathf.Min(value, c.Stats.MaxHealthPoint);
         }
 
         public static void RLSetMaxHealth(this EcsWorld world, EcsEntity entity, int value)
         {
             var c = world.GetComponent<DataSheetComponent>(entity);
             if (c != null)
-                c.MaxHealthPoint = value;
+                c.Stats.MaxHealthPoint = value;
         }
 
         public static int RLGetHealth(this EcsWorld world, EcsEntity entity)
@@ -34,7 +34,7 @@ namespace Client
             int value = 0;
             var c = world.GetComponent<DataSheetComponent>(entity);
             if (c != null)
-                value = c.HealthPoint;
+                value = c.Stats.HealthPoint;
             return value;
         }
 
@@ -43,7 +43,7 @@ namespace Client
             int value = 0;
             var c = world.GetComponent<DataSheetComponent>(entity);
             if (c != null)
-                value = c.MaxHealthPoint;
+                value = c.Stats.MaxHealthPoint;
             return value;
         }
 
@@ -51,7 +51,7 @@ namespace Client
         {
             var c = world.GetComponent<DataSheetComponent>(entity);
             if (c != null)
-                c.HealthPoint -= value;
+                c.Stats.HealthPoint -= value;
         }
 
         public static void RLCreateEffect(this EcsWorld world, Vector2 position, SpriteEffect effect, float lifeTime)

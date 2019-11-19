@@ -19,23 +19,12 @@ namespace Client
         private float gameOvetCurrentTime = 0f;
 
         private GameLevel gameLevel = null;
-        private PlayerObject playerPreset;
 
         private NPCDataSheet playerData;
-        private NPCDataSheet playerStartData;
 
         void IEcsInitSystem.Initialize()
         {
-            playerPreset = ObjData.p_PlayerPreset;
-
             _worldStatus.GameStatus = GameStatus.Start;
-            playerStartData = new NPCDataSheet
-            {
-                HealthPoint = ObjData.p_PlayerPreset.HealthPoint,
-                MaxHealthPoint = ObjData.p_PlayerPreset.HealthPoint,
-                Initiative = ObjData.p_PlayerPreset.Initiative,
-                WeaponItem = new WeaponItemChopper(ObjData.p_WeaponChopperPreset.Damage)
-            };
         }
 
         void IEcsRunSystem.Run()
@@ -66,7 +55,12 @@ namespace Client
         void StartGame()
         {
             levelNum = 1;
-            playerData = playerStartData;
+            playerData = new NPCDataSheet(
+                new NPCStats(ObjData.p_PlayerPreset.HealthPoint,
+                             ObjData.p_PlayerPreset.HealthPoint,
+                             ObjData.p_PlayerPreset.Initiative),
+                new WeaponItemChopper(ObjData.p_PlayerPreset.WeaponItem.Damage));
+
             _worldStatus.GameStatus = GameStatus.LevelLoad;
             _worldStatus.LevelNum = levelNum++;
             loadLevelCurrentTime = loadLevelTime;
@@ -82,7 +76,6 @@ namespace Client
                 gameLevel = new GameLevel(_world, playerData);
                 gameLevel.LevelCreate();
                 gameLevel.SetActive(true);
-                _worldStatus.ParentOtherObject = ObjData.t_GameObjectsOther;
                 _worldStatus.GameStatus = GameStatus.LevelRun;
             }
         }
@@ -132,8 +125,8 @@ namespace Client
             {
                 ref var e = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Components1[i];
-                playerData.MaxHealthPoint = c1.MaxHealthPoint;
-                playerData.HealthPoint = c1.HealthPoint;
+                playerData.NPCStats = c1.Stats;
+                playerData.WeaponItem = c1.WeaponItem;
                 _world.RLRemoveGOEntity(e);
             }
         }

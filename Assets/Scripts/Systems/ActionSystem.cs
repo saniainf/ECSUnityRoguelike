@@ -131,20 +131,6 @@ namespace Client
             return result;
         }
 
-        void CreateEffect(Vector2Int position, SpriteEffect effect, float lifeTime)
-        {
-            _world.CreateEntityWith(out SpriteEffectCreateEvent spriteEffect);
-            spriteEffect.Position = position;
-            spriteEffect.SpriteEffect = effect;
-            spriteEffect.LifeTime = lifeTime;
-        }
-
-        void RunAnimation(EcsEntity entity, AnimatorField animation)
-        {
-            var c = _world.EnsureComponent<ActionAnimationComponent>(entity, out _);
-            c.Animation = animation;
-        }
-
         void MoveEntity(EcsEntity entity, Vector2 goalPosition)
         {
             var c = _world.EnsureComponent<ActionMoveComponent>(entity, out _);

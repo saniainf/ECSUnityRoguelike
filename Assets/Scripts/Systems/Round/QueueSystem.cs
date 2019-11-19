@@ -29,12 +29,12 @@ namespace Client
 
             foreach (var i in _playerEntities)
             {
-                sortedEntities.Add(new Tuple<int, EcsEntity>(_playerEntities.Components1[i].Initiative, _playerEntities.Entities[i]));
+                sortedEntities.Add(new Tuple<int, EcsEntity>(_playerEntities.Components1[i].Stats.Initiative, _playerEntities.Entities[i]));
             }
 
             foreach (var i in _enemyEntities)
             {
-                sortedEntities.Add(new Tuple<int, EcsEntity>(_enemyEntities.Components1[i].Initiative, _enemyEntities.Entities[i]));
+                sortedEntities.Add(new Tuple<int, EcsEntity>(_enemyEntities.Components1[i].Stats.Initiative, _enemyEntities.Entities[i]));
             }
 
             sortedEntities.Sort((a, b) => b.Item1.CompareTo(a.Item1));

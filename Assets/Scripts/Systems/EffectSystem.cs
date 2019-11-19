@@ -32,7 +32,7 @@ namespace Client
                         case SpriteEffect.None:
                             break;
                         case SpriteEffect.Chop:
-                            go = VExt.LayoutSpriteObjects(prefabSprite, c1.Position.x, c1.Position.y, _worldStatus.ParentOtherObject, LayersName.Effect.ToString(), chopEffect);
+                            go = VExt.LayoutSpriteObjects(prefabSprite, c1.Position.x, c1.Position.y, ObjData.t_GameObjectsOther, LayersName.Effect.ToString(), chopEffect);
                             break;
                         default:
                             break;

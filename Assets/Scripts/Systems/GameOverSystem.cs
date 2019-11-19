@@ -20,7 +20,7 @@ namespace Client
                 {
                     var c1 = _playerEntities.Components1[i];
 
-                    if (c1.HealthPoint <= 0)
+                    if (c1.Stats.HealthPoint <= 0)
                     {
                         _worldStatus.GameStatus = GameStatus.GameOver;
                     }
@@ -30,7 +30,7 @@ namespace Client
                 {
                     var c1 = _dataSheetEntities.Components1[i];
 
-                    if (c1.HealthPoint <= 0)
+                    if (c1.Stats.HealthPoint <= 0)
                     {
                         _world.RLRemoveGOEntity(_dataSheetEntities.Entities[i]);
                     }

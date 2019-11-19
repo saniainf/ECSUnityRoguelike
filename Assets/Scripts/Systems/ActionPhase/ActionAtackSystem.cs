@@ -8,7 +8,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        EcsFilter<ActionAtackComponent, AnimationComponent, WeaponItemComponent> _atackEntities = null;
+        EcsFilter<ActionAtackComponent, AnimationComponent, DataSheetComponent> _atackEntities = null;
 
         private float atackTime = 0.5f;
 

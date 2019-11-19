@@ -96,12 +96,11 @@ namespace Client
                     ref emptyCells,
                     "enemy01",
                     ObjData.p_Enemy01Preset.Animation,
-                    new NPCDataSheet
-                    {
-                        MaxHealthPoint = ObjData.p_Enemy01Preset.HealthPoint,
-                        HealthPoint = ObjData.p_Enemy01Preset.HealthPoint,
-                        Initiative = ObjData.p_Enemy01Preset.Initiative
-                    });
+                    new NPCDataSheet(
+                        new NPCStats(ObjData.p_Enemy01Preset.HealthPoint,
+                                     ObjData.p_Enemy01Preset.HealthPoint,
+                                     ObjData.p_Enemy01Preset.Initiative),
+                        new WeaponItemChopper(ObjData.p_Enemy01Preset.WeaponItem.Damage)));
             }
 
             for (int i = 0; i < enemy02Count; i++)
@@ -110,12 +109,11 @@ namespace Client
                     ref emptyCells,
                     "enemy02",
                     ObjData.p_Enemy02Preset.Animation,
-                    new NPCDataSheet
-                    {
-                        MaxHealthPoint = ObjData.p_Enemy02Preset.HealthPoint,
-                        HealthPoint = ObjData.p_Enemy02Preset.HealthPoint,
-                        Initiative = ObjData.p_Enemy02Preset.Initiative
-                    });
+                    new NPCDataSheet(
+                        new NPCStats(ObjData.p_Enemy02Preset.HealthPoint,
+                                     ObjData.p_Enemy02Preset.HealthPoint,
+                                     ObjData.p_Enemy02Preset.Initiative),
+                        new WeaponItemChopper(ObjData.p_Enemy01Preset.WeaponItem.Damage)));
             }
         }
 
@@ -202,12 +200,8 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-            dataComponent.MaxHealthPoint = data.MaxHealthPoint;
-            dataComponent.HealthPoint = data.HealthPoint;
-            dataComponent.Initiative = data.Initiative;
-
-            var weaponItem = _world.AddComponent<WeaponItemComponent>(e);
-            weaponItem.WeaponItem = new WeaponItemChopper(ObjData.p_WeaponChopperPreset.Damage);
+            dataComponent.Stats = playerData.NPCStats;
+            dataComponent.WeaponItem = playerData.WeaponItem;
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
@@ -269,8 +263,8 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-            dataComponent.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
-            dataComponent.HealthPoint = dataComponent.MaxHealthPoint;
+            dataComponent.Stats.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
+            dataComponent.Stats.HealthPoint = dataComponent.Stats.MaxHealthPoint;
 
             emptyCells.Remove(cell);
         }
@@ -290,12 +284,8 @@ namespace Client
             animationComponent.animator = go.GetComponent<Animator>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
-            dataComponent.MaxHealthPoint = data.HealthPoint;
-            dataComponent.HealthPoint = data.HealthPoint;
-            dataComponent.Initiative = data.Initiative;
-
-            var weaponItem = _world.AddComponent<WeaponItemComponent>(e);
-            weaponItem.WeaponItem = new WeaponItemChopper(ObjData.p_Enemy01Preset.HitDamage);
+            dataComponent.Stats = data.NPCStats;
+            dataComponent.WeaponItem = data.WeaponItem;
 
             emptyCells.Remove(cell);
         }

@@ -65,11 +65,11 @@ namespace Client
             foreach (var i in _playerDataEntities)
             {
                 var pc1 = _playerDataEntities.Components1[i];
-                var cur = Mathf.Max(0, pc1.HealthPoint);
-                var hp = pc1.MaxHealthPoint;
+                var cur = Mathf.Max(0, pc1.Stats.HealthPoint);
+                var hp = pc1.Stats.MaxHealthPoint;
 
                 UIHPText.text = $"HP: {cur} | {hp}";
-                UIHPSlider.value = (((float)pc1.HealthPoint / (float)pc1.MaxHealthPoint) * 100f);
+                UIHPSlider.value = (((float)pc1.Stats.HealthPoint / (float)pc1.Stats.MaxHealthPoint) * 100f);
             }
         }
 

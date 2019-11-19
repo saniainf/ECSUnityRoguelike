@@ -25,6 +25,8 @@ namespace Client
         public static CollectItemObject p_HealItemPreset = Resources.Load<CollectItemObject>("Presets/HealItemPreset");
         public static CollectItemObject p_BoostHPItemPreset = Resources.Load<CollectItemObject>("Presets/BoostHPItemPreset");
         public static WeaponItemObject p_WeaponChopperPreset = Resources.Load<WeaponItemObject>("Presets/WeaponChopperPreset");
+        public static WeaponItemObject p_WeaponClawsPreset = Resources.Load<WeaponItemObject>("Presets/WeaponClawsPreset");
+        public static WeaponItemObject p_WeaponClawsMK2Preset = Resources.Load<WeaponItemObject>("Presets/WeaponClawsMK2Preset");
     }
 }
 

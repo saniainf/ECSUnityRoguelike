@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Client
 {
     [CreateAssetMenu(menuName = "EcsRoguelike/PlayerPreset", fileName = "PlayerPreset")]
-    public class PlayerObject : ScriptableObject
+    class PlayerObject : ScriptableObject
     {
         public RuntimeAnimatorController Animation;
         public int HealthPoint;
-        public int HitDamage;
         public int Initiative;
+        public WeaponItemObject WeaponItem;
     }
 }

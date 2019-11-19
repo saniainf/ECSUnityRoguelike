@@ -7,7 +7,7 @@ namespace Client
         void OnAtack(EcsWorld world, EcsEntity caster, EcsEntity target);
     }
 
-    class WeaponItemChopper : IWeaponItem
+    struct WeaponItemChopper : IWeaponItem
     {
         private int damage;
 
@@ -19,16 +19,6 @@ namespace Client
         void IWeaponItem.OnAtack(EcsWorld world, EcsEntity caster, EcsEntity target)
         {
             world.RLApplyDamage(target, damage);
-        }
-    }
-
-    sealed class WeaponItemComponent : IEcsAutoResetComponent
-    {
-        public IWeaponItem WeaponItem;
-
-        void IEcsAutoResetComponent.Reset()
-        {
-            WeaponItem = null;
         }
     }
 }
