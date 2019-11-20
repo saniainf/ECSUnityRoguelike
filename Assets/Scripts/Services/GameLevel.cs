@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// построение уровня
+    /// </summary>
     class GameLevel
     {
         private EcsWorld _world;
@@ -113,7 +116,7 @@ namespace Client
                         new NPCStats(ObjData.p_Enemy02Preset.HealthPoint,
                                      ObjData.p_Enemy02Preset.HealthPoint,
                                      ObjData.p_Enemy02Preset.Initiative),
-                        new WeaponItemChopper(ObjData.p_Enemy01Preset.WeaponItem.Damage)));
+                        new WeaponItemChopper(ObjData.p_Enemy02Preset.WeaponItem.Damage)));
             }
         }
 

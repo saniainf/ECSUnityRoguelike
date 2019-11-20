@@ -5,6 +5,7 @@ namespace Client
 {
     sealed class GameObjectComponent : IEcsAutoResetComponent
     {
+        //TODO сделать компонент для GameObject с кэшем всех этих компонентов
         public Transform Transform = null;
         public Rigidbody2D Rigidbody = null;
         public BoxCollider2D Collider = null;

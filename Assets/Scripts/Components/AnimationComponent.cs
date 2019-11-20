@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Client
 {
+    //TODO перенести в gameobjectComponent
     sealed class AnimationComponent : IEcsAutoResetComponent
     {
         public Animator animator = null;

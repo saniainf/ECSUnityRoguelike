@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// управление атакой чара в фазу действия
+    /// </summary>
     [EcsInject]
     sealed class ActionAtackSystem : IEcsRunSystem
     {

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// управление сбором предметов на карте
+    /// </summary>
     [EcsInject]
     sealed class CollectSystem : IEcsRunSystem
     {

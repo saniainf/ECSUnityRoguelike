@@ -2,9 +2,13 @@ using Leopotam.Ecs;
 
 namespace Client
 {
+    /// <summary>
+    /// отслеживание мертвых сущностей
+    /// </summary>
     [EcsInject]
     sealed class GameOverSystem : IEcsRunSystem
     {
+        //TODO надо переделать смерть сущности, чтобы не сразу исчезала
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
 

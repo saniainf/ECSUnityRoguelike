@@ -5,8 +5,11 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// ввод игрока, когда его ход и фаза ввода
+    /// </summary>
     [EcsInject]
-    sealed class UserInputSystem : IEcsRunSystem
+    sealed class InputUserPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
         readonly EcsFilter<InputPhaseComponent, PlayerComponent> _inputPhaseEntities = null;

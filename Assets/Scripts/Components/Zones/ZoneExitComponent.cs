@@ -4,7 +4,6 @@ namespace Client
 {
     sealed class ZoneExitComponent : IEcsAutoResetComponent
     {
-
         void IEcsAutoResetComponent.Reset()
         {
 

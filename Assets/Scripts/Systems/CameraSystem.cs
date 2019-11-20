@@ -3,9 +3,13 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// управление камерой
+    /// </summary>
     [EcsInject]
     sealed class CameraSystem : IEcsRunSystem, IEcsInitSystem
     {
+        //UNDONE camera
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<GameObjectComponent, PlayerComponent> _playerEntities = null;

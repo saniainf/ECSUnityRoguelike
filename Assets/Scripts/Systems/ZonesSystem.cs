@@ -2,6 +2,9 @@ using Leopotam.Ecs;
 
 namespace Client
 {
+    /// <summary>
+    /// контроль специальных зон на карте, выход и т.д.
+    /// </summary>
     [EcsInject]
     sealed class ZonesSystem : IEcsRunSystem
     {

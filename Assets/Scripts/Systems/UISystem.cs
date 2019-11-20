@@ -4,9 +4,13 @@ using UnityEngine.UI;
 
 namespace Client
 {
+    /// <summary>
+    /// менеджер интерфейса
+    /// </summary>
     [EcsInject]
     sealed class UISystem : IEcsRunSystem, IEcsInitSystem
     {
+        //UNDONE ui
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerDataEntities = null;

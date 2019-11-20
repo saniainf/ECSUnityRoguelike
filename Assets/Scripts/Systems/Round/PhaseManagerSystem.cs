@@ -2,6 +2,9 @@ using Leopotam.Ecs;
 
 namespace Client
 {
+    /// <summary>
+    /// менеджер фаз хода чара
+    /// </summary>
     [EcsInject]
     sealed class PhaseManagerSystem : IEcsRunSystem
     {

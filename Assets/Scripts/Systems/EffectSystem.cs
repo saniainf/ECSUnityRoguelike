@@ -3,8 +3,11 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [EcsInject]
-    sealed class EffectSystem : IEcsRunSystem
+    sealed class EffectSystem_tmp : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;

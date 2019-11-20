@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// построение очереди ходов чаров
+    /// </summary>
     [EcsInject]
     sealed class QueueSystem : IEcsRunSystem
     {

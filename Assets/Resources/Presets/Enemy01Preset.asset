@@ -15,4 +15,4 @@ MonoBehaviour:
   Animation: {fileID: 22100000, guid: 81879b5342bb95c48b11a3b4c83840e7, type: 2}
   HealthPoint: 2
   Initiative: 1
-  WeaponItem: {fileID: 11400000, guid: 822c7374015566541a8acc19cf144ac6, type: 2}
+  WeaponItem: {fileID: 11400000, guid: c8d73e07587a3f74eb6fb54c47609367, type: 2}

@@ -1,5 +1,8 @@
 ﻿namespace Client
 {
+    /// <summary>
+    /// основные статы чара
+    /// </summary>
     struct NPCStats
     {
         public int MaxHealthPoint;

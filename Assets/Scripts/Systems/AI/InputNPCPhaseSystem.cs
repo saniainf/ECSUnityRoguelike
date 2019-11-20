@@ -3,8 +3,11 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// ввод npc, когда его ход и фаза ввода
+    /// </summary>
     [EcsInject]
-    sealed class AIEnemySystem : IEcsRunSystem
+    sealed class InputNPCPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
         readonly EcsFilter<InputPhaseComponent, GameObjectComponent, EnemyComponent> _inputPhaseEntities = null;

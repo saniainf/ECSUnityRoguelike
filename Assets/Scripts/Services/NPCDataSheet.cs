@@ -1,5 +1,8 @@
 ﻿namespace Client
 {
+    /// <summary>
+    /// свойства чара (статы, оружие...)
+    /// </summary>
     struct NPCDataSheet
     {
         public NPCStats NPCStats;

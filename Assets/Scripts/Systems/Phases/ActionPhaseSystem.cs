@@ -12,8 +12,11 @@ namespace Client
         RIGHT
     }
 
+    /// <summary>
+    /// фаза определения действия чара, на основе фазы ввода и контроль этих действий
+    /// </summary>
     [EcsInject]
-    sealed class ActionSystem : IEcsRunSystem
+    sealed class ActionPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 
@@ -38,7 +41,6 @@ namespace Client
                 var c1 = _inputEntities.Components1[i];
                 var c2 = _inputEntities.Components2[i];
 
-                SpriteRenderer sr = c1.Transform.gameObject.GetComponent<SpriteRenderer>();
                 Vector2 goalPosition;
 
                 switch (c2.MoveDirection)
@@ -57,13 +59,13 @@ namespace Client
                         goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
-                        sr.flipX = true;
+                        c1.SpriteRenderer.flipX = true;
                         break;
                     case MoveDirection.RIGHT:
                         goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
-                        sr.flipX = false;
+                        c1.SpriteRenderer.flipX = false;
                         break;
                     case MoveDirection.NONE:
                         _world.RemoveComponent<InputDirectionComponent>(in entity);

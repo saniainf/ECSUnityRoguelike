@@ -3,6 +3,9 @@ using Leopotam.Ecs;
 
 namespace Client
 {
+    /// <summary>
+    /// загрузка, выгрузка уровня. сохранение данных между уровнями
+    /// </summary>
     [EcsInject]
     sealed class LevelManagerSystem : IEcsRunSystem, IEcsInitSystem
     {

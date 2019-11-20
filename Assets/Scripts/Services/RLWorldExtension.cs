@@ -5,6 +5,9 @@ using Leopotam.Ecs;
 
 namespace Client
 {
+    /// <summary>
+    /// расширения для World класса
+    /// </summary>
     public static class RLWorldExtension
     {
         public static void RLRemoveGOEntity(this EcsWorld world, EcsEntity entity, float time = 0)

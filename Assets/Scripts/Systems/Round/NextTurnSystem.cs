@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace Client
 {
+    /// <summary>
+    /// передача хода следующему чару в очереди
+    /// </summary>
     [EcsInject]
     sealed class NextTurnSystem : IEcsRunSystem
     {

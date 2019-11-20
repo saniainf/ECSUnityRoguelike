@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// управление внешним видом всего что может повреждаться
+    /// </summary>
     [EcsInject]
     sealed class AppearanceSystem : IEcsRunSystem
     {

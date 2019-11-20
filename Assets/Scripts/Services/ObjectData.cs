@@ -2,18 +2,24 @@
 
 namespace Client
 {
+    /// <summary>
+    /// все ресурсы
+    /// </summary>
     static class ObjData
     {
+        //трансформы
         public static Transform t_GameBoardRoot;
         public static Transform t_GameObjectsRoot;
         public static Transform t_GameObjectsOther;
 
+        //ресурсы
         public static Sprite[] r_SpriteSheet = Resources.LoadAll<Sprite>("Sprites/Scavengers_SpriteSheet");
         public static GameObject r_PrefabSprite = Resources.Load<GameObject>("Prefabs/PrefabSprite");
         public static GameObject r_PrefabAnimation = Resources.Load<GameObject>("Prefabs/PrefabAnimation");
         public static GameObject r_PrefabPhysicsSprite = Resources.Load<GameObject>("Prefabs/PrefabPhysicsSprite");
         public static GameObject r_PrefabPhysicsAnimation = Resources.Load<GameObject>("Prefabs/PrefabPhysicsAnimation");
 
+        //преднастройки сущностей
         public static WallsObject p_WallsPresets = Resources.Load<WallsObject>("Presets/WallsPreset");
         public static SpritesObject p_ChopEffect = Resources.Load<SpritesObject>("Presets/ChopEffect");
         public static SpritesObject p_ObstaclePresets = Resources.Load<SpritesObject>("Presets/ObstaclePresets");

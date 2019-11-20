@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// управление передвижением чара в фазу действия
+    /// </summary>
     [EcsInject]
     sealed class ActionMoveSystem : IEcsRunSystem
     {
