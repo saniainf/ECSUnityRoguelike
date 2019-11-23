@@ -11,7 +11,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<ActionAnimationComponent, AnimationComponent> _animationEntities = null;
+        readonly EcsFilter<ActionAnimationComponent, GameObjectComponent> _animationEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -23,10 +23,10 @@ namespace Client
 
                 if (!c1.Run)
                 {
-                    c2.animator.SetTrigger(c1.Animation.ToString());
+                    c2.Link.Animator.SetTrigger(c1.Animation.ToString());
                     c1.Run = true;
                 }
-                else if (!c2.animator.GetBool(AnimatorField.ActionRun.ToString()))
+                else if (!c2.Link.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     _world.RemoveComponent<ActionAnimationComponent>(entity);
                 }

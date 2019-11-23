@@ -59,13 +59,13 @@ namespace Client
                         goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
-                        c1.SpriteRenderer.flipX = true;
+                        c1.Link.SpriteRenderer.flipX = true;
                         break;
                     case MoveDirection.RIGHT:
                         goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
                         CreateAction(entity, goalPosition);
-                        c1.SpriteRenderer.flipX = false;
+                        c1.Link.SpriteRenderer.flipX = false;
                         break;
                     case MoveDirection.NONE:
                         _world.RemoveComponent<InputDirectionComponent>(in entity);
@@ -102,7 +102,7 @@ namespace Client
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
                 var c1 = _obstacleEntities.Components1[i];
 
-                if (c1.Collider.OverlapPoint(goalPosition))
+                if (c1.Link.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
                     _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
@@ -120,7 +120,7 @@ namespace Client
                 ref var ce = ref _collisionEntities.Entities[i];
                 var c1 = _collisionEntities.Components1[i];
 
-                if (c1.Collider.OverlapPoint(goalPosition))
+                if (c1.Link.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
 

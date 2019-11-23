@@ -163,9 +163,7 @@ namespace Client
 
             _world.CreateEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
             goComponent.Transform = go.transform;
-            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            goComponent.Collider = go.GetComponent<BoxCollider2D>();
-            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
+            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
         }
 
         void LayoutExitObject(int x, int y)
@@ -193,14 +191,10 @@ namespace Client
                 LayersName.Character.ToString(),
                 ObjData.p_PlayerPreset.Animation);
 
-            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out PlayerComponent _);
+            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out PlayerComponent _);
 
             goComponent.Transform = go.transform;
-            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            goComponent.Collider = go.GetComponent<BoxCollider2D>();
-            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
-
-            animationComponent.animator = go.GetComponent<Animator>();
+            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.Stats = playerData.NPCStats;
@@ -256,14 +250,10 @@ namespace Client
                 LayersName.Object.ToString(),
                 VExt.NextFromArray(ObjData.p_WallsPresets.Animation));
 
-            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out WallComponent _);
+            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out WallComponent _);
 
             goComponent.Transform = go.transform;
-            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            goComponent.Collider = go.GetComponent<BoxCollider2D>();
-            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
-
-            animationComponent.animator = go.GetComponent<Animator>();
+            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.Stats.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
@@ -277,14 +267,10 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutAnimationObjects(ObjData.r_PrefabPhysicsAnimation, cell.x, cell.y, goName, ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), animation);
-            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out AnimationComponent animationComponent, out EnemyComponent _);
+            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out EnemyComponent _);
 
             goComponent.Transform = go.transform;
-            goComponent.Rigidbody = go.GetComponent<Rigidbody2D>();
-            goComponent.Collider = go.GetComponent<BoxCollider2D>();
-            goComponent.SpriteRenderer = go.GetComponent<SpriteRenderer>();
-
-            animationComponent.animator = go.GetComponent<Animator>();
+            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.Stats = data.NPCStats;

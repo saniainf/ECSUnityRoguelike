@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 1609624262450889741}
   - component: {fileID: -3099518092383457058}
   - component: {fileID: 6854870726458002323}
+  - component: {fileID: 3561782403361158795}
   m_Layer: 0
-  m_Name: PrefabAnimation
+  m_Name: PrefabPhysicsAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,3 +150,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3561782403361158795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609624262450889742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4acd94a2ee2f04386e90dc8d2cae74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rigidbody: {fileID: -3099518092383457058}
+  Collider: {fileID: 6854870726458002323}
+  SpriteRenderer: {fileID: 1609624262450889740}
+  Animator: {fileID: 1609624262450889741}
