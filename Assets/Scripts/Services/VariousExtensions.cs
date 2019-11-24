@@ -32,14 +32,6 @@ namespace Client
         ActionTime
     }
 
-    public enum UIType
-    {
-        None,
-        LevelRun,
-        LevelLoad,
-        GameOver
-    }
-
     public enum GameStatus
     {
         None,
@@ -48,6 +40,22 @@ namespace Client
         LevelLoad,
         LevelEnd,
         GameOver
+    }
+
+    public enum InputType
+    {
+        None,
+        Move,
+        UseActiveItem
+    }
+
+    enum MoveDirection
+    {
+        None,
+        Up,
+        Down,
+        Left,
+        Right
     }
 
     static class VExt

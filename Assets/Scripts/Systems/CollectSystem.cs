@@ -28,7 +28,7 @@ namespace Client
                     var cc1 = _collectItemEntities.Components1[j];
                     var cc2 = _collectItemEntities.Components2[j];
 
-                    if (pc1.Link.Collider.OverlapPoint(cc1.Transform.position))
+                    if (pc1.GOcomps.Collider.OverlapPoint(cc1.Transform.position))
                     {
                         cc2.CollectItem.OnCollect(_world, pe);
                         _world.RLRemoveGOEntity(ce);

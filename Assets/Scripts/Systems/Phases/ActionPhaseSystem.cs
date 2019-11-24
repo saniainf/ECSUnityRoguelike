@@ -3,15 +3,6 @@ using UnityEngine;
 
 namespace Client
 {
-    enum MoveDirection
-    {
-        NONE,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    }
-
     /// <summary>
     /// фаза определения действия чара, на основе фазы ввода и контроль этих действий
     /// </summary>
@@ -21,7 +12,7 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<ActionPhaseComponent> _actionPhaseEntities = null;
-        readonly EcsFilter<GameObjectComponent, InputDirectionComponent> _inputEntities = null;
+        readonly EcsFilter<GameObjectComponent, InputActionComponent> _inputEntities = null;
 
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
@@ -41,37 +32,45 @@ namespace Client
                 var c1 = _inputEntities.Components1[i];
                 var c2 = _inputEntities.Components2[i];
 
-                Vector2 goalPosition;
-
-                switch (c2.MoveDirection)
+                if (c2.InputAction == InputType.Move)
                 {
-                    case MoveDirection.UP:
-                        goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y + 1);
-                        _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, goalPosition);
-                        break;
-                    case MoveDirection.DOWN:
-                        goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y - 1);
-                        _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, goalPosition);
-                        break;
-                    case MoveDirection.LEFT:
-                        goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
-                        _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, goalPosition);
-                        c1.Link.SpriteRenderer.flipX = true;
-                        break;
-                    case MoveDirection.RIGHT:
-                        goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
-                        _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        CreateAction(entity, goalPosition);
-                        c1.Link.SpriteRenderer.flipX = false;
-                        break;
-                    case MoveDirection.NONE:
-                        _world.RemoveComponent<InputDirectionComponent>(in entity);
-                        break;
-                    default:
-                        break;
+                    Vector2 goalPosition;
+
+                    switch (c2.MoveDirection)
+                    {
+                        case MoveDirection.Up:
+                            goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y + 1);
+                            _world.RemoveComponent<InputActionComponent>(in entity);
+                            RunMoveAction(entity, goalPosition);
+                            break;
+                        case MoveDirection.Down:
+                            goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y - 1);
+                            _world.RemoveComponent<InputActionComponent>(in entity);
+                            RunMoveAction(entity, goalPosition);
+                            break;
+                        case MoveDirection.Left:
+                            goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
+                            _world.RemoveComponent<InputActionComponent>(in entity);
+                            RunMoveAction(entity, goalPosition);
+                            c1.GOcomps.SpriteRenderer.flipX = true;
+                            break;
+                        case MoveDirection.Right:
+                            goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
+                            _world.RemoveComponent<InputActionComponent>(in entity);
+                            RunMoveAction(entity, goalPosition);
+                            c1.GOcomps.SpriteRenderer.flipX = false;
+                            break;
+                        case MoveDirection.None:
+                            _world.RemoveComponent<InputActionComponent>(in entity);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (c2.InputAction == InputType.UseActiveItem)
+                {
+
                 }
             }
 
@@ -85,7 +84,7 @@ namespace Client
             }
         }
 
-        void CreateAction(EcsEntity entity, Vector2 goalPosition)
+        void RunMoveAction(EcsEntity entity, Vector2 goalPosition)
         {
             if (!CheckObstacleCollision(entity, goalPosition) && !CheckCollision(entity, goalPosition))
             {
@@ -102,7 +101,7 @@ namespace Client
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
                 var c1 = _obstacleEntities.Components1[i];
 
-                if (c1.Link.Collider.OverlapPoint(goalPosition))
+                if (c1.GOcomps.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
                     _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
@@ -120,7 +119,7 @@ namespace Client
                 ref var ce = ref _collisionEntities.Entities[i];
                 var c1 = _collisionEntities.Components1[i];
 
-                if (c1.Link.Collider.OverlapPoint(goalPosition))
+                if (c1.GOcomps.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
 

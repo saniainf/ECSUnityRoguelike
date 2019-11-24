@@ -23,10 +23,10 @@ namespace Client
 
                 if (!c1.Run)
                 {
-                    c2.Link.Animator.SetTrigger(c1.Animation.ToString());
+                    c2.GOcomps.Animator.SetTrigger(c1.Animation.ToString());
                     c1.Run = true;
                 }
-                else if (!c2.Link.Animator.GetBool(AnimatorField.ActionRun.ToString()))
+                else if (!c2.GOcomps.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     _world.RemoveComponent<ActionAnimationComponent>(entity);
                 }

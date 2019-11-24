@@ -15,7 +15,7 @@ namespace Client
 
         void IEcsRunSystem.Run()
         {
-            var direction = Random.value > 0.7f ? VExt.NextEnum<MoveDirection>() : MoveDirection.NONE;
+            var direction = Random.value > 0.7f ? VExt.NextEnum<MoveDirection>() : MoveDirection.None;
 
             foreach (var i in _inputPhaseEntities)
             {
@@ -30,30 +30,31 @@ namespace Client
                     {
                         if (ec2.Transform.position.x - 1 == pc1.Transform.position.x)
                         {
-                            direction = MoveDirection.LEFT;
+                            direction = MoveDirection.Left;
                         }
                         if (ec2.Transform.position.x + 1 == pc1.Transform.position.x)
                         {
-                            direction = MoveDirection.RIGHT;
+                            direction = MoveDirection.Right;
                         }
                     }
                     if (ec2.Transform.position.x == pc1.Transform.position.x)
                     {
                         if (ec2.Transform.position.y - 1 == pc1.Transform.position.y)
                         {
-                            direction = MoveDirection.DOWN;
+                            direction = MoveDirection.Down;
                         }
                         if (ec2.Transform.position.y + 1 == pc1.Transform.position.y)
                         {
-                            direction = MoveDirection.UP;
+                            direction = MoveDirection.Up;
                         }
                     }
 
                 }
 
                 ref var entity = ref _inputPhaseEntities.Entities[i];
-                var c = _world.AddComponent<InputDirectionComponent>(entity);
+                var c = _world.AddComponent<InputActionComponent>(entity);
                 c.MoveDirection = direction;
+                c.InputAction = InputType.Move;
                 ec1.PhaseEnd = true;
             }
         }

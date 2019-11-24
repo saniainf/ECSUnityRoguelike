@@ -31,14 +31,14 @@ namespace Client
                     c.Animation = AnimatorField.AnimationAtack;
                 }
 
-                if (c1.Run && !c1.OnAtack && c2.Link.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
+                if (c1.Run && !c1.OnAtack && c2.GOcomps.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
                 {
                     c1.OnAtack = true;
                     _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
                     c3.WeaponItem.OnAtack(_world, e, c1.Target);
                 }
 
-                if (c1.Run && c1.OnAtack && !c2.Link.Animator.GetBool(AnimatorField.ActionRun.ToString()))
+                if (c1.Run && c1.OnAtack && !c2.GOcomps.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     _world.RemoveComponent<ActionAtackComponent>(e);
                 }

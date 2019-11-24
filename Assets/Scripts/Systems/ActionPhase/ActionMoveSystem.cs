@@ -23,7 +23,7 @@ namespace Client
 
                 if (!c1.Run)
                 {
-                    c1.StartPosition = c2.Link.Rigidbody.position;
+                    c1.StartPosition = c2.GOcomps.Rigidbody.position;
                     c1.Run = true;
                 }
 
@@ -38,14 +38,14 @@ namespace Client
 
                 if (c1.GoalInt != Vector2Int.zero)
                 {
-                    var nextPosition = Vector2.MoveTowards(c2.Link.Rigidbody.position, c1.GoalInt, c1.Speed * Time.deltaTime);
-                    c2.Link.Rigidbody.MovePosition(nextPosition);
-                    c1.SqrDistance = (c2.Link.Rigidbody.position - c1.StartPosition).sqrMagnitude;
+                    var nextPosition = Vector2.MoveTowards(c2.GOcomps.Rigidbody.position, c1.GoalInt, c1.Speed * Time.deltaTime);
+                    c2.GOcomps.Rigidbody.MovePosition(nextPosition);
+                    c1.SqrDistance = (c2.GOcomps.Rigidbody.position - c1.StartPosition).sqrMagnitude;
 
-                    float sqrDistanceToGoal = (c2.Link.Rigidbody.position - c1.GoalInt).sqrMagnitude;
+                    float sqrDistanceToGoal = (c2.GOcomps.Rigidbody.position - c1.GoalInt).sqrMagnitude;
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
-                        c2.Link.Rigidbody.position = c1.GoalInt;
+                        c2.GOcomps.Rigidbody.position = c1.GoalInt;
 
                         _world.RemoveComponent<ActionMoveComponent>(e);
                     }
@@ -53,14 +53,14 @@ namespace Client
 
                 else if (c1.GoalFloat != Vector2.zero)
                 {
-                    var nextPosition = Vector2.MoveTowards(c2.Link.Rigidbody.position, c1.GoalFloat, c1.Speed * Time.deltaTime);
-                    c2.Link.Rigidbody.MovePosition(nextPosition);
-                    c1.SqrDistance = (c2.Link.Rigidbody.position - c1.StartPosition).sqrMagnitude;
+                    var nextPosition = Vector2.MoveTowards(c2.GOcomps.Rigidbody.position, c1.GoalFloat, c1.Speed * Time.deltaTime);
+                    c2.GOcomps.Rigidbody.MovePosition(nextPosition);
+                    c1.SqrDistance = (c2.GOcomps.Rigidbody.position - c1.StartPosition).sqrMagnitude;
 
-                    float sqrDistanceToGoal = (c2.Link.Rigidbody.position - c1.GoalFloat).sqrMagnitude;
+                    float sqrDistanceToGoal = (c2.GOcomps.Rigidbody.position - c1.GoalFloat).sqrMagnitude;
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
-                        c2.Link.Rigidbody.position = c1.GoalFloat;
+                        c2.GOcomps.Rigidbody.position = c1.GoalFloat;
                         c2.Transform.position = c1.GoalFloat;
 
                         _world.RemoveComponent<ActionMoveComponent>(e);
@@ -69,9 +69,9 @@ namespace Client
 
                 else if (c1.GoalDirection != Vector2.zero)
                 {
-                    var nextPosition = c2.Link.Rigidbody.position + (c1.GoalDirection * (c1.Speed * Time.deltaTime));
-                    c2.Link.Rigidbody.MovePosition(nextPosition);
-                    c1.SqrDistance = (c2.Link.Rigidbody.position - c1.StartPosition).sqrMagnitude;
+                    var nextPosition = c2.GOcomps.Rigidbody.position + (c1.GoalDirection * (c1.Speed * Time.deltaTime));
+                    c2.GOcomps.Rigidbody.MovePosition(nextPosition);
+                    c1.SqrDistance = (c2.GOcomps.Rigidbody.position - c1.StartPosition).sqrMagnitude;
                 }
             }
         }

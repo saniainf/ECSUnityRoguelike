@@ -163,7 +163,7 @@ namespace Client
 
             _world.CreateEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
             goComponent.Transform = go.transform;
-            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
         }
 
         void LayoutExitObject(int x, int y)
@@ -194,7 +194,7 @@ namespace Client
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out PlayerComponent _);
 
             goComponent.Transform = go.transform;
-            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.Stats = playerData.NPCStats;
@@ -253,7 +253,7 @@ namespace Client
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out WallComponent _);
 
             goComponent.Transform = go.transform;
-            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.Stats.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
@@ -270,7 +270,7 @@ namespace Client
             var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out EnemyComponent _);
 
             goComponent.Transform = go.transform;
-            goComponent.Link = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
 
             var dataComponent = _world.AddComponent<DataSheetComponent>(e);
             dataComponent.Stats = data.NPCStats;
