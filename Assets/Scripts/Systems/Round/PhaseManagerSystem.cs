@@ -18,6 +18,7 @@ namespace Client
             {
                 ref var e = ref _inputPhaseEntities.Entities[i];
                 var c1 = _inputPhaseEntities.Components1[i];
+
                 if (c1.PhaseEnd)
                 {
                     _world.RemoveComponent<InputPhaseComponent>(e);

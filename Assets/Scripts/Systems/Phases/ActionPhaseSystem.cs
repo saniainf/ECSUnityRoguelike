@@ -32,45 +32,23 @@ namespace Client
                 var c1 = _inputEntities.Components1[i];
                 var c2 = _inputEntities.Components2[i];
 
-                if (c2.InputAction == InputType.Move)
+                if (!c2.Skip)
                 {
-                    Vector2 goalPosition;
-
-                    switch (c2.MoveDirection)
+                    if (c2.InputActionType == ActionType.Move)
                     {
-                        case MoveDirection.Up:
-                            goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y + 1);
-                            _world.RemoveComponent<InputActionComponent>(in entity);
-                            RunMoveAction(entity, goalPosition);
-                            break;
-                        case MoveDirection.Down:
-                            goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y - 1);
-                            _world.RemoveComponent<InputActionComponent>(in entity);
-                            RunMoveAction(entity, goalPosition);
-                            break;
-                        case MoveDirection.Left:
-                            goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
-                            _world.RemoveComponent<InputActionComponent>(in entity);
-                            RunMoveAction(entity, goalPosition);
-                            c1.GOcomps.SpriteRenderer.flipX = true;
-                            break;
-                        case MoveDirection.Right:
-                            goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
-                            _world.RemoveComponent<InputActionComponent>(in entity);
-                            RunMoveAction(entity, goalPosition);
-                            c1.GOcomps.SpriteRenderer.flipX = false;
-                            break;
-                        case MoveDirection.None:
-                            _world.RemoveComponent<InputActionComponent>(in entity);
-                            break;
-                        default:
-                            break;
+                        _world.RemoveComponent<InputActionComponent>(in entity);
+                        RunMoveAction(entity, c2.GoalPosition);
+                    }
+
+                    if (c2.InputActionType == ActionType.UseActiveItem)
+                    {
+                        _world.RemoveComponent<InputActionComponent>(in entity);
+                        RunMoveAction(entity, c2.GoalPosition);
                     }
                 }
-
-                if (c2.InputAction == InputType.UseActiveItem)
+                else
                 {
-
+                    _world.RemoveComponent<InputActionComponent>(in entity);
                 }
             }
 

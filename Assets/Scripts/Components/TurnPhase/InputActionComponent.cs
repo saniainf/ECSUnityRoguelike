@@ -1,16 +1,19 @@
 using Leopotam.Ecs;
+using UnityEngine;
 
 namespace Client
 {
     sealed class InputActionComponent:IEcsAutoResetComponent
     {
-        public InputType InputAction = InputType.None;
-        public MoveDirection MoveDirection = MoveDirection.None;
+        public ActionType InputActionType = ActionType.None;
+        public Vector2 GoalPosition = Vector2.zero;
+        public bool Skip = false;
 
         void IEcsAutoResetComponent.Reset()
         {
-            InputAction = InputType.None;
-            MoveDirection = MoveDirection.None;
+            InputActionType = ActionType.None;
+            GoalPosition = Vector2.zero;
+            Skip = false;
         }
     }
 }

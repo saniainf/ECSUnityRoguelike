@@ -27,53 +27,69 @@ namespace Client
 
             foreach (var i in _inputPhaseEntities)
             {
+                var ic1 = _inputPhaseEntities.Components1[i];
                 var ic2 = _inputPhaseEntities.Components2[i];
+                var ie = _inputPhaseEntities.Entities[i];
 
                 var playerPoint = new Vector2(Mathf.Round(ic2.Transform.position.x), Mathf.Round(ic2.Transform.position.y));
                 var targetPoint = new Vector2(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y));
 
-                if ((targetPoint - playerPoint).sqrMagnitude == 1.0f)
+                foreach (var j in _collisionEntities)
                 {
-                    foreach (var j in _collisionEntities)
-                    {
-                        var cc1 = _collisionEntities.Components1[j];
-                        cc1.GOcomps.SpriteRenderer.color = Color.white;
+                    var cc1 = _collisionEntities.Components1[j];
+                    cc1.GOcomps.SpriteRenderer.color = Color.white;
 
-                        if (cc1.GOcomps.Collider.OverlapPoint(targetPoint))
+                    //todo здесь будут координаты точки удара из щаблона удара 
+                    if (((targetPoint - playerPoint).sqrMagnitude == 1.0f) &&
+                        (cc1.GOcomps.Collider.OverlapPoint(targetPoint)))
+                    {
+                        Debug.DrawLine(playerPoint, targetPoint, Color.red);
+                        cc1.GOcomps.SpriteRenderer.color = Color.red;
+
+                        if (Input.GetMouseButtonDown(0))
                         {
-                            Debug.DrawLine(playerPoint, targetPoint, Color.red);
-                            cc1.GOcomps.SpriteRenderer.color = Color.red;
+                            var c = _world.AddComponent<InputActionComponent>(ie);
+                            c.GoalPosition = targetPoint;
+                            c.InputActionType = ActionType.UseActiveItem;
+                            ic1.PhaseEnd = true;
                         }
                     }
-
                 }
             }
         }
 
         void KeyboardInput()
         {
-            float horizontal = (int)Input.GetAxis("Horizontal");
-            float vertical = (int)Input.GetAxis("Vertical");
-
-            if (horizontal != 0)
-                vertical = 0;
-
-            if (horizontal != 0 || vertical != 0)
+            foreach (var i in _inputPhaseEntities)
             {
-                MoveDirection direction;
+                ref var e = ref _inputPhaseEntities.Entities[i];
+                var c1 = _inputPhaseEntities.Components1[i];
+                var c2 = _inputPhaseEntities.Components2[i];
 
-                if (vertical == 0)
-                    direction = horizontal > 0 ? MoveDirection.Right : MoveDirection.Left;
-                else
-                    direction = vertical > 0 ? MoveDirection.Up : MoveDirection.Down;
+                float horizontal = (int)Input.GetAxis("Horizontal");
+                float vertical = (int)Input.GetAxis("Vertical");
+                Vector2 goalPosition = Vector2.zero; 
 
-                foreach (var i in _inputPhaseEntities)
+                if (horizontal != 0)
+                    vertical = 0;
+
+                if (horizontal != 0 || vertical != 0)
                 {
-                    ref var e = ref _inputPhaseEntities.Entities[i];
-                    var c1 = _inputPhaseEntities.Components1[i];
+                    if (vertical > 0)
+                        goalPosition = new Vector2(c2.Transform.position.x, c2.Transform.position.y + 1);
+
+                    if (vertical < 0)
+                        goalPosition = new Vector2(c2.Transform.position.x, c2.Transform.position.y - 1);
+
+                    if (horizontal > 0)
+                        goalPosition = new Vector2(c2.Transform.position.x + 1, c2.Transform.position.y);
+
+                    if (horizontal < 0)
+                        goalPosition = new Vector2(c2.Transform.position.x - 1, c2.Transform.position.y);
+
                     var c = _world.AddComponent<InputActionComponent>(e);
-                    c.MoveDirection = direction;
-                    c.InputAction = InputType.Move;
+                    c.GoalPosition = goalPosition;
+                    c.InputActionType = ActionType.Move;
                     c1.PhaseEnd = true;
                 }
             }

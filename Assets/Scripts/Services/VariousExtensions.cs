@@ -42,7 +42,7 @@ namespace Client
         GameOver
     }
 
-    public enum InputType
+    public enum ActionType
     {
         None,
         Move,
