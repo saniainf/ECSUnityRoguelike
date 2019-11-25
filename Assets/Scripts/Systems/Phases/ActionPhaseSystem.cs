@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// фаза определения действия чара, на основе фазы ввода и контроль этих действий
     /// </summary>
-    [EcsInject]
+
     sealed class ActionPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -29,26 +29,26 @@ namespace Client
             foreach (var i in _inputEntities)
             {
                 ref var entity = ref _inputEntities.Entities[i];
-                var c1 = _inputEntities.Components1[i];
-                var c2 = _inputEntities.Components2[i];
+                var c1 = _inputEntities.Get1[i];
+                var c2 = _inputEntities.Get2[i];
 
                 if (!c2.Skip)
                 {
                     if (c2.InputActionType == ActionType.Move)
                     {
-                        _world.RemoveComponent<InputActionComponent>(in entity);
+                        entity.Unset<InputActionComponent>();
                         RunMoveAction(entity, c2.GoalPosition);
                     }
 
                     if (c2.InputActionType == ActionType.UseActiveItem)
                     {
-                        _world.RemoveComponent<InputActionComponent>(in entity);
+                        entity.Unset<InputActionComponent>();
                         RunMoveAction(entity, c2.GoalPosition);
                     }
                 }
                 else
                 {
-                    _world.RemoveComponent<InputActionComponent>(in entity);
+                    entity.Unset<InputActionComponent>();
                 }
             }
 
@@ -56,7 +56,7 @@ namespace Client
             {
                 foreach (var i in _actionPhaseEntities)
                 {
-                    var c1 = _actionPhaseEntities.Components1[i];
+                    var c1 = _actionPhaseEntities.Get1[i];
                     c1.PhaseEnd = true;
                 }
             }
@@ -77,12 +77,12 @@ namespace Client
             foreach (var i in _obstacleEntities)
             {
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
-                var c1 = _obstacleEntities.Components1[i];
+                var c1 = _obstacleEntities.Get1[i];
 
                 if (c1.GOcomps.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
-                    _world.GetComponent<TurnComponent>(entity).ReturnInput = true;
+                    entity.Get<TurnComponent>().ReturnInput = true;
                 }
             }
             return result;
@@ -95,13 +95,13 @@ namespace Client
             foreach (var i in _collisionEntities)
             {
                 ref var ce = ref _collisionEntities.Entities[i];
-                var c1 = _collisionEntities.Components1[i];
+                var c1 = _collisionEntities.Get1[i];
 
                 if (c1.GOcomps.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
 
-                    var c = _world.AddComponent<ActionAtackComponent>(entity);
+                    var c = entity.Set<ActionAtackComponent>();
                     c.TargetPosition = goalPosition;
                     c.Target = ce;
                 }
@@ -112,7 +112,7 @@ namespace Client
 
         void MoveEntity(EcsEntity entity, Vector2 goalPosition)
         {
-            var c = _world.EnsureComponent<ActionMoveComponent>(entity, out _);
+            var c = entity.Set<ActionMoveComponent>();
             c.GoalInt = goalPosition.ToInt2();
             c.Speed = speed;
         }

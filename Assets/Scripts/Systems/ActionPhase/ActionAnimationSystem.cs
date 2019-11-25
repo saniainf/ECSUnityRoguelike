@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// управление анимацией чара в фазу действия
     /// </summary>
-    [EcsInject]
+    
     sealed class ActionAnimationSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -18,8 +18,8 @@ namespace Client
             foreach (var i in _animationEntities)
             {
                 ref var entity = ref _animationEntities.Entities[i];
-                var c1 = _animationEntities.Components1[i];
-                var c2 = _animationEntities.Components2[i];
+                var c1 = _animationEntities.Get1[i];
+                var c2 = _animationEntities.Get2[i];
 
                 if (!c1.Run)
                 {
@@ -28,7 +28,7 @@ namespace Client
                 }
                 else if (!c2.GOcomps.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
-                    _world.RemoveComponent<ActionAnimationComponent>(entity);
+                    entity.Unset<ActionAnimationComponent>();
                 }
             }
         }

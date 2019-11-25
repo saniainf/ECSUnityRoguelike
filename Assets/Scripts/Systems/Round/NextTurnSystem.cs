@@ -9,7 +9,7 @@ namespace Client
     /// <summary>
     /// передача хода следующему чару в очереди
     /// </summary>
-    [EcsInject]
+    
     sealed class NextTurnSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -30,14 +30,14 @@ namespace Client
 
             foreach (var i in _canTurnEntities)
             {
-                if (_canTurnEntities.Components1[i].Queue < queue)
+                if (_canTurnEntities.Get1[i].Queue < queue)
                 {
-                    queue = _canTurnEntities.Components1[i].Queue;
+                    queue = _canTurnEntities.Get1[i].Queue;
                     entity = _canTurnEntities.Entities[i];
                 }
             }
 
-            _world.AddComponent<InputPhaseComponent>(entity);
+            entity.Set<InputPhaseComponent>();
         }
     }
 }

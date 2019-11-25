@@ -43,21 +43,21 @@ namespace Client
             _systems
                 .Inject(_worldStatus);
 
-            _systems.Initialize();
+            _systems.Init();
         }
 
         void Update()
         {
             _systems.Run();
 
-            _world.RemoveOneFrameComponents();
+            _world.EndFrame();
         }
 
         void OnDisable()
         {
-            _systems.Dispose();
+            _systems.Destroy();
             _systems = null;
-            _world.Dispose();
+            _world.Destroy();
             _world = null;
         }
     }

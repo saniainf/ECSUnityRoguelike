@@ -2,12 +2,12 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    sealed class ActionAnimationComponent:IEcsAutoResetComponent
+    sealed class ActionAnimationComponent:IEcsAutoReset
     {
         public AnimatorField Animation = AnimatorField.None;
         public bool Run = false;
 
-        void IEcsAutoResetComponent.Reset()
+        void IEcsAutoReset.Reset()
         {
             Run = false;
         }

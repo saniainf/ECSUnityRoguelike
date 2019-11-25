@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// управление атакой чара в фазу действия
     /// </summary>
-    [EcsInject]
+    
     sealed class ActionAtackSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -20,14 +20,14 @@ namespace Client
             foreach (var i in _atackEntities)
             {
                 ref var e = ref _atackEntities.Entities[i];
-                var c1 = _atackEntities.Components1[i];
-                var c2 = _atackEntities.Components2[i];
-                var c3 = _atackEntities.Components3[i];
+                var c1 = _atackEntities.Get1[i];
+                var c2 = _atackEntities.Get2[i];
+                var c3 = _atackEntities.Get3[i];
 
                 if (!c1.Run)
                 {
                     c1.Run = true;
-                    var c = _world.AddComponent<ActionAnimationComponent>(e);
+                    var c = e.Set<ActionAnimationComponent>();
                     c.Animation = AnimatorField.AnimationAtack;
                 }
 
@@ -35,12 +35,12 @@ namespace Client
                 {
                     c1.OnAtack = true;
                     _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
-                    c3.WeaponItem.OnAtack(_world, e, c1.Target);
+                    c3.WeaponItem.OnAtack(e, c1.Target);
                 }
 
                 if (c1.Run && c1.OnAtack && !c2.GOcomps.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
-                    _world.RemoveComponent<ActionAtackComponent>(e);
+                    e.Unset<ActionAtackComponent>();
                 }
             }
         }

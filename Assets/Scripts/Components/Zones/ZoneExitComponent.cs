@@ -2,9 +2,9 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    sealed class ZoneExitComponent : IEcsAutoResetComponent
+    sealed class ZoneExitComponent : IEcsAutoReset
     {
-        void IEcsAutoResetComponent.Reset()
+        void IEcsAutoReset.Reset()
         {
 
         }

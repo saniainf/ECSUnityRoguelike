@@ -7,7 +7,7 @@ namespace Client
     /// <summary>
     /// ввод npc, когда его ход и фаза ввода
     /// </summary>
-    [EcsInject]
+    
     sealed class InputNPCPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -18,14 +18,14 @@ namespace Client
         {
             foreach (var i in _inputPhaseEntities)
             {
-                var ec1 = _inputPhaseEntities.Components1[i];
-                var ec2 = _inputPhaseEntities.Components2[i];
+                var ec1 = _inputPhaseEntities.Get1[i];
+                var ec2 = _inputPhaseEntities.Get2[i];
                 Vector2 goalPosition = Vector2.zero;
                 bool skip = true;
 
                 //foreach (var j in _playerEntities)
                 //{
-                //    var pc1 = _playerEntities.Components1[j];
+                //    var pc1 = _playerEntities.Get1[j];
 
                 //    if (ec2.Transform.position.y == pc1.Transform.position.y)
                 //    {
@@ -56,7 +56,7 @@ namespace Client
                 //}
 
                 ref var entity = ref _inputPhaseEntities.Entities[i];
-                var c = _world.AddComponent<InputActionComponent>(entity);
+                var c = entity.Set<InputActionComponent>();
                 c.GoalPosition = goalPosition;
                 c.InputActionType = ActionType.Move;
                 c.Skip = skip;

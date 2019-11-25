@@ -5,7 +5,7 @@ namespace Client
     /// <summary>
     /// отслеживание мертвых сущностей
     /// </summary>
-    [EcsInject]
+    
     sealed class GameOverSystem : IEcsRunSystem
     {
         //TODO надо переделать смерть сущности, чтобы не сразу исчезала
@@ -22,7 +22,7 @@ namespace Client
             {
                 foreach (var i in _playerEntities)
                 {
-                    var c1 = _playerEntities.Components1[i];
+                    var c1 = _playerEntities.Get1[i];
 
                     if (c1.Stats.HealthPoint <= 0)
                     {
@@ -32,11 +32,11 @@ namespace Client
 
                 foreach (var i in _dataSheetEntities)
                 {
-                    var c1 = _dataSheetEntities.Components1[i];
+                    var c1 = _dataSheetEntities.Get1[i];
 
                     if (c1.Stats.HealthPoint <= 0)
                     {
-                        _world.RLRemoveGOEntity(_dataSheetEntities.Entities[i]);
+                        _dataSheetEntities.Entities[i].RLDestoryGO();
                     }
                 }
             }

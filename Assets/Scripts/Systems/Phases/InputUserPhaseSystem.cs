@@ -8,7 +8,7 @@ namespace Client
     /// <summary>
     /// ввод игрока, когда его ход и фаза ввода
     /// </summary>
-    [EcsInject]
+    
     sealed class InputUserPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -27,8 +27,8 @@ namespace Client
 
             foreach (var i in _inputPhaseEntities)
             {
-                var ic1 = _inputPhaseEntities.Components1[i];
-                var ic2 = _inputPhaseEntities.Components2[i];
+                var ic1 = _inputPhaseEntities.Get1[i];
+                var ic2 = _inputPhaseEntities.Get2[i];
                 var ie = _inputPhaseEntities.Entities[i];
 
                 var playerPoint = new Vector2(Mathf.Round(ic2.Transform.position.x), Mathf.Round(ic2.Transform.position.y));
@@ -36,7 +36,7 @@ namespace Client
 
                 foreach (var j in _collisionEntities)
                 {
-                    var cc1 = _collisionEntities.Components1[j];
+                    var cc1 = _collisionEntities.Get1[j];
                     cc1.GOcomps.SpriteRenderer.color = Color.white;
 
                     //todo здесь будут координаты точки удара из щаблона удара 
@@ -48,7 +48,7 @@ namespace Client
 
                         if (Input.GetMouseButtonDown(0))
                         {
-                            var c = _world.AddComponent<InputActionComponent>(ie);
+                            var c = ie.Set<InputActionComponent>();
                             c.GoalPosition = targetPoint;
                             c.InputActionType = ActionType.UseActiveItem;
                             ic1.PhaseEnd = true;
@@ -63,8 +63,8 @@ namespace Client
             foreach (var i in _inputPhaseEntities)
             {
                 ref var e = ref _inputPhaseEntities.Entities[i];
-                var c1 = _inputPhaseEntities.Components1[i];
-                var c2 = _inputPhaseEntities.Components2[i];
+                var c1 = _inputPhaseEntities.Get1[i];
+                var c2 = _inputPhaseEntities.Get2[i];
 
                 float horizontal = (int)Input.GetAxis("Horizontal");
                 float vertical = (int)Input.GetAxis("Vertical");
@@ -87,7 +87,7 @@ namespace Client
                     if (horizontal < 0)
                         goalPosition = new Vector2(c2.Transform.position.x - 1, c2.Transform.position.y);
 
-                    var c = _world.AddComponent<InputActionComponent>(e);
+                    var c = e.Set<InputActionComponent>();
                     c.GoalPosition = goalPosition;
                     c.InputActionType = ActionType.Move;
                     c1.PhaseEnd = true;

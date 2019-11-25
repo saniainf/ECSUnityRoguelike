@@ -4,7 +4,7 @@ namespace Client
 {
     interface IWeaponItem
     {
-        void OnAtack(EcsWorld world, EcsEntity caster, EcsEntity target);
+        void OnAtack(EcsEntity caster, EcsEntity target);
     }
 
     struct WeaponItemChopper : IWeaponItem
@@ -16,9 +16,9 @@ namespace Client
             this.damage = damage;
         }
 
-        void IWeaponItem.OnAtack(EcsWorld world, EcsEntity caster, EcsEntity target)
+        void IWeaponItem.OnAtack(EcsEntity caster, EcsEntity target)
         {
-            world.RLApplyDamage(target, damage);
+            target.RLApplyDamage(damage);
         }
     }
 }

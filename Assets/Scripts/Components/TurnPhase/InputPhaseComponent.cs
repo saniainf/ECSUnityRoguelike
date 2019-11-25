@@ -2,11 +2,11 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    sealed class InputPhaseComponent:IEcsAutoResetComponent
+    sealed class InputPhaseComponent:IEcsAutoReset
     {
         public bool PhaseEnd = false;
 
-        void IEcsAutoResetComponent.Reset()
+        void IEcsAutoReset.Reset()
         {
             PhaseEnd = false;
         }

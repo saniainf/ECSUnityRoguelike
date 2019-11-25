@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// управление передвижением чара в фазу действия
     /// </summary>
-    [EcsInject]
+
     sealed class ActionMoveSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -18,8 +18,8 @@ namespace Client
             foreach (var i in _moveEntities)
             {
                 ref var e = ref _moveEntities.Entities[i];
-                var c1 = _moveEntities.Components1[i];
-                var c2 = _moveEntities.Components2[i];
+                var c1 = _moveEntities.Get1[i];
+                var c2 = _moveEntities.Get2[i];
 
                 if (!c1.Run)
                 {
@@ -32,7 +32,7 @@ namespace Client
                     if (c1.SqrDistance > (c1.DestroyDistance * c1.DestroyDistance))
                     {
                         Debug.Log($"{c1.SqrDistance}    {c1.DestroyDistance * c1.DestroyDistance}");
-                        _world.RemoveComponent<ActionMoveComponent>(e);
+                        e.Unset<ActionMoveComponent>();
                     }
                 }
 
@@ -47,7 +47,7 @@ namespace Client
                     {
                         c2.GOcomps.Rigidbody.position = c1.GoalInt;
 
-                        _world.RemoveComponent<ActionMoveComponent>(e);
+                        e.Unset<ActionMoveComponent>();
                     }
                 }
 
@@ -63,7 +63,7 @@ namespace Client
                         c2.GOcomps.Rigidbody.position = c1.GoalFloat;
                         c2.Transform.position = c1.GoalFloat;
 
-                        _world.RemoveComponent<ActionMoveComponent>(e);
+                        e.Unset<ActionMoveComponent>();
                     }
                 }
 

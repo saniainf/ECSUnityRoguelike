@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Client
 {
-    sealed class GameObjectComponent : IEcsAutoResetComponent
+    sealed class GameObjectComponent : IEcsAutoReset
     {
         public Transform Transform = null;
         public PrefabComponentsShortcut GOcomps = null;
 
-        void IEcsAutoResetComponent.Reset()
+        void IEcsAutoReset.Reset()
         {
             GOcomps = null;
             Transform = null;

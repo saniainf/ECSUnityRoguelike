@@ -5,7 +5,7 @@ namespace Client
     /// <summary>
     /// менеджер фаз хода чара
     /// </summary>
-    [EcsInject]
+    
     sealed class PhaseManagerSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -17,33 +17,33 @@ namespace Client
             foreach (var i in _inputPhaseEntities)
             {
                 ref var e = ref _inputPhaseEntities.Entities[i];
-                var c1 = _inputPhaseEntities.Components1[i];
+                var c1 = _inputPhaseEntities.Get1[i];
 
                 if (c1.PhaseEnd)
                 {
-                    _world.RemoveComponent<InputPhaseComponent>(e);
-                    _world.AddComponent<ActionPhaseComponent>(e);
+                    e.Unset<InputPhaseComponent>();
+                    e.Set<ActionPhaseComponent>();
                 }
             }
 
             foreach (var i in _actionPhaseEntities)
             {
                 ref var e = ref _actionPhaseEntities.Entities[i];
-                var c1 = _actionPhaseEntities.Components1[i];
-                var c2 = _actionPhaseEntities.Components2[i];
+                var c1 = _actionPhaseEntities.Get1[i];
+                var c2 = _actionPhaseEntities.Get2[i];
 
                 if (c1.PhaseEnd)
                 {
-                    _world.RemoveComponent<ActionPhaseComponent>(e);
+                    e.Unset<ActionPhaseComponent>();
 
                     if (c2.ReturnInput)
                     {
-                        _world.AddComponent<InputPhaseComponent>(e);
+                        e.Set<InputPhaseComponent>();
                         c2.ReturnInput = false;
                     }
                     else
                     {
-                        _world.RemoveComponent<TurnComponent>(e);
+                        e.Unset<TurnComponent>();
                     }
                 }
             }

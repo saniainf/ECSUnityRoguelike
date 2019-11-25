@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// управление камерой
     /// </summary>
-    [EcsInject]
+    
     sealed class CameraSystem : IEcsRunSystem, IEcsInitSystem
     {
         //UNDONE camera
@@ -18,7 +18,7 @@ namespace Client
 
         private Transform cameraTransform;
 
-        void IEcsInitSystem.Initialize()
+        void IEcsInitSystem.Init()
         {
             cameraTransform = Object.Instantiate(cameraPrefab).transform;
         }
@@ -27,15 +27,10 @@ namespace Client
         {
             foreach (var i in _playerEntities)
             {
-                var playerPosition = _playerEntities.Components1[i].Transform.position;
+                var playerPosition = _playerEntities.Get1[i].Transform.position;
                 playerPosition.z = -100f;
                 cameraTransform.position = playerPosition;
             }
-        }
-
-        void IEcsInitSystem.Destroy()
-        {
-
         }
     }
 }

@@ -10,49 +10,49 @@ namespace Client
     /// </summary>
     public static class RLWorldExtension
     {
-        public static void RLRemoveGOEntity(this EcsWorld world, EcsEntity entity, float time = 0)
+        public static void RLDestoryGO(this EcsEntity entity, float time = 0)
         {
-            var c = world.GetComponent<GameObjectComponent>(entity);
+            var c = entity.Get<GameObjectComponent>();
             if (c != null)
                 UnityEngine.Object.Destroy(c.Transform.gameObject, time);
-            world.RemoveEntity(entity);
+            entity.Destroy();
         }
 
-        public static void RLSetHealth(this EcsWorld world, EcsEntity entity, int value)
+        public static void RLSetHealth(this EcsEntity entity, int value)
         {
-            var c = world.GetComponent<DataSheetComponent>(entity);
+            var c = entity.Get<DataSheetComponent>();
             if (c != null)
                 c.Stats.HealthPoint = Mathf.Min(value, c.Stats.MaxHealthPoint);
         }
 
-        public static void RLSetMaxHealth(this EcsWorld world, EcsEntity entity, int value)
+        public static void RLSetMaxHealth(this EcsEntity entity, int value)
         {
-            var c = world.GetComponent<DataSheetComponent>(entity);
+            var c = entity.Get<DataSheetComponent>();
             if (c != null)
                 c.Stats.MaxHealthPoint = value;
         }
 
-        public static int RLGetHealth(this EcsWorld world, EcsEntity entity)
+        public static int RLGetHealth(this EcsEntity entity)
         {
             int value = 0;
-            var c = world.GetComponent<DataSheetComponent>(entity);
+            var c = entity.Get<DataSheetComponent>();
             if (c != null)
                 value = c.Stats.HealthPoint;
             return value;
         }
 
-        public static int RLGetMaxHealth(this EcsWorld world, EcsEntity entity)
+        public static int RLGetMaxHealth(this EcsEntity entity)
         {
             int value = 0;
-            var c = world.GetComponent<DataSheetComponent>(entity);
+            var c = entity.Get<DataSheetComponent>();
             if (c != null)
                 value = c.Stats.MaxHealthPoint;
             return value;
         }
 
-        public static void RLApplyDamage(this EcsWorld world, EcsEntity entity, int value)
+        public static void RLApplyDamage(this EcsEntity entity, int value)
         {
-            var c = world.GetComponent<DataSheetComponent>(entity);
+            var c = entity.Get<DataSheetComponent>();
             if (c != null)
                 c.Stats.HealthPoint -= value;
         }

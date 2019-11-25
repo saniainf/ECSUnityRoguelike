@@ -8,7 +8,7 @@ namespace Client
     /// <summary>
     /// построение очереди ходов чаров
     /// </summary>
-    [EcsInject]
+    
     sealed class QueueSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -32,19 +32,19 @@ namespace Client
 
             foreach (var i in _playerEntities)
             {
-                sortedEntities.Add(new Tuple<int, EcsEntity>(_playerEntities.Components1[i].Stats.Initiative, _playerEntities.Entities[i]));
+                sortedEntities.Add(new Tuple<int, EcsEntity>(_playerEntities.Get1[i].Stats.Initiative, _playerEntities.Entities[i]));
             }
 
             foreach (var i in _enemyEntities)
             {
-                sortedEntities.Add(new Tuple<int, EcsEntity>(_enemyEntities.Components1[i].Stats.Initiative, _enemyEntities.Entities[i]));
+                sortedEntities.Add(new Tuple<int, EcsEntity>(_enemyEntities.Get1[i].Stats.Initiative, _enemyEntities.Entities[i]));
             }
 
             sortedEntities.Sort((a, b) => b.Item1.CompareTo(a.Item1));
 
             foreach (var e in sortedEntities)
             {
-                var c = _world.AddComponent<TurnComponent>(e.Item2);
+                var c = e.Item2.Set<TurnComponent>();
                 c.Queue = queue++;
             }
         }

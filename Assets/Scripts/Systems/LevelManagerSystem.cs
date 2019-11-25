@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// загрузка, выгрузка уровня. сохранение данных между уровнями
     /// </summary>
-    [EcsInject]
+    
     sealed class LevelManagerSystem : IEcsRunSystem, IEcsInitSystem
     {
         readonly EcsWorld _world = null;
@@ -25,7 +25,7 @@ namespace Client
 
         private NPCDataSheet playerData;
 
-        void IEcsInitSystem.Initialize()
+        void IEcsInitSystem.Init()
         {
             _worldStatus.GameStatus = GameStatus.Start;
         }
@@ -121,22 +121,17 @@ namespace Client
             foreach (var i in _transformEntities)
             {
                 ref var e = ref _transformEntities.Entities[i];
-                _world.RLRemoveGOEntity(e);
+                e.RLDestoryGO();
             }
 
             foreach (var i in _playerEntities)
             {
                 ref var e = ref _playerEntities.Entities[i];
-                var c1 = _playerEntities.Components1[i];
+                var c1 = _playerEntities.Get1[i];
                 playerData.NPCStats = c1.Stats;
                 playerData.WeaponItem = c1.WeaponItem;
-                _world.RLRemoveGOEntity(e);
+                e.RLDestoryGO();
             }
-        }
-
-        void IEcsInitSystem.Destroy()
-        {
-
         }
     }
 }

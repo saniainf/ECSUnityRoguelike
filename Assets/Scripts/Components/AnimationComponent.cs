@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Client
 {
     //TODO перенести в gameobjectComponent
-    //sealed class AnimationComponent : IEcsAutoResetComponent
+    //sealed class AnimationComponent : IEcsAutoReset
     //{
     //    public Animator animator = null;
 
-    //    void IEcsAutoResetComponent.Reset()
+    //    void IEcsAutoReset.Reset()
     //    {
     //        animator = null;
     //    }

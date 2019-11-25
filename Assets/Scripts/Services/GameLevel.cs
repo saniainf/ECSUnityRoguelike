@@ -147,7 +147,7 @@ namespace Client
                 LayersName.Floor.ToString(),
                 VExt.NextFromArray(ObjData.p_FloorPresets.spritesArray));
 
-            _world.CreateEntityWith(out GameObjectComponent goComponent);
+            _world.NewEntityWith(out GameObjectComponent goComponent);
             goComponent.Transform = go.transform;
         }
 
@@ -161,7 +161,7 @@ namespace Client
                 LayersName.Wall.ToString(),
                 VExt.NextFromArray(ObjData.p_ObstaclePresets.spritesArray));
 
-            _world.CreateEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
+            _world.NewEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
             goComponent.Transform = go.transform;
             goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
         }
@@ -176,7 +176,7 @@ namespace Client
                 LayersName.Object.ToString(),
                 ObjData.p_ExitPointPreset.spriteSingle);
 
-            _world.CreateEntityWith(out GameObjectComponent goComponent, out ZoneExitComponent _);
+            _world.NewEntityWith(out GameObjectComponent goComponent, out ZoneExitComponent _);
             goComponent.Transform = go.transform;
         }
 
@@ -191,12 +191,12 @@ namespace Client
                 LayersName.Character.ToString(),
                 ObjData.p_PlayerPreset.Animation);
 
-            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out PlayerComponent _);
+            var e = _world.NewEntityWith(out GameObjectComponent goComponent, out PlayerComponent _);
 
             goComponent.Transform = go.transform;
             goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
 
-            var dataComponent = _world.AddComponent<DataSheetComponent>(e);
+            var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = playerData.NPCStats;
             dataComponent.WeaponItem = playerData.WeaponItem;
         }
@@ -212,7 +212,7 @@ namespace Client
                 ObjData.t_GameObjectsRoot,
                 LayersName.Object.ToString(), ObjData.p_BoostHPItemPreset.Sprite);
 
-            _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
+            _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
             goComponent.Transform = go.transform;
             collectItemComponent.CollectItem = new CollectItemBoostHP(ObjData.p_BoostHPItemPreset.Value);
 
@@ -231,7 +231,7 @@ namespace Client
                 LayersName.Object.ToString(),
                 ObjData.p_HealItemPreset.Sprite);
 
-            _world.CreateEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
+            _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
             goComponent.Transform = go.transform;
             collectItemComponent.CollectItem = new CollectItemHeal(ObjData.p_HealItemPreset.Value);
 
@@ -250,12 +250,12 @@ namespace Client
                 LayersName.Object.ToString(),
                 VExt.NextFromArray(ObjData.p_WallsPresets.Animation));
 
-            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out WallComponent _);
+            var e = _world.NewEntityWith(out GameObjectComponent goComponent, out WallComponent _);
 
             goComponent.Transform = go.transform;
             goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
 
-            var dataComponent = _world.AddComponent<DataSheetComponent>(e);
+            var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
             dataComponent.Stats.HealthPoint = dataComponent.Stats.MaxHealthPoint;
 
@@ -267,12 +267,12 @@ namespace Client
             var cell = VExt.NextFromList(emptyCells);
 
             var go = VExt.LayoutAnimationObjects(ObjData.r_PrefabPhysicsAnimation, cell.x, cell.y, goName, ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), animation);
-            var e = _world.CreateEntityWith(out GameObjectComponent goComponent, out EnemyComponent _);
+            var e = _world.NewEntityWith(out GameObjectComponent goComponent, out EnemyComponent _);
 
             goComponent.Transform = go.transform;
             goComponent.GOcomps = go.GetComponent<PrefabComponentsShortcut>();
 
-            var dataComponent = _world.AddComponent<DataSheetComponent>(e);
+            var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = data.NPCStats;
             dataComponent.WeaponItem = data.WeaponItem;
 

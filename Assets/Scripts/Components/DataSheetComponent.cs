@@ -2,13 +2,13 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    sealed class DataSheetComponent : IEcsAutoResetComponent
+    sealed class DataSheetComponent : IEcsAutoReset
     {
         public NPCStats Stats;
 
         public IWeaponItem WeaponItem;
 
-        void IEcsAutoResetComponent.Reset()
+        void IEcsAutoReset.Reset()
         {
             WeaponItem = null;
         }

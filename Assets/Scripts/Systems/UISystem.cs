@@ -7,7 +7,7 @@ namespace Client
     /// <summary>
     /// менеджер интерфейса
     /// </summary>
-    [EcsInject]
+    
     sealed class UISystem : IEcsRunSystem, IEcsInitSystem
     {
         //UNDONE ui
@@ -30,7 +30,7 @@ namespace Client
         private Text UILoadLevelText;
         private Text UIGameOverText;
 
-        void IEcsInitSystem.Initialize()
+        void IEcsInitSystem.Init()
         {
             levelRunCanvas = Object.Instantiate(canvasPrefab);
             UIHPSlider = Object.Instantiate(healthPointSliderPrefab, levelRunCanvas.transform).GetComponent<Slider>();
@@ -68,7 +68,7 @@ namespace Client
 
             foreach (var i in _playerDataEntities)
             {
-                var pc1 = _playerDataEntities.Components1[i];
+                var pc1 = _playerDataEntities.Get1[i];
                 var cur = Mathf.Max(0, pc1.Stats.HealthPoint);
                 var hp = pc1.Stats.MaxHealthPoint;
 
@@ -82,11 +82,6 @@ namespace Client
             levelLoadCanvas.SetActive(value);
             levelRunCanvas.SetActive(value);
             gameOverCanvas.SetActive(value);
-        }
-
-        void IEcsInitSystem.Destroy()
-        {
-
         }
     }
 }

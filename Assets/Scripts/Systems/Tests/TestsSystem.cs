@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client
 {
-    [EcsInject]
+    
     sealed class TestsSystem : IEcsInitSystem, IEcsRunSystem
     {
         readonly EcsFilter<GameObjectComponent, DataSheetComponent> _collisionEntities = null;
@@ -16,7 +16,7 @@ namespace Client
         readonly WorldStatus _worldStatus = null;
 
 
-        void IEcsInitSystem.Initialize()
+        void IEcsInitSystem.Init()
         {
 
         }
@@ -27,7 +27,7 @@ namespace Client
             {
                 foreach (var i in _player)
                 {
-                    var c1 = _player.Components1[i];
+                    var c1 = _player.Get1[i];
 
                     LayoutProjectile(c1.Transform.position.x, c1.Transform.position.y);
                 }
@@ -42,7 +42,7 @@ namespace Client
         void LayoutProjectile(float x, float y)
         {
             var go = VExt.LayoutSpriteObjects(_worldObjects.ResourcesPresets.PrefabSprite, x, y, "arrow", _worldStatus.ParentOtherObject, LayersName.Object.ToString(), _worldObjects.ArrowPreset.spriteSingle);
-            _world.CreateEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ActionMoveComponent actionMoveComponent);
+            _world.NewEntityWith(out GameObjectCreateEvent gameObjectCreateEvent, out ActionMoveComponent actionMoveComponent);
 
             gameObjectCreateEvent.Transform = go.transform;
             gameObjectCreateEvent.Rigidbody = go.GetComponent<Rigidbody2D>();
@@ -62,15 +62,15 @@ namespace Client
 
             foreach (var i in _collisionEntities)
             {
-                var c1 = _collisionEntities.Components1[i];
+                var c1 = _collisionEntities.Get1[i];
 
                 c1.GOcomps.SpriteRenderer.color = Color.white;
 
                 if (c1.GOcomps.Collider.OverlapPoint(worldPos3D))
                 {
                     var targetPoint = c1.GOcomps.Rigidbody.position;
-                    var playerPoint = _player.Components1[0].GOcomps.Rigidbody.position;
-                    var playerColider = _player.Components1[0].GOcomps.Collider;
+                    var playerPoint = _player.Get1[0].GOcomps.Rigidbody.position;
+                    var playerColider = _player.Get1[0].GOcomps.Collider;
                     RaycastHit2D[] hit = new RaycastHit2D[1];
 
                     var count = playerColider.Raycast(targetPoint - playerPoint, hit);
@@ -87,12 +87,7 @@ namespace Client
             }
         }
 
-        void IEcsInitSystem.Destroy()
-        {
-
-        }
-
-        void IEcsInitSystem.Initialize()
+        void IEcsInitSystem.Init()
         {
 
         }

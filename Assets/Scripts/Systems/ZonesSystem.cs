@@ -5,7 +5,7 @@ namespace Client
     /// <summary>
     /// контроль специальных зон на карте, выход и т.д.
     /// </summary>
-    [EcsInject]
+    
     sealed class ZonesSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -19,11 +19,11 @@ namespace Client
         {
             foreach (var i in _playerEntities)
             {
-                var pc1 = _playerEntities.Components1[i];
+                var pc1 = _playerEntities.Get1[i];
 
                 foreach (var j in _zoneExitEntities)
                 {
-                    var zc1 = _zoneExitEntities.Components1[i];
+                    var zc1 = _zoneExitEntities.Get1[i];
 
                     if (pc1.Transform.position == zc1.Transform.position)
                     {

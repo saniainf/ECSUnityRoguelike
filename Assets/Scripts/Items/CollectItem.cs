@@ -4,7 +4,7 @@ namespace Client
 {
     interface ICollectItem
     {
-        void OnCollect(EcsWorld world, EcsEntity entity);
+        void OnCollect(EcsEntity entity);
     }
 
     struct CollectItemHeal : ICollectItem
@@ -16,9 +16,9 @@ namespace Client
             this.value = value;
         }
 
-        void ICollectItem.OnCollect(EcsWorld world, EcsEntity entity)
+        void ICollectItem.OnCollect(EcsEntity entity)
         {
-            world.RLSetHealth(entity, world.RLGetHealth(entity) + value);
+            entity.RLSetHealth(entity.RLGetHealth() + value);
         }
     }
 
@@ -31,10 +31,10 @@ namespace Client
             this.value = value;
         }
 
-        void ICollectItem.OnCollect(EcsWorld world, EcsEntity entity)
+        void ICollectItem.OnCollect(EcsEntity entity)
         {
-            world.RLSetMaxHealth(entity, world.RLGetMaxHealth(entity) + value);
-            world.RLSetHealth(entity, world.RLGetHealth(entity) + value);
+            entity.RLSetMaxHealth(entity.RLGetMaxHealth() + value);
+            entity.RLSetHealth(entity.RLGetHealth() + value);
 
         }
     }

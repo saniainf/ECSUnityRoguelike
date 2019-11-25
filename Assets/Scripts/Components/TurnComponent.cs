@@ -2,12 +2,12 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    sealed class TurnComponent : IEcsAutoResetComponent
+    sealed class TurnComponent : IEcsAutoReset
     {
         public int Queue = 0;
         public bool ReturnInput = false;
 
-        void IEcsAutoResetComponent.Reset()
+        void IEcsAutoReset.Reset()
         {
             ReturnInput = false;
         }

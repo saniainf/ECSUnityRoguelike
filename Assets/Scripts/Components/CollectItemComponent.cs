@@ -7,11 +7,11 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    class CollectItemComponent : IEcsAutoResetComponent
+    class CollectItemComponent : IEcsAutoReset
     {
         public ICollectItem CollectItem;
 
-        void IEcsAutoResetComponent.Reset()
+        void IEcsAutoReset.Reset()
         {
             CollectItem = null;
         }
