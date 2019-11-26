@@ -25,34 +25,51 @@ namespace Client
                 Vector2 goalPosition = Vector2.zero;
                 bool skip = false;
 
+                Debug.Log($"entity: {e.GetInternalId()} | решает что делать");
+
                 foreach (var j in _playerEntities)
                 {
                     var pc1 = _playerEntities.Get1[j];
+                    var pe = _playerEntities.Entities[j];
+
+                    Debug.Log($"entity: {e.GetInternalId()} | проверяет нет ли рядом entity: {pe.GetInternalId()}");
+
+                    Vector2 check = new Vector2(cgo.Transform.position.x - 1, cgo.Transform.position.y);
+                    if (pc1.GOcomps.Collider.OverlapPoint(check))
+                    {
+                        goalPosition = check;
+                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} слева");
+                    }
+
 
                     if (cgo.Transform.position.y == pc1.Transform.position.y)
                     {
+                        Debug.Log($"entity: {e.GetInternalId()} | проверяет по Y entity: {pe.GetInternalId()}");
+
                         if (cgo.Transform.position.x - 1 == pc1.Transform.position.x)
                         {
                             goalPosition = new Vector2(cgo.Transform.position.x - 1, cgo.Transform.position.y);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует противника слева");
+                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} слева");
                         }
                         if (cgo.Transform.position.x + 1 == pc1.Transform.position.x)
                         {
                             goalPosition = new Vector2(cgo.Transform.position.x + 1, cgo.Transform.position.y);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует противника справа");
+                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} справа");
                         }
                     }
                     else if (cgo.Transform.position.x == pc1.Transform.position.x)
                     {
+                        Debug.Log($"entity: {e.GetInternalId()} | проверяет по X entity: {pe.GetInternalId()}");
+
                         if (cgo.Transform.position.y - 1 == pc1.Transform.position.y)
                         {
                             goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y - 1);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует противника снизу");
+                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} снизу");
                         }
                         if (cgo.Transform.position.y + 1 == pc1.Transform.position.y)
                         {
                             goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y + 1);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует противника сверху");
+                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} сверху");
                         }
                     }
                     else
@@ -64,7 +81,7 @@ namespace Client
                         }
                         else
                         {
-                            var d = UnityEngine.Random.Range(0, 3);
+                            var d = UnityEngine.Random.Range(0, 4);
                             Debug.Log($"--random {d}--");
                             switch (d)
                             {

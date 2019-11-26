@@ -28,14 +28,16 @@ namespace Client
                     if (!c2.SkipTurn)
                     {
                         e.Set<ActionPhaseComponent>();
+
+                        Debug.Log($"entity: {e.GetInternalId()} | фаза action");
                     }
                     else
                     {
                         e.Unset<TurnComponent>();
+
                         Debug.Log($"entity: {e.GetInternalId()} | принудительный конец хода");
                     }
 
-                    Debug.Log($"entity: {e.GetInternalId()} | фаза action");
                 }
             }
 
@@ -53,11 +55,13 @@ namespace Client
                     {
                         e.Set<InputPhaseComponent>();
                         c2.ReturnInput = false;
+
                         Debug.Log($"entity: {e.GetInternalId()} | возврат фазы input");
                     }
                     else
                     {
                         e.Unset<TurnComponent>();
+
                         Debug.Log($"entity: {e.GetInternalId()} | конец хода");
                     }
                 }
