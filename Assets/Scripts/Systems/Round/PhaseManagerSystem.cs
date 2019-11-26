@@ -1,11 +1,12 @@
 using Leopotam.Ecs;
+using UnityEngine;
 
 namespace Client
 {
     /// <summary>
     /// менеджер фаз хода чара
     /// </summary>
-    
+
     sealed class PhaseManagerSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -18,11 +19,23 @@ namespace Client
             {
                 ref var e = ref _inputPhaseEntities.Entities[i];
                 var c1 = _inputPhaseEntities.Get1[i];
+                var c2 = _inputPhaseEntities.Get2[i];
 
                 if (c1.PhaseEnd)
                 {
                     e.Unset<InputPhaseComponent>();
-                    e.Set<ActionPhaseComponent>();
+
+                    if (!c2.SkipTurn)
+                    {
+                        e.Set<ActionPhaseComponent>();
+                    }
+                    else
+                    {
+                        e.Unset<TurnComponent>();
+                        Debug.Log($"entity: {e.GetInternalId()} | принудительный конец хода");
+                    }
+
+                    Debug.Log($"entity: {e.GetInternalId()} | фаза action");
                 }
             }
 
@@ -40,10 +53,12 @@ namespace Client
                     {
                         e.Set<InputPhaseComponent>();
                         c2.ReturnInput = false;
+                        Debug.Log($"entity: {e.GetInternalId()} | возврат фазы input");
                     }
                     else
                     {
                         e.Unset<TurnComponent>();
+                        Debug.Log($"entity: {e.GetInternalId()} | конец хода");
                     }
                 }
             }

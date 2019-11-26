@@ -17,7 +17,7 @@ namespace Client
         {
             foreach (var i in _animationEntities)
             {
-                ref var entity = ref _animationEntities.Entities[i];
+                ref var e = ref _animationEntities.Entities[i];
                 var c1 = _animationEntities.Get1[i];
                 var c2 = _animationEntities.Get2[i];
 
@@ -25,10 +25,12 @@ namespace Client
                 {
                     c2.GOcomps.Animator.SetTrigger(c1.Animation.ToString());
                     c1.Run = true;
+
+                    Debug.Log($"entity: {e.GetInternalId()} | запущена action анимация: {c1.Animation.ToString()}");
                 }
                 else if (!c2.GOcomps.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
-                    entity.Unset<ActionAnimationComponent>();
+                    e.Unset<ActionAnimationComponent>();
                 }
             }
         }

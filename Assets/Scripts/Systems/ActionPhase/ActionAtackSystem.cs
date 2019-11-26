@@ -29,6 +29,8 @@ namespace Client
                     c1.Run = true;
                     var c = e.Set<ActionAnimationComponent>();
                     c.Animation = AnimatorField.AnimationAtack;
+
+                    Debug.Log($"entity: {e.GetInternalId()} | запущена action атака: entity: {c1.Target.GetInternalId()}");
                 }
 
                 if (c1.Run && !c1.OnAtack && c2.GOcomps.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)

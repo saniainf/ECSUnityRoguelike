@@ -8,17 +8,17 @@ namespace Client
     /// <summary>
     /// ввод игрока, когда его ход и фаза ввода
     /// </summary>
-    
+
     sealed class InputUserPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<InputPhaseComponent, GameObjectComponent, PlayerComponent> _inputPhaseEntities = null;
+        readonly EcsFilter<InputPhaseComponent, TurnComponent, PlayerComponent> _inputPhaseEntities = null;
         readonly EcsFilter<GameObjectComponent, DataSheetComponent>.Exclude<PlayerComponent> _collisionEntities = null;
 
         void IEcsRunSystem.Run()
         {
             KeyboardInput();
-            MouseInput();
+            //MouseInput();
         }
 
         void MouseInput()
@@ -29,9 +29,10 @@ namespace Client
             {
                 var ic1 = _inputPhaseEntities.Get1[i];
                 var ic2 = _inputPhaseEntities.Get2[i];
+                var goc = _inputPhaseEntities.Entities[i].Get<GameObjectComponent>();
                 var ie = _inputPhaseEntities.Entities[i];
 
-                var playerPoint = new Vector2(Mathf.Round(ic2.Transform.position.x), Mathf.Round(ic2.Transform.position.y));
+                var playerPoint = new Vector2(Mathf.Round(goc.Transform.position.x), Mathf.Round(goc.Transform.position.y));
                 var targetPoint = new Vector2(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y));
 
                 foreach (var j in _collisionEntities)
@@ -48,10 +49,9 @@ namespace Client
 
                         if (Input.GetMouseButtonDown(0))
                         {
-                            var c = ie.Set<InputActionComponent>();
-                            c.GoalPosition = targetPoint;
-                            c.InputActionType = ActionType.UseActiveItem;
                             ic1.PhaseEnd = true;
+                            ic2.GoalPosition = targetPoint;
+                            ic2.ActionType = ActionType.UseActiveItem;
                         }
                     }
                 }
@@ -65,10 +65,11 @@ namespace Client
                 ref var e = ref _inputPhaseEntities.Entities[i];
                 var c1 = _inputPhaseEntities.Get1[i];
                 var c2 = _inputPhaseEntities.Get2[i];
+                var goc = _inputPhaseEntities.Entities[i].Get<GameObjectComponent>();
 
                 float horizontal = (int)Input.GetAxis("Horizontal");
                 float vertical = (int)Input.GetAxis("Vertical");
-                Vector2 goalPosition = Vector2.zero; 
+                Vector2 goalPosition = Vector2.zero;
 
                 if (horizontal != 0)
                     vertical = 0;
@@ -76,21 +77,28 @@ namespace Client
                 if (horizontal != 0 || vertical != 0)
                 {
                     if (vertical > 0)
-                        goalPosition = new Vector2(c2.Transform.position.x, c2.Transform.position.y + 1);
+                        goalPosition = new Vector2(goc.Transform.position.x, goc.Transform.position.y + 1);
 
                     if (vertical < 0)
-                        goalPosition = new Vector2(c2.Transform.position.x, c2.Transform.position.y - 1);
+                        goalPosition = new Vector2(goc.Transform.position.x, goc.Transform.position.y - 1);
 
                     if (horizontal > 0)
-                        goalPosition = new Vector2(c2.Transform.position.x + 1, c2.Transform.position.y);
+                        goalPosition = new Vector2(goc.Transform.position.x + 1, goc.Transform.position.y);
 
                     if (horizontal < 0)
-                        goalPosition = new Vector2(c2.Transform.position.x - 1, c2.Transform.position.y);
+                        goalPosition = new Vector2(goc.Transform.position.x - 1, goc.Transform.position.y);
 
-                    var c = e.Set<InputActionComponent>();
-                    c.GoalPosition = goalPosition;
-                    c.InputActionType = ActionType.Move;
                     c1.PhaseEnd = true;
+                    c2.GoalPosition = goalPosition;
+                    c2.ActionType = ActionType.Move;
+
+                    Debug.Log($"entity: {e.GetInternalId()} | ввод с клавиатуры: сместить в {goalPosition.x}, {goalPosition.y}");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    c1.PhaseEnd = true;
+                    c2.SkipTurn = true;
                 }
             }
         }

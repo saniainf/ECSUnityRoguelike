@@ -44,12 +44,13 @@ namespace Client
                 .Inject(_worldStatus);
 
             _systems.Init();
+
+            Debug.Log("Start game");
         }
 
         void Update()
         {
             _systems.Run();
-
             _world.EndFrame();
         }
 

@@ -11,8 +11,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<ActionPhaseComponent> _actionPhaseEntities = null;
-        readonly EcsFilter<GameObjectComponent, InputActionComponent> _inputEntities = null;
+        readonly EcsFilter<ActionPhaseComponent, TurnComponent> _actionPhaseEntities = null;
 
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
@@ -26,29 +25,25 @@ namespace Client
 
         void IEcsRunSystem.Run()
         {
-            foreach (var i in _inputEntities)
+            foreach (var i in _actionPhaseEntities)
             {
-                ref var entity = ref _inputEntities.Entities[i];
-                var c1 = _inputEntities.Get1[i];
-                var c2 = _inputEntities.Get2[i];
+                ref var e = ref _actionPhaseEntities.Entities[i];
+                var c1 = _actionPhaseEntities.Get1[i];
+                var c2 = _actionPhaseEntities.Get2[i];
 
-                if (!c2.Skip)
+                if (!c1.Run)
                 {
-                    if (c2.InputActionType == ActionType.Move)
+                    if (c2.ActionType == ActionType.Move)
                     {
-                        entity.Unset<InputActionComponent>();
-                        RunMoveAction(entity, c2.GoalPosition);
+                        RunMoveAction(e, c2.GoalPosition);
                     }
 
-                    if (c2.InputActionType == ActionType.UseActiveItem)
+                    if (c2.ActionType == ActionType.UseActiveItem)
                     {
-                        entity.Unset<InputActionComponent>();
-                        RunMoveAction(entity, c2.GoalPosition);
+                        RunMoveAction(e, c2.GoalPosition);
                     }
-                }
-                else
-                {
-                    entity.Unset<InputActionComponent>();
+
+                    c1.Run = true;
                 }
             }
 
