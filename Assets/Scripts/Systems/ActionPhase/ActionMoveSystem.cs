@@ -23,7 +23,7 @@ namespace Client
 
                 if (!c1.Run)
                 {
-                    c1.StartPosition = c2.GOcomps.Rigidbody.position;
+                    c1.StartPosition = c2.GObj.Rigidbody.position;
                     c1.Run = true;
 
                     Debug.Log($"entity: {e.GetInternalId()} | запущено action смещение в: {c1.GoalInt.x}, {c1.GoalInt.y}");
@@ -40,14 +40,14 @@ namespace Client
 
                 //if (c1.GoalInt != Vector2Int.zero)
                 //{
-                var nextPosition = Vector2.MoveTowards(c2.GOcomps.Rigidbody.position, c1.GoalInt, c1.Speed * Time.deltaTime);
-                c2.GOcomps.Rigidbody.MovePosition(nextPosition);
-                c1.SqrDistance = (c2.GOcomps.Rigidbody.position - c1.StartPosition).sqrMagnitude;
+                var nextPosition = Vector2.MoveTowards(c2.GObj.Rigidbody.position, c1.GoalInt, c1.Speed * Time.deltaTime);
+                c2.GObj.Rigidbody.MovePosition(nextPosition);
+                c1.SqrDistance = (c2.GObj.Rigidbody.position - c1.StartPosition).sqrMagnitude;
 
-                float sqrDistanceToGoal = (c2.GOcomps.Rigidbody.position - c1.GoalInt).sqrMagnitude;
+                float sqrDistanceToGoal = (c2.GObj.Rigidbody.position - c1.GoalInt).sqrMagnitude;
                 if (sqrDistanceToGoal < float.Epsilon)
                 {
-                    c2.GOcomps.Rigidbody.position = c1.GoalInt;
+                    c2.GObj.Rigidbody.position = c1.GoalInt;
 
                     e.Unset<ActionMoveComponent>();
                 }

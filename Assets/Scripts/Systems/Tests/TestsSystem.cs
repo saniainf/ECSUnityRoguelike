@@ -64,13 +64,13 @@ namespace Client
             {
                 var c1 = _collisionEntities.Get1[i];
 
-                c1.GOcomps.SpriteRenderer.color = Color.white;
+                c1.GObj.SpriteRenderer.color = Color.white;
 
-                if (c1.GOcomps.Collider.OverlapPoint(worldPos3D))
+                if (c1.GObj.Collider.OverlapPoint(worldPos3D))
                 {
-                    var targetPoint = c1.GOcomps.Rigidbody.position;
-                    var playerPoint = _player.Get1[0].GOcomps.Rigidbody.position;
-                    var playerColider = _player.Get1[0].GOcomps.Collider;
+                    var targetPoint = c1.GObj.Rigidbody.position;
+                    var playerPoint = _player.Get1[0].GObj.Rigidbody.position;
+                    var playerColider = _player.Get1[0].GObj.Collider;
                     RaycastHit2D[] hit = new RaycastHit2D[1];
 
                     var count = playerColider.Raycast(targetPoint - playerPoint, hit);
@@ -78,9 +78,9 @@ namespace Client
                     if (count != 0)
                     {
                         Debug.DrawLine(playerPoint, hit[0].point);
-                        if (hit[0].collider == c1.GOcomps.Collider)
+                        if (hit[0].collider == c1.GObj.Collider)
                         {
-                            c1.GOcomps.SpriteRenderer.color = Color.red;
+                            c1.GObj.SpriteRenderer.color = Color.red;
                         }
                     }
                 }

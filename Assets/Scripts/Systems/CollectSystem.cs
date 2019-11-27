@@ -28,7 +28,7 @@ namespace Client
                     var cc1 = _collectItemEntities.Get1[j];
                     var cc2 = _collectItemEntities.Get2[j];
 
-                    if (pc1.GOcomps.Collider.OverlapPoint(cc1.Transform.position))
+                    if (pc1.GObj.Collider.OverlapPoint(cc1.Transform.position))
                     {
                         cc2.CollectItem.OnCollect(pe);
                         ce.RLDestoryGO();

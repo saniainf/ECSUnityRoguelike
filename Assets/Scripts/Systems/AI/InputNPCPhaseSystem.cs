@@ -24,6 +24,7 @@ namespace Client
                 var cgo = _inputPhaseEntities.Entities[i].Get<GameObjectComponent>();
                 Vector2 goalPosition = Vector2.zero;
                 bool skip = false;
+                bool atackPlayer = false;
 
                 Debug.Log($"entity: {e.GetInternalId()} | решает что делать");
 
@@ -34,77 +35,73 @@ namespace Client
 
                     Debug.Log($"entity: {e.GetInternalId()} | проверяет нет ли рядом entity: {pe.GetInternalId()}");
 
-                    Vector2 check = new Vector2(cgo.Transform.position.x - 1, cgo.Transform.position.y);
-                    if (pc1.GOcomps.Collider.OverlapPoint(check))
+                    Vector2 checkPoint = cgo.Transform.position;
+                    checkPoint.x = cgo.Transform.position.x - 1;
+                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
                     {
-                        goalPosition = check;
+                        goalPosition = checkPoint;
+                        atackPlayer = true;
                         Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} слева");
+                        continue;
                     }
 
-
-                    if (cgo.Transform.position.y == pc1.Transform.position.y)
+                    checkPoint.x = cgo.Transform.position.x + 1;
+                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
                     {
-                        Debug.Log($"entity: {e.GetInternalId()} | проверяет по Y entity: {pe.GetInternalId()}");
+                        goalPosition = checkPoint;
+                        atackPlayer = true;
+                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} справа");
+                        continue;
+                    }
 
-                        if (cgo.Transform.position.x - 1 == pc1.Transform.position.x)
-                        {
+                    checkPoint = cgo.Transform.position;
+                    checkPoint.y = cgo.Transform.position.y + 1;
+                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
+                    {
+                        goalPosition = checkPoint;
+                        atackPlayer = true;
+                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} сверху");
+                        continue;
+                    }
+
+                    checkPoint.y = cgo.Transform.position.y - 1;
+                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
+                    {
+                        goalPosition = checkPoint;
+                        atackPlayer = true;
+                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} снизу");
+                        continue;
+                    }
+                }
+
+                if (!atackPlayer && UnityEngine.Random.value < 0.7f)
+                {
+                    skip = true;
+                    Debug.Log($"entity: {e.GetInternalId()} | решил пропустить ход");
+                }
+
+                if (!atackPlayer && !skip)
+                {
+                    switch (UnityEngine.Random.Range(0, 4))
+                    {
+                        case 0:
                             goalPosition = new Vector2(cgo.Transform.position.x - 1, cgo.Transform.position.y);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} слева");
-                        }
-                        if (cgo.Transform.position.x + 1 == pc1.Transform.position.x)
-                        {
+                            break;
+                        case 1:
                             goalPosition = new Vector2(cgo.Transform.position.x + 1, cgo.Transform.position.y);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} справа");
-                        }
-                    }
-                    else if (cgo.Transform.position.x == pc1.Transform.position.x)
-                    {
-                        Debug.Log($"entity: {e.GetInternalId()} | проверяет по X entity: {pe.GetInternalId()}");
-
-                        if (cgo.Transform.position.y - 1 == pc1.Transform.position.y)
-                        {
+                            break;
+                        case 2:
                             goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y - 1);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} снизу");
-                        }
-                        if (cgo.Transform.position.y + 1 == pc1.Transform.position.y)
-                        {
+                            break;
+                        case 3:
                             goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y + 1);
-                            Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} сверху");
-                        }
-                    }
-                    else
-                    {
-                        if (UnityEngine.Random.value < 0.7f)
-                        {
+                            break;
+                        default:
                             skip = true;
-                            Debug.Log($"entity: {e.GetInternalId()} | решил пропустить ход");
-                        }
-                        else
-                        {
-                            var d = UnityEngine.Random.Range(0, 4);
-                            Debug.Log($"--random {d}--");
-                            switch (d)
-                            {
-                                case 0:
-                                    goalPosition = new Vector2(cgo.Transform.position.x - 1, cgo.Transform.position.y);
-                                    break;
-                                case 1:
-                                    goalPosition = new Vector2(cgo.Transform.position.x + 1, cgo.Transform.position.y);
-                                    break;
-                                case 2:
-                                    goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y - 1);
-                                    break;
-                                case 3:
-                                    goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y + 1);
-                                    break;
-                                default:
-                                    skip = true;
-                                    break;
-                            }
-
-                            Debug.Log($"entity: {e.GetInternalId()} | решил пойти в {goalPosition.x}, {goalPosition.y}");
-                        }
+                            break;
                     }
+
+                    Debug.Log($"entity: {e.GetInternalId()} | решил пойти в {goalPosition.x}, {goalPosition.y}");
                 }
 
                 c1.PhaseEnd = true;

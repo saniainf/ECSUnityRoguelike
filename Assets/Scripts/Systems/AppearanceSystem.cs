@@ -20,7 +20,7 @@ namespace Client
                 var c1 = _aspectEntities.Get1[i];
                 var c2 = _aspectEntities.Get2[i];
 
-                c1.GOcomps.Animator.SetBool(AnimatorField.Damaged.ToString(), (c2.Stats.MaxHealthPoint != c2.Stats.HealthPoint));
+                c1.GObj.Animator.SetBool(AnimatorField.Damaged.ToString(), (c2.Stats.MaxHealthPoint != c2.Stats.HealthPoint));
             }
         }
     }

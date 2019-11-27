@@ -33,14 +33,14 @@ namespace Client
                     Debug.Log($"entity: {e.GetInternalId()} | запущена action атака: entity: {c1.Target.GetInternalId()}");
                 }
 
-                if (c1.Run && !c1.OnAtack && c2.GOcomps.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
+                if (c1.Run && !c1.OnAtack && c2.GObj.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
                 {
                     c1.OnAtack = true;
                     _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
                     c3.WeaponItem.OnAtack(e, c1.Target);
                 }
 
-                if (c1.Run && c1.OnAtack && !c2.GOcomps.Animator.GetBool(AnimatorField.ActionRun.ToString()))
+                if (c1.Run && c1.OnAtack && !c2.GObj.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     e.Unset<ActionAtackComponent>();
                 }

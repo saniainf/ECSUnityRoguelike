@@ -23,12 +23,12 @@ namespace Client
 
                 if (!c1.Run)
                 {
-                    c2.GOcomps.Animator.SetTrigger(c1.Animation.ToString());
+                    c2.GObj.Animator.SetTrigger(c1.Animation.ToString());
                     c1.Run = true;
 
                     Debug.Log($"entity: {e.GetInternalId()} | запущена action анимация: {c1.Animation.ToString()}");
                 }
-                else if (!c2.GOcomps.Animator.GetBool(AnimatorField.ActionRun.ToString()))
+                else if (!c2.GObj.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     e.Unset<ActionAnimationComponent>();
                 }

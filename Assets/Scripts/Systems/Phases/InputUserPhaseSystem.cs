@@ -38,14 +38,14 @@ namespace Client
                 foreach (var j in _collisionEntities)
                 {
                     var cc1 = _collisionEntities.Get1[j];
-                    cc1.GOcomps.SpriteRenderer.color = Color.white;
+                    cc1.GObj.SpriteRenderer.color = Color.white;
 
                     //todo здесь будут координаты точки удара из щаблона удара 
                     if (((targetPoint - playerPoint).sqrMagnitude == 1.0f) &&
-                        (cc1.GOcomps.Collider.OverlapPoint(targetPoint)))
+                        (cc1.GObj.Collider.OverlapPoint(targetPoint)))
                     {
                         Debug.DrawLine(playerPoint, targetPoint, Color.red);
-                        cc1.GOcomps.SpriteRenderer.color = Color.red;
+                        cc1.GObj.SpriteRenderer.color = Color.red;
 
                         if (Input.GetMouseButtonDown(0))
                         {

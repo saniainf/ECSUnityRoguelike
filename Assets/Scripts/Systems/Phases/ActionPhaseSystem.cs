@@ -74,7 +74,7 @@ namespace Client
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
                 var c1 = _obstacleEntities.Get1[i];
 
-                if (c1.GOcomps.Collider.OverlapPoint(goalPosition))
+                if (c1.GObj.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
                     entity.Get<TurnComponent>().ReturnInput = true;
@@ -92,7 +92,7 @@ namespace Client
                 ref var ce = ref _collisionEntities.Entities[i];
                 var c1 = _collisionEntities.Get1[i];
 
-                if (c1.GOcomps.Collider.OverlapPoint(goalPosition))
+                if (c1.GObj.Collider.OverlapPoint(goalPosition))
                 {
                     result = true;
 

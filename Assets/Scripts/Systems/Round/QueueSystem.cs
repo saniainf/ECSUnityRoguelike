@@ -47,7 +47,7 @@ namespace Client
                 c.Queue = queue++;
             }
 
-            Debug.Log("___________________________");
+            Debug.Log("++++++++++++++++++++++++++++++");
             Debug.Log("новый раунд");
             foreach (var e in sortedEntities)
             {
