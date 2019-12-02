@@ -49,9 +49,8 @@ namespace Client
         UseActiveItem
     }
 
-    enum MoveDirection
+    public enum Direction
     {
-        None,
         Up,
         Down,
         Left,

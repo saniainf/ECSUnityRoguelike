@@ -106,8 +106,8 @@ namespace Client
 
                 c1.PhaseEnd = true;
                 c2.SkipTurn = skip;
-                c2.GoalPosition = goalPosition;
-                c2.ActionType = ActionType.Move;
+                var icom = new InputComOneStep(goalPosition);
+                c2.InputCommand = icom;
             }
         }
     }

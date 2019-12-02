@@ -9,6 +9,8 @@ namespace Client
 
     sealed class ActionMoveSystem : IEcsRunSystem
     {
+        float SPEED = 7f;
+
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<ActionMoveComponent, TurnComponent, GameObjectComponent> _moveEntities = null;
@@ -27,17 +29,25 @@ namespace Client
 
                 if (!c1.Run && CheckObstacleCollision(c1.GoalPosition))
                 {
-                    c2.ReturnInput = true;
+                    //TODO проверка на возврат хода при столкновении с препядствием
+                    if (true)
+                        c2.ReturnInput = true;
+
                     e.Unset<ActionMoveComponent>();
                     continue;
                 }
 
                 if (!c1.Run && CheckCollision(c1.GoalPosition, out EcsEntity target))
                 {
-                    var c = e.Set<ActionAtackComponent>();
-                    c.Target = target;
-                    c.TargetPosition = c1.GoalPosition;
-                    e.Unset<ActionAtackComponent>();
+                    // TODO проверка на атаку при движении
+                    if (true)
+                    {
+                        var c = e.Set<ActionAtackComponent>();
+                        c.Target = target;
+                        c.TargetPosition = c1.GoalPosition;
+                    }
+
+                    e.Unset<ActionMoveComponent>();
                     continue;
                 }
 
@@ -51,7 +61,7 @@ namespace Client
 
                 if (c1.Run)
                 {
-                    var nextPosition = Vector2.MoveTowards(c3.GObj.Rigidbody.position, c1.GoalPosition, c1.Speed * Time.deltaTime);
+                    var nextPosition = Vector2.MoveTowards(c3.GObj.Rigidbody.position, c1.GoalPosition, SPEED * Time.deltaTime);
                     c3.GObj.Rigidbody.MovePosition(nextPosition);
 
                     float sqrDistanceToGoal = (c3.GObj.Rigidbody.position - c1.GoalPosition).sqrMagnitude;

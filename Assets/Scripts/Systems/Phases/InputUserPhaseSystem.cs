@@ -50,8 +50,7 @@ namespace Client
                         if (Input.GetMouseButtonDown(0))
                         {
                             ic1.PhaseEnd = true;
-                            ic2.GoalPosition = targetPoint;
-                            ic2.ActionType = ActionType.UseActiveItem;
+
                         }
                     }
                 }
@@ -71,26 +70,41 @@ namespace Client
                 float vertical = (int)Input.GetAxis("Vertical");
                 Vector2 goalPosition = Vector2.zero;
 
+
                 if (horizontal != 0)
                     vertical = 0;
 
                 if (horizontal != 0 || vertical != 0)
                 {
+                    InputComOneStepOnDirection oneStepOnDirection = null;
+
                     if (vertical > 0)
+                    {
+                        oneStepOnDirection = new InputComOneStepOnDirection(Direction.Up);
                         goalPosition = new Vector2(goc.Transform.position.x, goc.Transform.position.y + 1);
+                    }
 
                     if (vertical < 0)
+                    {
+                        oneStepOnDirection = new InputComOneStepOnDirection(Direction.Down);
                         goalPosition = new Vector2(goc.Transform.position.x, goc.Transform.position.y - 1);
+                    }
 
                     if (horizontal > 0)
+                    {
+                        oneStepOnDirection = new InputComOneStepOnDirection(Direction.Right);
                         goalPosition = new Vector2(goc.Transform.position.x + 1, goc.Transform.position.y);
+                    }
 
                     if (horizontal < 0)
+                    {
+                        oneStepOnDirection = new InputComOneStepOnDirection(Direction.Left);
                         goalPosition = new Vector2(goc.Transform.position.x - 1, goc.Transform.position.y);
+                    }
 
                     c1.PhaseEnd = true;
-                    c2.GoalPosition = goalPosition;
-                    c2.ActionType = ActionType.Move;
+                    //var icom = new InputComOneStep(goalPosition);
+                    c2.InputCommand = oneStepOnDirection;
 
                     Debug.Log($"entity: {e.GetInternalId()} | ввод с клавиатуры: сместить в {goalPosition.x}, {goalPosition.y}");
                 }
@@ -98,7 +112,8 @@ namespace Client
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     c1.PhaseEnd = true;
-                    c2.SkipTurn = true;
+                    var icom = new InputComSkipTurn();
+                    c2.InputCommand = icom;
                 }
             }
         }
