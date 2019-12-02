@@ -101,14 +101,13 @@ namespace Client
                     c.Target = ce;
                 }
             }
-
             return result;
         }
 
         void MoveEntity(EcsEntity entity, Vector2 goalPosition)
         {
             var c = entity.Set<ActionMoveComponent>();
-            c.GoalInt = goalPosition.ToInt2();
+            c.GoalPosition = goalPosition.ToInt2();
             c.Speed = speed;
         }
     }

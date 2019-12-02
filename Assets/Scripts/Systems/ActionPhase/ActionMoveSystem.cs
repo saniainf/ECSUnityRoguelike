@@ -11,7 +11,10 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<ActionMoveComponent, GameObjectComponent> _moveEntities = null;
+        readonly EcsFilter<ActionMoveComponent, TurnComponent, GameObjectComponent> _moveEntities = null;
+
+        readonly EcsFilter<GameObjectComponent, DataSheetComponent> _collisionEntities = null;
+        readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -20,62 +23,79 @@ namespace Client
                 ref var e = ref _moveEntities.Entities[i];
                 var c1 = _moveEntities.Get1[i];
                 var c2 = _moveEntities.Get2[i];
+                var c3 = _moveEntities.Get3[i];
+
+                if (!c1.Run && CheckObstacleCollision(c1.GoalPosition))
+                {
+                    c2.ReturnInput = true;
+                    e.Unset<ActionMoveComponent>();
+                    continue;
+                }
+
+                if (!c1.Run && CheckCollision(c1.GoalPosition, out EcsEntity target))
+                {
+                    var c = e.Set<ActionAtackComponent>();
+                    c.Target = target;
+                    c.TargetPosition = c1.GoalPosition;
+                    e.Unset<ActionAtackComponent>();
+                    continue;
+                }
 
                 if (!c1.Run)
                 {
-                    c1.StartPosition = c2.GObj.Rigidbody.position;
+                    c1.StartPosition = c3.GObj.Rigidbody.position;
                     c1.Run = true;
 
-                    Debug.Log($"entity: {e.GetInternalId()} | запущено action смещение в: {c1.GoalInt.x}, {c1.GoalInt.y}");
+                    Debug.Log($"entity: {e.GetInternalId()} | запущено action смещение в: {c1.GoalPosition.x}, {c1.GoalPosition.y}");
                 }
 
-                //if (c1.Run)
-                //{
-                //    if (c1.SqrDistance > (c1.DestroyDistance * c1.DestroyDistance))
-                //    {
-                //        Debug.Log($"{c1.SqrDistance}    {c1.DestroyDistance * c1.DestroyDistance}");
-                //        e.Unset<ActionMoveComponent>();
-                //    }
-                //}
-
-                //if (c1.GoalInt != Vector2Int.zero)
-                //{
-                var nextPosition = Vector2.MoveTowards(c2.GObj.Rigidbody.position, c1.GoalInt, c1.Speed * Time.deltaTime);
-                c2.GObj.Rigidbody.MovePosition(nextPosition);
-                c1.SqrDistance = (c2.GObj.Rigidbody.position - c1.StartPosition).sqrMagnitude;
-
-                float sqrDistanceToGoal = (c2.GObj.Rigidbody.position - c1.GoalInt).sqrMagnitude;
-                if (sqrDistanceToGoal < float.Epsilon)
+                if (c1.Run)
                 {
-                    c2.GObj.Rigidbody.position = c1.GoalInt;
+                    var nextPosition = Vector2.MoveTowards(c3.GObj.Rigidbody.position, c1.GoalPosition, c1.Speed * Time.deltaTime);
+                    c3.GObj.Rigidbody.MovePosition(nextPosition);
 
-                    e.Unset<ActionMoveComponent>();
+                    float sqrDistanceToGoal = (c3.GObj.Rigidbody.position - c1.GoalPosition).sqrMagnitude;
+                    if (sqrDistanceToGoal < float.Epsilon)
+                    {
+                        c3.GObj.Rigidbody.position = c1.GoalPosition;
+
+                        e.Unset<ActionMoveComponent>();
+                    }
                 }
-                //}
-
-                //else if (c1.GoalFloat != Vector2.zero)
-                //{
-                //    var nextPosition = Vector2.MoveTowards(c2.GOcomps.Rigidbody.position, c1.GoalFloat, c1.Speed * Time.deltaTime);
-                //    c2.GOcomps.Rigidbody.MovePosition(nextPosition);
-                //    c1.SqrDistance = (c2.GOcomps.Rigidbody.position - c1.StartPosition).sqrMagnitude;
-
-                //    float sqrDistanceToGoal = (c2.GOcomps.Rigidbody.position - c1.GoalFloat).sqrMagnitude;
-                //    if (sqrDistanceToGoal < float.Epsilon)
-                //    {
-                //        c2.GOcomps.Rigidbody.position = c1.GoalFloat;
-                //        c2.Transform.position = c1.GoalFloat;
-
-                //        e.Unset<ActionMoveComponent>();
-                //    }
-                //}
-
-                //else if (c1.GoalDirection != Vector2.zero)
-                //{
-                //    var nextPosition = c2.GOcomps.Rigidbody.position + (c1.GoalDirection * (c1.Speed * Time.deltaTime));
-                //    c2.GOcomps.Rigidbody.MovePosition(nextPosition);
-                //    c1.SqrDistance = (c2.GOcomps.Rigidbody.position - c1.StartPosition).sqrMagnitude;
-                //}
             }
+        }
+
+        bool CheckObstacleCollision(Vector2 goalPosition)
+        {
+            foreach (var i in _obstacleEntities)
+            {
+                ref var wallEntity = ref _obstacleEntities.Entities[i];
+                var c1 = _obstacleEntities.Get1[i];
+
+                if (c1.GObj.Collider.OverlapPoint(goalPosition))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        bool CheckCollision(Vector2 goalPosition, out EcsEntity target)
+        {
+            target = EcsEntity.Null;
+
+            foreach (var i in _collisionEntities)
+            {
+                ref var ce = ref _collisionEntities.Entities[i];
+                var c1 = _collisionEntities.Get1[i];
+
+                if (c1.GObj.Collider.OverlapPoint(goalPosition))
+                {
+                    target = ce;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

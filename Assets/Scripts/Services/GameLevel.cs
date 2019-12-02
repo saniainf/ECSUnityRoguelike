@@ -195,6 +195,7 @@ namespace Client
 
             goComponent.Transform = go.transform;
             goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
 
             var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = playerData.NPCStats;
@@ -254,6 +255,7 @@ namespace Client
 
             goComponent.Transform = go.transform;
             goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
 
             var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
@@ -271,6 +273,7 @@ namespace Client
 
             goComponent.Transform = go.transform;
             goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
 
             var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = data.NPCStats;

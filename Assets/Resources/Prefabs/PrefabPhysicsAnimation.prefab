@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.44145367, b: 0.2956123, a: 1}
+  m_Color: {r: 0.8396226, g: 0.40591028, b: 0.20990565, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -236,7 +236,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 6603b913b2067be479b8fd00e1b868a5, type: 3}
-    m_FontSize: 4
+    m_FontSize: 1
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 3000
+  m_DynamicPixelsPerUnit: 2700
 --- !u!114 &280619692321699257
 MonoBehaviour:
   m_ObjectHideFlags: 0

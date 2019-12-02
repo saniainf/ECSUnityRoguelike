@@ -1,4 +1,5 @@
 using Leopotam.Ecs;
+using System;
 using UnityEngine;
 
 namespace Client
@@ -7,8 +8,9 @@ namespace Client
     {
         public int Queue = 0;
         public bool ReturnInput = false;
-
+        [Obsolete]
         public ActionType ActionType = ActionType.None;
+        [Obsolete]
         public Vector2 GoalPosition = Vector2.zero;
 
         public bool SkipTurn = false;
