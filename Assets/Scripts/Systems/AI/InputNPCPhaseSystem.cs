@@ -22,9 +22,12 @@ namespace Client
                 var c1 = _inputPhaseEntities.Get1[i];
                 var c2 = _inputPhaseEntities.Get2[i];
                 var cgo = _inputPhaseEntities.Entities[i].Get<GameObjectComponent>();
+
                 Vector2 goalPosition = Vector2.zero;
+
                 bool skip = false;
                 bool atackPlayer = false;
+                EcsEntity target = EcsEntity.Null;
 
                 Debug.Log($"entity: {e.GetInternalId()} | решает что делать");
 
@@ -40,6 +43,7 @@ namespace Client
                     if (pc1.GObj.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
+                        target = pe;
                         atackPlayer = true;
                         Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} слева");
                         continue;
@@ -49,6 +53,7 @@ namespace Client
                     if (pc1.GObj.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
+                        target = pe;
                         atackPlayer = true;
                         Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} справа");
                         continue;
@@ -59,6 +64,7 @@ namespace Client
                     if (pc1.GObj.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
+                        target = pe;
                         atackPlayer = true;
                         Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} сверху");
                         continue;
@@ -68,46 +74,56 @@ namespace Client
                     if (pc1.GObj.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
+                        target = pe;
                         atackPlayer = true;
                         Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} снизу");
                         continue;
                     }
                 }
 
+                if (atackPlayer)
+                {
+                    c2.InputCommand = new InputComAtackCloseCell(target, goalPosition);
+                    c1.PhaseEnd = true;
+                    continue;
+                }
+
                 if (!atackPlayer && UnityEngine.Random.value < 0.7f)
                 {
-                    skip = true;
                     Debug.Log($"entity: {e.GetInternalId()} | решил пропустить ход");
+                    c2.InputCommand = new InputComEmpty();
+                    c1.PhaseEnd = true;
+                    continue;
                 }
 
                 if (!atackPlayer && !skip)
                 {
+                    float v = 0f;
+                    float h = 0f;
+
                     switch (UnityEngine.Random.Range(0, 4))
                     {
                         case 0:
-                            goalPosition = new Vector2(cgo.Transform.position.x - 1, cgo.Transform.position.y);
+                            h -= 1;
                             break;
                         case 1:
-                            goalPosition = new Vector2(cgo.Transform.position.x + 1, cgo.Transform.position.y);
+                            h += 1;
                             break;
                         case 2:
-                            goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y - 1);
+                            v -= 1;
                             break;
                         case 3:
-                            goalPosition = new Vector2(cgo.Transform.position.x, cgo.Transform.position.y + 1);
+                            v += 1;
                             break;
                         default:
                             skip = true;
                             break;
                     }
+                    Debug.Log($"entity: {e.GetInternalId()} | бродит");
 
-                    Debug.Log($"entity: {e.GetInternalId()} | решил пойти в {goalPosition.x}, {goalPosition.y}");
+                    c1.PhaseEnd = true;
+                    c2.InputCommand = new InputComOneStepOnDirection(h, v);
                 }
-
-                c1.PhaseEnd = true;
-                c2.SkipTurn = skip;
-                var icom = new InputComOneStep(goalPosition);
-                c2.InputCommand = icom;
             }
         }
     }

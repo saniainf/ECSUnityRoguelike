@@ -7,6 +7,7 @@ namespace Client
     {
         public bool Run = false;
         public bool OnAtack = false;
+
         public Vector2 TargetPosition = Vector2.zero;
         public EcsEntity Target = EcsEntity.Null;
 

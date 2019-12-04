@@ -35,7 +35,7 @@ namespace Client
         }
     }
 
-    class InputComSkipTurn : IInputCommand
+    class InputComEmpty : IInputCommand
     {
         void IInputCommand.Execute(EcsEntity entity)
         {
@@ -45,38 +45,65 @@ namespace Client
 
     class InputComOneStepOnDirection : IInputCommand
     {
-        Direction direction;
+        float horizontal;
+        float vertical;
+
         Vector2 goalPosition = Vector2.zero;
 
-        public InputComOneStepOnDirection(Direction direction)
+        public InputComOneStepOnDirection(float h, float v)
         {
-            this.direction = direction;
+            horizontal = h;
+            vertical = v;
+
+            if (horizontal != 0)
+                vertical = 0;
         }
 
         void IInputCommand.Execute(EcsEntity entity)
         {
             var c1 = entity.Get<GameObjectComponent>();
 
-            switch (direction)
+            if (vertical > 0)
             {
-                case Direction.Up:
-                    goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y + 1);
-                    break;
-                case Direction.Down:
-                    goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y - 1);
-                    break;
-                case Direction.Left:
-                    goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
-                    break;
-                case Direction.Right:
-                    goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
-                    break;
-                default:
-                    break;
+                goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y + 1);
+            }
+
+            if (vertical < 0)
+            {
+                goalPosition = new Vector2(c1.Transform.position.x, c1.Transform.position.y - 1);
+            }
+
+            if (horizontal > 0)
+            {
+                goalPosition = new Vector2(c1.Transform.position.x + 1, c1.Transform.position.y);
+            }
+
+            if (horizontal < 0)
+            {
+                goalPosition = new Vector2(c1.Transform.position.x - 1, c1.Transform.position.y);
             }
 
             var c = entity.Set<ActionMoveComponent>();
             c.GoalPosition = goalPosition.ToInt2();
+        }
+    }
+
+    class InputComAtackCloseCell : IInputCommand
+    {
+        EcsEntity target;
+        Vector2 targetPosition;
+
+        public InputComAtackCloseCell(EcsEntity target, Vector2 targetPos)
+        {
+            this.target = target;
+            targetPosition = targetPos;
+        }
+
+        void IInputCommand.Execute(EcsEntity entity)
+        {
+            var c = entity.Set<ActionAtackComponent>();
+            c.Target = target;
+            c.TargetPosition = targetPosition;
         }
     }
 }
