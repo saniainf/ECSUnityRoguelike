@@ -88,12 +88,12 @@ namespace Client
         }
     }
 
-    class InputComAtackCloseCell : IInputCommand
+    class InputComAtack : IInputCommand
     {
         EcsEntity target;
         Vector2 targetPosition;
 
-        public InputComAtackCloseCell(EcsEntity target, Vector2 targetPos)
+        public InputComAtack(EcsEntity target, Vector2 targetPos)
         {
             this.target = target;
             targetPosition = targetPos;

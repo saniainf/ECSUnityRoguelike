@@ -26,7 +26,6 @@ namespace Client
         {
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            /*
             foreach (var i in _inputPhaseEntities)
             {
                 var ic1 = _inputPhaseEntities.Get1[i];
@@ -44,41 +43,7 @@ namespace Client
 
                     cc1.GObj.SpriteRenderer.color = Color.white;
 
-                    //todo здесь будут координаты точки удара из щаблона удара 
-                    if (((targetPoint - playerPoint).sqrMagnitude == 1.0f) &&
-                        (cc1.GObj.Collider.OverlapPoint(targetPoint)))
-                    {
-                        Debug.DrawLine(playerPoint, targetPoint, Color.red);
-                        cc1.GObj.SpriteRenderer.color = Color.red;
-
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            ic2.InputCommand = new InputComAtackCloseCell(ce, cc1.Transform.position);
-                            ic1.PhaseEnd = true;
-                        }
-                    }
-                }
-            }
-            */
-
-            foreach (var i in _inputPhaseEntities)
-            {
-                var ic1 = _inputPhaseEntities.Get1[i];
-                var ic2 = _inputPhaseEntities.Get2[i];
-                var goc = _inputPhaseEntities.Entities[i].Get<GameObjectComponent>();
-                var ie = _inputPhaseEntities.Entities[i];
-
-                var playerPoint = new Vector2(Mathf.Round(goc.Transform.position.x), Mathf.Round(goc.Transform.position.y));
-                var targetPoint = new Vector2(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y));
-
-                foreach (var j in _collisionEntities)
-                {
-                    var cc1 = _collisionEntities.Get1[j];
-                    var ce = _collisionEntities.Entities[j];
-
-                    cc1.GObj.SpriteRenderer.color = Color.white;
-
-                    if (cc1.GObj.Collider.OverlapPoint(mousePos))
+                    if (cc1.GObj.Collider.OverlapPoint(targetPoint))
                     {
                         var playerColider = goc.GObj.Collider;
                         RaycastHit2D[] hit = new RaycastHit2D[1];
@@ -87,15 +52,29 @@ namespace Client
 
                         if (count != 0)
                         {
-                            Debug.DrawLine(playerPoint, hit[0].point);
-                            if (hit[0].collider == cc1.GObj.Collider)
+                            if ((targetPoint - playerPoint).sqrMagnitude == 1.0f)
                             {
-                                cc1.GObj.SpriteRenderer.color = new Color(1f, 0.8f, 0.8f);
+                                Debug.DrawLine(playerPoint, targetPoint, Color.green);
+                                cc1.GObj.SpriteRenderer.color = new Color(0.8f, 1f, 0.8f);
 
                                 if (Input.GetMouseButtonDown(0))
                                 {
-                                    ic2.InputCommand = new InputComAtackCloseCell(ce, cc1.Transform.position);
+                                    ic2.InputCommand = new InputComAtack(ce, cc1.Transform.position);
                                     ic1.PhaseEnd = true;
+                                }
+                            }
+                            else
+                            {
+                                Debug.DrawLine(playerPoint, hit[0].point, Color.red);
+                                if (hit[0].collider == cc1.GObj.Collider)
+                                {
+                                    cc1.GObj.SpriteRenderer.color = new Color(1f, 0.8f, 0.8f);
+
+                                    if (Input.GetMouseButtonDown(1))
+                                    {
+                                        ic2.InputCommand = new InputComAtack(ce, cc1.Transform.position);
+                                        ic1.PhaseEnd = true;
+                                    }
                                 }
                             }
                         }
