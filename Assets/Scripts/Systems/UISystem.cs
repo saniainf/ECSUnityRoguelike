@@ -7,7 +7,6 @@ namespace Client
     /// <summary>
     /// менеджер интерфейса
     /// </summary>
-    
     sealed class UISystem : IEcsRunSystem, IEcsInitSystem
     {
         //UNDONE ui

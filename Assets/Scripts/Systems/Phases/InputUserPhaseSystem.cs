@@ -41,8 +41,6 @@ namespace Client
                     var cc1 = _collisionEntities.Get1[j];
                     var ce = _collisionEntities.Entities[j];
 
-                    cc1.GObj.SpriteRenderer.color = Color.white;
-
                     if (cc1.GObj.Collider.OverlapPoint(targetPoint))
                     {
                         var playerColider = goc.GObj.Collider;
@@ -54,8 +52,7 @@ namespace Client
                         {
                             if ((targetPoint - playerPoint).sqrMagnitude == 1.0f)
                             {
-                                Debug.DrawLine(playerPoint, targetPoint, Color.green);
-                                cc1.GObj.SpriteRenderer.color = new Color(0.8f, 1f, 0.8f);
+                                Debug.DrawLine(playerPoint, targetPoint, Color.red);
 
                                 if (Input.GetMouseButtonDown(0))
                                 {
@@ -65,11 +62,9 @@ namespace Client
                             }
                             else
                             {
-                                Debug.DrawLine(playerPoint, hit[0].point, Color.red);
+                                Debug.DrawLine(playerPoint, hit[0].point, Color.green);
                                 if (hit[0].collider == cc1.GObj.Collider)
                                 {
-                                    cc1.GObj.SpriteRenderer.color = new Color(1f, 0.8f, 0.8f);
-
                                     if (Input.GetMouseButtonDown(1))
                                     {
                                         ic2.InputCommand = new InputComAtack(ce, cc1.Transform.position);

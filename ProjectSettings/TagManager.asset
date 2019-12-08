@@ -56,6 +56,9 @@ TagManager:
   - name: Effect
     uniqueID: 211891689
     locked: 0
+  - name: TileOverlay
+    uniqueID: 1706279035
+    locked: 0
   - name: UI
     uniqueID: 1803888921
     locked: 0

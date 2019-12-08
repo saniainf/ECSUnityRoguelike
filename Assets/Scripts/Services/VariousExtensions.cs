@@ -12,7 +12,9 @@ namespace Client
         Wall,
         Object,
         Character,
-        Effect
+        Effect,
+        TileOverlay,
+        UI
     }
 
     public enum SpriteEffect

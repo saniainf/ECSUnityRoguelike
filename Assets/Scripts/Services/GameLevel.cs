@@ -149,6 +149,7 @@ namespace Client
 
             _world.NewEntityWith(out GameObjectComponent goComponent);
             goComponent.Transform = go.transform;
+            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
         }
 
         void LayoutObstacleObject(int x, int y)
@@ -178,6 +179,7 @@ namespace Client
 
             _world.NewEntityWith(out GameObjectComponent goComponent, out ZoneExitComponent _);
             goComponent.Transform = go.transform;
+            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
         }
 
         void LayoutPlayerObject(int x, int y, NPCDataSheet data)
@@ -215,6 +217,7 @@ namespace Client
 
             _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
             goComponent.Transform = go.transform;
+            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
             collectItemComponent.CollectItem = new CollectItemBoostHP(ObjData.p_BoostHPItemPreset.Value);
 
             emptyCells.Remove(cell);
@@ -234,6 +237,7 @@ namespace Client
 
             _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
             goComponent.Transform = go.transform;
+            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
             collectItemComponent.CollectItem = new CollectItemHeal(ObjData.p_HealItemPreset.Value);
 
             emptyCells.Remove(cell);
