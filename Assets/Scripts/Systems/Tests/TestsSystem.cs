@@ -7,6 +7,7 @@ namespace Client
     sealed class TestsSystem : IEcsInitSystem, IEcsRunSystem
     {
         readonly EcsWorld _world = null;
+        readonly WorldStatus _worldStatus = null;
 
         readonly EcsFilter<InputPhaseComponent, TurnComponent, PlayerComponent> _inputPhaseEntities = null;
 
@@ -94,42 +95,38 @@ namespace Client
 
         Color TileOverlayColor(Vector2 target)
         {
-            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var result = Color.white;
 
             foreach (var i in _inputPhaseEntities)
             {
-                var ic1 = _inputPhaseEntities.Get1[i];
-                var ic2 = _inputPhaseEntities.Get2[i];
                 var goc = _inputPhaseEntities.Entities[i].Get<GameObjectComponent>();
                 var ie = _inputPhaseEntities.Entities[i];
 
                 var playerPoint = new Vector2(Mathf.Round(goc.Transform.position.x), Mathf.Round(goc.Transform.position.y));
-                var targetPoint = new Vector2(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y));
 
                 foreach (var j in _collisionEntities)
                 {
                     var cc1 = _collisionEntities.Get1[j];
                     var ce = _collisionEntities.Entities[j];
 
-                    if (cc1.GObj.Collider.OverlapPoint(targetPoint))
+                    if (cc1.GObj.Collider.OverlapPoint(target))
                     {
                         var playerColider = goc.GObj.Collider;
                         RaycastHit2D[] hit = new RaycastHit2D[1];
 
-                        var count = playerColider.Raycast(targetPoint - playerPoint, hit);
+                        var count = playerColider.Raycast(target - playerPoint, hit);
 
                         if (count != 0)
                         {
-                            if ((targetPoint - playerPoint).sqrMagnitude == 1.0f)
+                            if ((target - playerPoint).sqrMagnitude == 1.0f)
                             {
-                                result = new Color(1f, 0f, 0f);
+                                result = Color.red;
                             }
                             else
                             {
                                 if (hit[0].collider == cc1.GObj.Collider)
                                 {
-                                    result = new Color(0f, 1f, 0f);
+                                    result = Color.yellow;
                                 }
                             }
                         }

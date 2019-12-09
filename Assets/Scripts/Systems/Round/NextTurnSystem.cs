@@ -9,10 +9,12 @@ namespace Client
     /// <summary>
     /// передача хода следующему чару в очереди
     /// </summary>
-    
+
     sealed class NextTurnSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
+        readonly WorldStatus _worldStatus = null;
+
         readonly EcsFilter<TurnComponent> _canTurnEntities = null;
         readonly EcsFilter<InputPhaseComponent> _inputPhaseEntities = null;
         readonly EcsFilter<ActionPhaseComponent> _actionPhaseEntities = null;
@@ -38,6 +40,7 @@ namespace Client
             }
 
             entity.Set<InputPhaseComponent>();
+            _worldStatus.PlayerTurnSet(entity.Get<PlayerComponent>() != null);
 
             Debug.Log("____________________________");
             Debug.Log($"ход entity: {entity.GetInternalId()}");
