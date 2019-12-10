@@ -9,25 +9,24 @@ namespace Client
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
 
-        readonly EcsFilter<InputPhaseComponent, TurnComponent, PlayerComponent> _inputPhaseEntities = null;
+        readonly EcsFilter<InputPhaseComponent, TurnComponent, PlayerComponent> _inputPlayerEntities = null;
 
         readonly EcsFilter<GameObjectComponent, DataSheetComponent>.Exclude<PlayerComponent> _collisionEntities = null;
-        readonly EcsFilter<GameObjectComponent, PlayerComponent> _player = null;
         readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
 
-        readonly EcsFilter<TileOverlayComponent> _tileOverlays = null;
+        readonly EcsFilter<TargetTileComponent> _targetTiles = null;
 
         Vector2 newTargetPoint;
         Vector2 targetPoint = Vector2.zero;
 
         void IEcsRunSystem.Run()
         {
-            if (_inputPhaseEntities.GetEntitiesCount() > 0)
+            if (!_inputPlayerEntities.IsEmpty())
             {
                 var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 newTargetPoint = new Vector2(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y));
 
-                if (_tileOverlays.GetEntitiesCount() == 0)
+                if (_targetTiles.IsEmpty())
                 {
                     CreateTileOverlay(newTargetPoint);
                     targetPoint = newTargetPoint;
@@ -53,9 +52,9 @@ namespace Client
 
         void ClearTileOverlay()
         {
-            foreach (var i in _tileOverlays)
+            foreach (var i in _targetTiles)
             {
-                _tileOverlays.Entities[i].RLDestoryGO();
+                _targetTiles.Entities[i].RLDestoryGO();
             }
         }
 
@@ -71,10 +70,11 @@ namespace Client
                     LayersName.TileOverlay.ToString(),
                     ObjData.p_Overlay.spriteSingle);
 
-                _world.NewEntityWith(out GameObjectComponent goComponent, out TileOverlayComponent _);
+                _world.NewEntityWith(out GameObjectComponent goComponent, out TargetTileComponent targetTile);
                 goComponent.Transform = go.transform;
                 goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
-                goComponent.GObj.SpriteRenderer.color = TileOverlayColor(target);
+
+                SetupTargetTile(target, ref goComponent, ref targetTile);
             }
         }
 
@@ -93,16 +93,14 @@ namespace Client
             return false;
         }
 
-        Color TileOverlayColor(Vector2 target)
+        void SetupTargetTile(Vector2 target, ref GameObjectComponent goc, ref TargetTileComponent targetTile)
         {
-            var result = Color.white;
-
-            foreach (var i in _inputPhaseEntities)
+            foreach (var i in _inputPlayerEntities)
             {
-                var goc = _inputPhaseEntities.Entities[i].Get<GameObjectComponent>();
-                var ie = _inputPhaseEntities.Entities[i];
+                var pgoc = _inputPlayerEntities.Entities[i].Get<GameObjectComponent>();
+                var pe = _inputPlayerEntities.Entities[i];
 
-                var playerPoint = new Vector2(Mathf.Round(goc.Transform.position.x), Mathf.Round(goc.Transform.position.y));
+                var playerPoint = new Vector2(Mathf.Round(pgoc.Transform.position.x), Mathf.Round(pgoc.Transform.position.y));
 
                 foreach (var j in _collisionEntities)
                 {
@@ -111,7 +109,7 @@ namespace Client
 
                     if (cc1.GObj.Collider.OverlapPoint(target))
                     {
-                        var playerColider = goc.GObj.Collider;
+                        var playerColider = pgoc.GObj.Collider;
                         RaycastHit2D[] hit = new RaycastHit2D[1];
 
                         var count = playerColider.Raycast(target - playerPoint, hit);
@@ -120,20 +118,23 @@ namespace Client
                         {
                             if ((target - playerPoint).sqrMagnitude == 1.0f)
                             {
-                                result = Color.red;
+                                goc.GObj.SpriteRenderer.color = Color.red;
+                                targetTile.Target = ce;
+                                targetTile.AtackType = AtackType.Melee;
                             }
                             else
                             {
                                 if (hit[0].collider == cc1.GObj.Collider)
                                 {
-                                    result = Color.yellow;
+                                    goc.GObj.SpriteRenderer.color = Color.yellow;
+                                    targetTile.Target = ce;
+                                    targetTile.AtackType = AtackType.Range;
                                 }
                             }
                         }
                     }
                 }
             }
-            return result;
         }
     }
 }

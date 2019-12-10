@@ -44,19 +44,11 @@ namespace Client
         GameOver
     }
 
-    public enum ActionType
+    public enum AtackType
     {
         None,
-        Move,
-        UseActiveItem
-    }
-
-    public enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right
+        Melee,
+        Range
     }
 
     static class VExt

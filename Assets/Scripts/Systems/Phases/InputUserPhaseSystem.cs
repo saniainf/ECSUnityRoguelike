@@ -14,6 +14,8 @@ namespace Client
         readonly EcsFilter<InputPhaseComponent, TurnComponent, PlayerComponent> _inputPhaseEntities = null;
         readonly EcsFilter<GameObjectComponent, DataSheetComponent>.Exclude<PlayerComponent> _collisionEntities = null;
 
+        readonly EcsFilter<TargetTileComponent> _targetTiles = null;
+
         bool atackMeele = false;
 
         void IEcsRunSystem.Run()
