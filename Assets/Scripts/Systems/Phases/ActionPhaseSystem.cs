@@ -16,6 +16,7 @@ namespace Client
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
         readonly EcsFilter<ActionAtackComponent> _atackEntities = null;
+        readonly EcsFilter<ProjectileComponent> _projectileEntities = null;
 
         readonly EcsFilter<GameObjectComponent, DataSheetComponent> _collisionEntities = null;
         readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
@@ -26,21 +27,19 @@ namespace Client
             {
                 ref var e = ref _actionPhaseEntities.Entities[i];
                 var c1 = _actionPhaseEntities.Get1[i];
-                var c2 = _actionPhaseEntities.Get2[i];
 
                 if (!c1.Run)
                 {
-                    c2.InputCommand.Execute(e);
+                    _actionPhaseEntities.Get2[i].InputCommand.Execute(e);
                     c1.Run = true;
                 }
             }
 
-            if (_moveEntities.GetEntitiesCount() == 0 && _animationEntities.GetEntitiesCount() == 0 && _atackEntities.GetEntitiesCount() == 0)
+            if (_moveEntities.IsEmpty() && _animationEntities.IsEmpty() && _atackEntities.IsEmpty() && _projectileEntities.IsEmpty())
             {
                 foreach (var i in _actionPhaseEntities)
                 {
-                    var c1 = _actionPhaseEntities.Get1[i];
-                    c1.PhaseEnd = true;
+                    _actionPhaseEntities.Get1[i].PhaseEnd = true;
                 }
             }
         }

@@ -8,12 +8,6 @@ using UnityEngine;
 
 namespace Client
 {
-    enum MyEnum
-    {
-
-    }
-
-
     interface IInputCommand
     {
         void Execute(EcsEntity entity);
@@ -104,6 +98,14 @@ namespace Client
             var c = entity.Set<ActionAtackComponent>();
             c.Target = target;
             c.TargetPosition = targetPosition;
+        }
+    }
+
+    class InputComAtackRange : IInputCommand
+    {
+        void IInputCommand.Execute(EcsEntity entity)
+        {
+            
         }
     }
 }

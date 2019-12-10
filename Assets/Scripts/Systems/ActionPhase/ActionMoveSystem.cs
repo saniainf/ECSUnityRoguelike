@@ -6,10 +6,9 @@ namespace Client
     /// <summary>
     /// управление передвижением чара в фазу действия
     /// </summary>
-
     sealed class ActionMoveSystem : IEcsRunSystem
     {
-        float SPEED = 7f;
+        const float SPEED = 7f;
 
         readonly EcsWorld _world = null;
 

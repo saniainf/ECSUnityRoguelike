@@ -3,16 +3,13 @@ using UnityEngine;
 
 namespace Client
 {
-    sealed class TestsSystem : IEcsInitSystem, IEcsRunSystem
+    sealed class TargetSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly WorldStatus _worldStatus = null;
 
         readonly EcsFilter<InputPhaseComponent, TurnComponent, PlayerComponent> _inputPlayerEntities = null;
-
         readonly EcsFilter<GameObjectComponent, DataSheetComponent>.Exclude<PlayerComponent> _collisionEntities = null;
         readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
-
         readonly EcsFilter<TargetTileComponent> _targetTiles = null;
 
         Vector2 newTargetPoint;
@@ -41,11 +38,6 @@ namespace Client
             {
                 ClearTileOverlay();
             }
-
-        }
-
-        void IEcsInitSystem.Init()
-        {
 
         }
 
@@ -117,6 +109,7 @@ namespace Client
                         {
                             if ((target - playerPoint).sqrMagnitude == 1.0f)
                             {
+                                Debug.DrawLine(playerPoint, target, Color.red, 1f);
                                 goc.GObj.SpriteRenderer.color = Color.red;
                                 targetTile.Target = ce;
                                 targetTile.TargetPos = target;
@@ -126,6 +119,7 @@ namespace Client
                             {
                                 if (hit[0].collider == cc1.GObj.Collider)
                                 {
+                                    Debug.DrawLine(playerPoint, target, Color.yellow, 1f);
                                     goc.GObj.SpriteRenderer.color = Color.yellow;
                                     targetTile.Target = ce;
                                     targetTile.TargetPos = target;

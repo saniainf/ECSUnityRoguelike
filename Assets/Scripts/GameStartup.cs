@@ -22,12 +22,13 @@ namespace Client
             Leopotam.Ecs.UnityIntegration.EcsSystemsObserver.Create(_systems);
 #endif
             _systems
-                .Add(new TestsSystem())
+                //.Add(new TestsSystem())
                 .Add(new QueueSystem())
                 .Add(new PhaseManagerSystem())
                 .Add(new NextTurnSystem())
                 .Add(new ZonesSystem())
                 .Add(new LevelManagerSystem())
+                .Add(new TargetSystem())
                 .Add(new InputUserPhaseSystem())
                 .Add(new InputNPCPhaseSystem())
                 .Add(new ActionPhaseSystem())
