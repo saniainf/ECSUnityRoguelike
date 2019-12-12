@@ -2,12 +2,20 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    interface IWeaponItem
+    interface IWeaponBehaviour
     {
         void OnAtack(EcsEntity caster, EcsEntity target);
     }
 
-    struct WeaponItemChopper : IWeaponItem
+    struct WeaponEmpty : IWeaponBehaviour
+    {
+        void IWeaponBehaviour.OnAtack(EcsEntity caster, EcsEntity target)
+        {
+            
+        }
+    }
+
+    struct WeaponItemChopper : IWeaponBehaviour
     {
         private int damage;
 
@@ -16,9 +24,24 @@ namespace Client
             this.damage = damage;
         }
 
-        void IWeaponItem.OnAtack(EcsEntity caster, EcsEntity target)
+        void IWeaponBehaviour.OnAtack(EcsEntity caster, EcsEntity target)
         {
             target.RLApplyDamage(damage);
+        }
+    }
+
+    struct WeaponItemStone : IWeaponBehaviour
+    {
+        private int damage;
+
+        public WeaponItemStone(int damage)
+        {
+            this.damage = damage;
+        }
+
+        void IWeaponBehaviour.OnAtack(EcsEntity caster, EcsEntity target)
+        {
+            
         }
     }
 }

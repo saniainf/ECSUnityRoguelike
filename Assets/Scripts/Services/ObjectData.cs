@@ -33,7 +33,8 @@ namespace Client
         public static WeaponItemObject p_WeaponChopperPreset = Resources.Load<WeaponItemObject>("Presets/WeaponChopperPreset");
         public static WeaponItemObject p_WeaponClawsPreset = Resources.Load<WeaponItemObject>("Presets/WeaponClawsPreset");
         public static WeaponItemObject p_WeaponClawsMK2Preset = Resources.Load<WeaponItemObject>("Presets/WeaponClawsMK2Preset");
-
+        public static WeaponItemObject p_WeaponStonePreset = Resources.Load<WeaponItemObject>("Presets/WeaponStonePreset");
+        
         public static SpritesObject p_Overlay = Resources.Load<SpritesObject>("Presets/Overlay");
     }
 }

@@ -83,7 +83,7 @@ namespace Client
 
                 if (atackPlayer)
                 {
-                    c2.InputCommand = new InputComAtack(target, goalPosition);
+                    c2.InputCommand = new InputComAtackMelee(target, goalPosition);
                     c1.PhaseEnd = true;
                     continue;
                 }

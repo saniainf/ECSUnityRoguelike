@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// загрузка, выгрузка уровня. сохранение данных между уровнями
     /// </summary>
-    
+
     sealed class LevelManagerSystem : IEcsRunSystem, IEcsInitSystem
     {
         readonly EcsWorld _world = null;
@@ -62,7 +62,8 @@ namespace Client
                 new NPCStats(ObjData.p_PlayerPreset.HealthPoint,
                              ObjData.p_PlayerPreset.HealthPoint,
                              ObjData.p_PlayerPreset.Initiative),
-                new WeaponItemChopper(ObjData.p_PlayerPreset.WeaponItem.Damage));
+                new WeaponItemChopper(ObjData.p_PlayerPreset.PrimaryWeaponItem.Damage),
+                new WeaponItemStone(ObjData.p_PlayerPreset.SecondaryWeaponItem.Damage));
 
             _worldStatus.GameStatus = GameStatus.LevelLoad;
             _worldStatus.LevelNum = levelNum++;
@@ -129,7 +130,7 @@ namespace Client
                 ref var e = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Get1[i];
                 playerData.NPCStats = c1.Stats;
-                playerData.WeaponItem = c1.WeaponItem;
+                playerData.PrimaryWeaponItem = c1.PrimaryWeaponItem;
                 e.RLDestoryGO();
             }
         }

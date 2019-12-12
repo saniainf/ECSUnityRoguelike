@@ -51,7 +51,7 @@ namespace Client
                 var ic1 = _inputPhaseEntities.Get1[i];
                 var ic2 = _inputPhaseEntities.Get2[i];
 
-                ic2.InputCommand = new InputComAtack(target.Target, target.TargetPos);
+                ic2.InputCommand = new InputComAtackMelee(target.Target, target.TargetPos);
                 ic1.PhaseEnd = true;
             }
         }
@@ -63,7 +63,7 @@ namespace Client
                 var ic1 = _inputPhaseEntities.Get1[i];
                 var ic2 = _inputPhaseEntities.Get2[i];
 
-                ic2.InputCommand = new InputComAtack(target.Target, target.TargetPos);
+                ic2.InputCommand = new InputComAtackRange(target.Target, target.TargetPos);
                 ic1.PhaseEnd = true;
             }
         }

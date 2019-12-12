@@ -95,6 +95,7 @@ namespace Client
 
             for (int i = 0; i < enemy01Count; i++)
             {
+                ObjData.p_WeaponChopperPreset.SetBehaviour(new WeaponItemChopper(2));
                 LayoutEnemyObject(
                     ref emptyCells,
                     "enemy01",
@@ -103,7 +104,8 @@ namespace Client
                         new NPCStats(ObjData.p_Enemy01Preset.HealthPoint,
                                      ObjData.p_Enemy01Preset.HealthPoint,
                                      ObjData.p_Enemy01Preset.Initiative),
-                        new WeaponItemChopper(ObjData.p_Enemy01Preset.WeaponItem.Damage)));
+                        ObjData.p_WeaponChopperPreset,
+                        ObjData.p_WeaponStonePreset));
             }
 
             for (int i = 0; i < enemy02Count; i++)
@@ -116,7 +118,8 @@ namespace Client
                         new NPCStats(ObjData.p_Enemy02Preset.HealthPoint,
                                      ObjData.p_Enemy02Preset.HealthPoint,
                                      ObjData.p_Enemy02Preset.Initiative),
-                        new WeaponItemChopper(ObjData.p_Enemy02Preset.WeaponItem.Damage)));
+                        new WeaponItemChopper(ObjData.p_Enemy02Preset.WeaponItem.Damage),
+                        new WeaponEmpty()));
             }
         }
 
@@ -201,7 +204,8 @@ namespace Client
 
             var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = playerData.NPCStats;
-            dataComponent.WeaponItem = playerData.WeaponItem;
+            dataComponent.PrimaryWeaponItem = playerData.PrimaryWeaponItem;
+            dataComponent.SecondaryWeaponItem = playerData.PrimaryWeaponItem;
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
@@ -281,7 +285,7 @@ namespace Client
 
             var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = data.NPCStats;
-            dataComponent.WeaponItem = data.WeaponItem;
+            dataComponent.PrimaryWeaponItem = data.PrimaryWeaponItem;
 
             emptyCells.Remove(cell);
         }

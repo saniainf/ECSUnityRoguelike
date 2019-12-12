@@ -6,7 +6,7 @@ namespace Client
     /// <summary>
     /// управление атакой чара в фазу действия
     /// </summary>
-    
+
     sealed class ActionAtackSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -37,7 +37,13 @@ namespace Client
                 {
                     c1.OnAtack = true;
                     _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
-                    c3.WeaponItem.OnAtack(e, c1.Target);
+                    if (c1.PrimaryOrSecondaryWeapon)
+                        c3.PrimaryWeaponItem.WeaponBehaviour.OnAtack(e, c1.Target);
+                    else
+                    {
+
+                        c3.SecondaryWeaponItem.WeaponBehaviour.OnAtack(e, c1.Target);
+                    }
                 }
 
                 if (c1.Run && c1.OnAtack && !c2.GObj.Animator.GetBool(AnimatorField.ActionRun.ToString()))
