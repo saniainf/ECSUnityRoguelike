@@ -6,13 +6,13 @@
     struct NPCDataSheet
     {
         public NPCStats NPCStats;
-        public WeaponItemObject PriamryWeapon;
-        public WeaponItemObject SecondaryWeapon;
+        public NPCWeapon PriamaryWeapon;
+        public NPCWeapon SecondaryWeapon;
 
-        public NPCDataSheet(NPCStats stats, WeaponItemObject primaryWeapon, WeaponItemObject secondWeapon)
+        public NPCDataSheet(NPCStats stats, NPCWeapon primaryWeapon, NPCWeapon secondWeapon)
         {
             NPCStats = stats;
-            PriamryWeapon = primaryWeapon;
+            PriamaryWeapon = primaryWeapon;
             SecondaryWeapon = secondWeapon;
         }
     }

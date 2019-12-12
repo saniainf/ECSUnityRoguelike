@@ -6,13 +6,13 @@ namespace Client
     {
         public NPCStats Stats;
 
-        public WeaponItemObject PrimaryWeaponItem;
-        public WeaponItemObject SecondaryWeaponItem;
+        public NPCWeapon PrimaryWeapon;
+        public NPCWeapon SecondaryWeapon;
 
         void IEcsAutoReset.Reset()
         {
-            PrimaryWeaponItem = null;
-            SecondaryWeaponItem = null;
+            PrimaryWeapon = null;
+            SecondaryWeapon = null;
         }
     }
 }

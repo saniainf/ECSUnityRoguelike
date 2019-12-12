@@ -33,9 +33,9 @@ namespace Client
                     float sqrDistanceToGoal = (c2.GObj.Rigidbody.position - c1.GoalPosition).sqrMagnitude;
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
-                        c2.GObj.Rigidbody.position = c1.GoalPosition;
+                        c1.Weapon.Behaviour.OnAtack(c1.Caster, c1.Target);
 
-                        e.Unset<ActionMoveComponent>();
+                        e.RLDestoryGO();
                     }
                 }
             }

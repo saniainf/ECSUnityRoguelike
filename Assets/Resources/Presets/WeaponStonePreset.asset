@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: WeaponStonePreset
   m_EditorClassIdentifier: 
   Damage: 1
+  ProjectileSprite: {fileID: 21300000, guid: 27188996247a9e745aa31badc8f8f863, type: 3}

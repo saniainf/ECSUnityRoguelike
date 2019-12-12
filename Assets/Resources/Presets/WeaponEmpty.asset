@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19fb1d3c9edf547439015b840be9b284, type: 3}
-  m_Name: ArrowPreset
+  m_Script: {fileID: 11500000, guid: adc4f59a86672f34389a7e14b70b4815, type: 3}
+  m_Name: WeaponEmpty
   m_EditorClassIdentifier: 
-  spritesArray: []
-  spriteSingle: {fileID: 21300000, guid: 120fbf6f867001a4cb33e56f5dae6daf, type: 3}
+  Damage: 0
+  ProjectileSprite: {fileID: 0}

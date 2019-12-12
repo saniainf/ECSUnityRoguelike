@@ -23,6 +23,7 @@ namespace Client
 #endif
             _systems
                 //.Add(new TestsSystem())
+                .Add(new ProjectileSystem())
                 .Add(new QueueSystem())
                 .Add(new PhaseManagerSystem())
                 .Add(new NextTurnSystem())

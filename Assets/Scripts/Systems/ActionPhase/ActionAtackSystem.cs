@@ -36,13 +36,29 @@ namespace Client
                 if (c1.Run && !c1.OnAtack && c2.GObj.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
                 {
                     c1.OnAtack = true;
-                    _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
                     if (c1.PrimaryOrSecondaryWeapon)
-                        c3.PrimaryWeaponItem.WeaponBehaviour.OnAtack(e, c1.Target);
+                    {
+                        _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
+                        c3.PrimaryWeapon.Behaviour.OnAtack(e, c1.Target);
+                    }
                     else
                     {
+                        var go = VExt.LayoutSpriteObjects(
+                            ObjData.r_PrefabPhysicsSprite,
+                            c2.GObj.Rigidbody.position.x, c2.GObj.Rigidbody.position.y,
+                            ObjData.t_GameObjectsOther,
+                            LayersName.Effect.ToString(),
+                            c3.SecondaryWeapon.ProjectileSprite);
 
-                        c3.SecondaryWeaponItem.WeaponBehaviour.OnAtack(e, c1.Target);
+                        _world.NewEntityWith(out GameObjectComponent goComponent, out ProjectileComponent projectileComponent);
+                        goComponent.Transform = go.transform;
+                        goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+
+                        projectileComponent.StartPosition = c2.GObj.Rigidbody.position;
+                        projectileComponent.GoalPosition = c1.TargetPosition;
+                        projectileComponent.Caster = e;
+                        projectileComponent.Target = c1.Target;
+                        projectileComponent.Weapon = c3.SecondaryWeapon;
                     }
                 }
 

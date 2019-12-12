@@ -62,8 +62,8 @@ namespace Client
                 new NPCStats(ObjData.p_PlayerPreset.HealthPoint,
                              ObjData.p_PlayerPreset.HealthPoint,
                              ObjData.p_PlayerPreset.Initiative),
-                new WeaponItemChopper(ObjData.p_PlayerPreset.PrimaryWeaponItem.Damage),
-                new WeaponItemStone(ObjData.p_PlayerPreset.SecondaryWeaponItem.Damage));
+                new NPCWeapon(ObjData.p_PlayerPreset.PrimaryWeaponItem, new WB_DamageOnContact()),
+                new NPCWeapon(ObjData.p_PlayerPreset.SecondaryWeaponItem, new WB_DamageOnContact()));
 
             _worldStatus.GameStatus = GameStatus.LevelLoad;
             _worldStatus.LevelNum = levelNum++;
@@ -130,7 +130,8 @@ namespace Client
                 ref var e = ref _playerEntities.Entities[i];
                 var c1 = _playerEntities.Get1[i];
                 playerData.NPCStats = c1.Stats;
-                playerData.PrimaryWeaponItem = c1.PrimaryWeaponItem;
+                playerData.PriamaryWeapon = c1.PrimaryWeapon;
+                playerData.SecondaryWeapon = c1.SecondaryWeapon;
                 e.RLDestoryGO();
             }
         }

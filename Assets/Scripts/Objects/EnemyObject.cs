@@ -10,6 +10,7 @@ namespace Client
         public RuntimeAnimatorController Animation;
         public int HealthPoint;
         public int Initiative;
-        public WeaponItemObject WeaponItem;
+        public WeaponItemObject PrimaryWeaponItem;
+        public WeaponItemObject SecondaryWeaponItem;
     }
 }

@@ -17,7 +17,7 @@ namespace Client
         int boostHPCount = 1;
         int wallCount = 5;
         int enemy01Count = 2;
-        int enemy02Count = 1;
+        int enemy02Count = 0;
 
         int boostHPValue = 3;
         int healValue = 2;
@@ -95,7 +95,6 @@ namespace Client
 
             for (int i = 0; i < enemy01Count; i++)
             {
-                ObjData.p_WeaponChopperPreset.SetBehaviour(new WeaponItemChopper(2));
                 LayoutEnemyObject(
                     ref emptyCells,
                     "enemy01",
@@ -104,8 +103,8 @@ namespace Client
                         new NPCStats(ObjData.p_Enemy01Preset.HealthPoint,
                                      ObjData.p_Enemy01Preset.HealthPoint,
                                      ObjData.p_Enemy01Preset.Initiative),
-                        ObjData.p_WeaponChopperPreset,
-                        ObjData.p_WeaponStonePreset));
+                        new NPCWeapon(ObjData.p_Enemy01Preset.PrimaryWeaponItem, new WB_DamageOnContact()),
+                        new NPCWeapon(ObjData.p_Enemy01Preset.SecondaryWeaponItem, new WB_DamageOnContact())));
             }
 
             for (int i = 0; i < enemy02Count; i++)
@@ -118,8 +117,8 @@ namespace Client
                         new NPCStats(ObjData.p_Enemy02Preset.HealthPoint,
                                      ObjData.p_Enemy02Preset.HealthPoint,
                                      ObjData.p_Enemy02Preset.Initiative),
-                        new WeaponItemChopper(ObjData.p_Enemy02Preset.WeaponItem.Damage),
-                        new WeaponEmpty()));
+                        new NPCWeapon(ObjData.p_Enemy02Preset.PrimaryWeaponItem, new WB_DamageOnContact()),
+                        new NPCWeapon(ObjData.p_Enemy02Preset.SecondaryWeaponItem, new WB_DamageOnContact())));
             }
         }
 
@@ -204,8 +203,8 @@ namespace Client
 
             var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = playerData.NPCStats;
-            dataComponent.PrimaryWeaponItem = playerData.PrimaryWeaponItem;
-            dataComponent.SecondaryWeaponItem = playerData.PrimaryWeaponItem;
+            dataComponent.PrimaryWeapon = playerData.PriamaryWeapon;
+            dataComponent.SecondaryWeapon = playerData.SecondaryWeapon;
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
@@ -285,7 +284,8 @@ namespace Client
 
             var dataComponent = e.Set<DataSheetComponent>();
             dataComponent.Stats = data.NPCStats;
-            dataComponent.PrimaryWeaponItem = data.PrimaryWeaponItem;
+            dataComponent.PrimaryWeapon = data.PriamaryWeapon;
+            dataComponent.SecondaryWeapon = data.SecondaryWeapon;
 
             emptyCells.Remove(cell);
         }
