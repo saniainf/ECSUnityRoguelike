@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adc4f59a86672f34389a7e14b70b4815, type: 3}
-  m_Name: WeaponStonePreset
+  m_Script: {fileID: 11500000, guid: 6d77f9e15b83786499b96d7f25260896, type: 3}
+  m_Name: IceBall
   m_EditorClassIdentifier: 
-  Damage: 1
-  ProjectileSprite: {fileID: 21300000, guid: 27188996247a9e745aa31badc8f8f863, type: 3}
-  HitEffect: {fileID: 11400000, guid: 8486255b0245c0b46b559322ae480107, type: 2}
+  idName: IceBall

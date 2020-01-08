@@ -26,8 +26,8 @@ namespace Client
         public static SpritesObject p_FloorPresets = Resources.Load<SpritesObject>("Presets/FloorPresets");
         public static SpritesObject p_ExitPointPreset = Resources.Load<SpritesObject>("Presets/ExitPointPresets");
         public static PlayerObject p_PlayerPreset = Resources.Load<PlayerObject>("Presets/PlayerPreset");
-        public static EnemyObject p_Enemy01Preset = Resources.Load<EnemyObject>("Presets/Enemy01Preset");
-        public static EnemyObject p_Enemy02Preset = Resources.Load<EnemyObject>("Presets/Enemy02Preset");
+        public static EnemyPreset p_Enemy01Preset = Resources.Load<EnemyPreset>("Presets/Enemy/Enemy01");
+        public static EnemyPreset p_Enemy02Preset = Resources.Load<EnemyPreset>("Presets/Enemy/Enemy02");
         public static CollectItemObject p_HealItemPreset = Resources.Load<CollectItemObject>("Presets/HealItemPreset");
         public static CollectItemObject p_BoostHPItemPreset = Resources.Load<CollectItemObject>("Presets/BoostHPItemPreset");
         public static WeaponItemObject p_WeaponChopperPreset = Resources.Load<WeaponItemObject>("Presets/WeaponChopperPreset");

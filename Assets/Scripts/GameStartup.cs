@@ -39,6 +39,7 @@ namespace Client
                 .Add(new CollectSystem())
                 .Add(new AppearanceSystem())
                 .Add(new GameOverSystem())
+                .Add(new EffectSystem())
                 .Add(new UISystem())
                 .Add(new CameraSystem());
 
@@ -46,8 +47,6 @@ namespace Client
                 .Inject(_worldStatus);
 
             _systems.Init();
-
-            Debug.Log("Start game");
         }
 
         void Update()

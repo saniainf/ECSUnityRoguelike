@@ -4,10 +4,13 @@ using UnityEngine;
 
 namespace Client
 {
-    [CreateAssetMenu(menuName = "EcsRoguelike/EnemyPreset", fileName = "EnemyPreset")]
-    class EnemyObject : ScriptableObject
+    [CreateAssetMenu(menuName = "EcsRoguelike/Presets/Enemy", fileName = "EnemyPreset")]
+    class EnemyPreset : ScriptableObject
     {
+        public string PresetName;
+        [Space]
         public RuntimeAnimatorController Animation;
+        [Space]
         public int HealthPoint;
         public int Initiative;
         public WeaponItemObject PrimaryWeaponItem;

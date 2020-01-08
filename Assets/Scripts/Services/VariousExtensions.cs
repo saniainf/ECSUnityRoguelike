@@ -53,12 +53,12 @@ namespace Client
 
     static class VExt
     {
-        public static GameObject LayoutSpriteObjects(GameObject prefab, float x, float y, Transform parent, string sortingLayer, Sprite sprite)
+        public static GameObject LayoutSpriteObject(GameObject prefab, Vector2 position, Transform parent, string sortingLayer, Sprite sprite)
         {
             string name = Guid.NewGuid().ToString();
             GameObject go = UnityEngine.Object.Instantiate(prefab);
             go.transform.SetParent(parent);
-            go.transform.localPosition = new Vector2(x, y);
+            go.transform.localPosition = position;
             go.name = ($"{name}_(x{go.transform.localPosition.x}, y{go.transform.localPosition.y})");
 
             SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
@@ -68,7 +68,7 @@ namespace Client
             return go;
         }
 
-        public static GameObject LayoutSpriteObjects(GameObject prefab, float x, float y, string name, Transform parent, string sortingLayer, Sprite sprite)
+        public static GameObject LayoutSpriteObject(GameObject prefab, float x, float y, string name, Transform parent, string sortingLayer, Sprite sprite)
         {
             GameObject go = UnityEngine.Object.Instantiate(prefab);
             go.transform.SetParent(parent);
@@ -82,9 +82,19 @@ namespace Client
             return go;
         }
 
-        public static GameObject LayoutAnimationObjects(GameObject prefab, float x, float y, string name, Transform parent, string sortingLayer, RuntimeAnimatorController controller)
+        public static GameObject LayoutAnimationObject(GameObject prefab, float x, float y, string name, Transform parent, string sortingLayer, RuntimeAnimatorController controller)
         {
-            GameObject go = LayoutSpriteObjects(prefab, x, y, name, parent, sortingLayer, null);
+            GameObject go = LayoutSpriteObject(prefab, x, y, name, parent, sortingLayer, null);
+
+            Animator animator = go.GetComponent<Animator>();
+            animator.runtimeAnimatorController = controller;
+
+            return go;
+        }
+
+        public static GameObject LayoutAnimationObject(GameObject prefab, Vector2 position, string name, Transform parent, string sortingLayer, RuntimeAnimatorController controller)
+        {
+            GameObject go = LayoutSpriteObject(prefab, position.x, position.y, name, parent, sortingLayer, null);
 
             Animator animator = go.GetComponent<Animator>();
             animator.runtimeAnimatorController = controller;

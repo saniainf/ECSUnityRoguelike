@@ -29,14 +29,10 @@ namespace Client
                 bool atackPlayer = false;
                 EcsEntity target = EcsEntity.Null;
 
-                Debug.Log($"entity: {e.GetInternalId()} | решает что делать");
-
                 foreach (var j in _playerEntities)
                 {
                     var pc1 = _playerEntities.Get1[j];
                     var pe = _playerEntities.Entities[j];
-
-                    Debug.Log($"entity: {e.GetInternalId()} | проверяет нет ли рядом entity: {pe.GetInternalId()}");
 
                     Vector2 checkPoint = cgo.Transform.position;
                     checkPoint.x = cgo.Transform.position.x - 1;
@@ -45,7 +41,6 @@ namespace Client
                         goalPosition = checkPoint;
                         target = pe;
                         atackPlayer = true;
-                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} слева");
                         continue;
                     }
 
@@ -55,7 +50,6 @@ namespace Client
                         goalPosition = checkPoint;
                         target = pe;
                         atackPlayer = true;
-                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} справа");
                         continue;
                     }
 
@@ -66,7 +60,6 @@ namespace Client
                         goalPosition = checkPoint;
                         target = pe;
                         atackPlayer = true;
-                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} сверху");
                         continue;
                     }
 
@@ -76,7 +69,6 @@ namespace Client
                         goalPosition = checkPoint;
                         target = pe;
                         atackPlayer = true;
-                        Debug.Log($"entity: {e.GetInternalId()} | атакует entity: {pe.GetInternalId()} снизу");
                         continue;
                     }
                 }
@@ -90,7 +82,6 @@ namespace Client
 
                 if (!atackPlayer && UnityEngine.Random.value < 0.7f)
                 {
-                    Debug.Log($"entity: {e.GetInternalId()} | решил пропустить ход");
                     c2.InputCommand = new InputComEmpty();
                     c1.PhaseEnd = true;
                     continue;
@@ -119,7 +110,6 @@ namespace Client
                             skip = true;
                             break;
                     }
-                    Debug.Log($"entity: {e.GetInternalId()} | бродит");
 
                     c1.PhaseEnd = true;
                     c2.InputCommand = new InputComOneStepOnDirection(h, v);

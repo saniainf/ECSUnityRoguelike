@@ -17,7 +17,7 @@ namespace Client
         int boostHPCount = 1;
         int wallCount = 5;
         int enemy01Count = 2;
-        int enemy02Count = 0;
+        int enemy02Count = 1;
 
         int boostHPValue = 3;
         int healValue = 2;
@@ -95,30 +95,12 @@ namespace Client
 
             for (int i = 0; i < enemy01Count; i++)
             {
-                LayoutEnemyObject(
-                    ref emptyCells,
-                    "enemy01",
-                    ObjData.p_Enemy01Preset.Animation,
-                    new NPCDataSheet(
-                        new NPCStats(ObjData.p_Enemy01Preset.HealthPoint,
-                                     ObjData.p_Enemy01Preset.HealthPoint,
-                                     ObjData.p_Enemy01Preset.Initiative),
-                        new NPCWeapon(ObjData.p_Enemy01Preset.PrimaryWeaponItem, new WB_DamageOnContact()),
-                        new NPCWeapon(ObjData.p_Enemy01Preset.SecondaryWeaponItem, new WB_DamageOnContact())));
+                LayoutEnemyObject(ref emptyCells, ObjData.p_Enemy01Preset);
             }
 
             for (int i = 0; i < enemy02Count; i++)
             {
-                LayoutEnemyObject(
-                    ref emptyCells,
-                    "enemy02",
-                    ObjData.p_Enemy02Preset.Animation,
-                    new NPCDataSheet(
-                        new NPCStats(ObjData.p_Enemy02Preset.HealthPoint,
-                                     ObjData.p_Enemy02Preset.HealthPoint,
-                                     ObjData.p_Enemy02Preset.Initiative),
-                        new NPCWeapon(ObjData.p_Enemy02Preset.PrimaryWeaponItem, new WB_DamageOnContact()),
-                        new NPCWeapon(ObjData.p_Enemy02Preset.SecondaryWeaponItem, new WB_DamageOnContact())));
+                LayoutEnemyObject(ref emptyCells, ObjData.p_Enemy02Preset);
             }
         }
 
@@ -141,22 +123,20 @@ namespace Client
         #region Layout
         void LayoutFloorObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObjects(
+            var go = VExt.LayoutSpriteObject(
                 ObjData.r_PrefabSprite,
                 x, y,
                 "floor",
-                ObjData.t_GameObjectsRoot,
+                ObjData.t_GameBoardRoot,
                 LayersName.Floor.ToString(),
                 VExt.NextFromArray(ObjData.p_FloorPresets.spritesArray));
 
-            _world.NewEntityWith(out GameObjectComponent goComponent);
-            goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            _world.NewEntityWithGameObject(go);
         }
 
         void LayoutObstacleObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObjects(
+            var go = VExt.LayoutSpriteObject(
                 ObjData.r_PrefabPhysicsSprite,
                 x, y,
                 "obstacle",
@@ -164,14 +144,12 @@ namespace Client
                 LayersName.Wall.ToString(),
                 VExt.NextFromArray(ObjData.p_ObstaclePresets.spritesArray));
 
-            _world.NewEntityWith(out GameObjectComponent goComponent, out ObstacleComponent _);
-            goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            _world.NewEntityWithGameObject(go).Set<ObstacleComponent>();
         }
 
         void LayoutExitObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObjects(
+            var go = VExt.LayoutSpriteObject(
                 ObjData.r_PrefabSprite,
                 x, y,
                 "exit",
@@ -179,15 +157,13 @@ namespace Client
                 LayersName.Object.ToString(),
                 ObjData.p_ExitPointPreset.spriteSingle);
 
-            _world.NewEntityWith(out GameObjectComponent goComponent, out ZoneExitComponent _);
-            goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            _world.NewEntityWithGameObject(go).Set<ZoneExitComponent>();
         }
 
         void LayoutPlayerObject(int x, int y, NPCDataSheet data)
         {
 
-            var go = VExt.LayoutAnimationObjects(
+            var go = VExt.LayoutAnimationObject(
                 ObjData.r_PrefabPhysicsAnimation,
                 x, y,
                 "player",
@@ -195,23 +171,19 @@ namespace Client
                 LayersName.Character.ToString(),
                 ObjData.p_PlayerPreset.Animation);
 
-            var e = _world.NewEntityWith(out GameObjectComponent goComponent, out PlayerComponent _);
-
-            goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
-            goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
-
+            var e = _world.NewEntityWithGameObject(go, true);
+            e.Set<PlayerComponent>();
             var dataComponent = e.Set<DataSheetComponent>();
-            dataComponent.Stats = playerData.NPCStats;
-            dataComponent.PrimaryWeapon = playerData.PriamaryWeapon;
-            dataComponent.SecondaryWeapon = playerData.SecondaryWeapon;
+            dataComponent.Stats = data.NPCStats;
+            dataComponent.PrimaryWeapon = data.PriamaryWeapon;
+            dataComponent.SecondaryWeapon = data.SecondaryWeapon;
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutSpriteObjects(
+            var go = VExt.LayoutSpriteObject(
                 ObjData.r_PrefabSprite,
                 cell.x, cell.y,
                 "boostHP",
@@ -230,7 +202,7 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutSpriteObjects(
+            var go = VExt.LayoutSpriteObject(
                 ObjData.r_PrefabSprite,
                 cell.x, cell.y,
                 "heal",
@@ -250,7 +222,7 @@ namespace Client
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutAnimationObjects(
+            var go = VExt.LayoutAnimationObject(
                 ObjData.r_PrefabPhysicsAnimation,
                 cell.x, cell.y,
                 "wall",
@@ -271,21 +243,11 @@ namespace Client
             emptyCells.Remove(cell);
         }
 
-        void LayoutEnemyObject(ref List<Vector2Int> emptyCells, string goName, RuntimeAnimatorController animation, NPCDataSheet data)
+        void LayoutEnemyObject(ref List<Vector2Int> emptyCells, EnemyPreset enemyPreset)
         {
             var cell = VExt.NextFromList(emptyCells);
 
-            var go = VExt.LayoutAnimationObjects(ObjData.r_PrefabPhysicsAnimation, cell.x, cell.y, goName, ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), animation);
-            var e = _world.NewEntityWith(out GameObjectComponent goComponent, out EnemyComponent _);
-
-            goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
-            goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
-
-            var dataComponent = e.Set<DataSheetComponent>();
-            dataComponent.Stats = data.NPCStats;
-            dataComponent.PrimaryWeapon = data.PriamaryWeapon;
-            dataComponent.SecondaryWeapon = data.SecondaryWeapon;
+            _world.RLCreateEnemy(cell, enemyPreset);
 
             emptyCells.Remove(cell);
         }

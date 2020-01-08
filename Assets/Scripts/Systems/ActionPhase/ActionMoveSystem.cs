@@ -54,8 +54,6 @@ namespace Client
                 {
                     c1.StartPosition = c3.GObj.Rigidbody.position;
                     c1.Run = true;
-
-                    Debug.Log($"entity: {e.GetInternalId()} | запущено action смещение в: {c1.GoalPosition.x}, {c1.GoalPosition.y}");
                 }
 
                 if (c1.Run)

@@ -8,7 +8,7 @@ namespace Client
     /// <summary>
     /// расширения для World класса
     /// </summary>
-    public static class RLWorldExtension
+    static class RLWorldExtension
     {
         public static void RLDestoryGO(this EcsEntity entity, float time = 0)
         {
@@ -57,24 +57,34 @@ namespace Client
                 c.Stats.HealthPoint -= value;
         }
 
-        public static void RLCreateEffect(this EcsWorld world, Vector2 position, SpriteEffect effect, float lifeTime)
+        public static void RLCreateEffect(this EcsWorld world, Vector2 position, EffectPreset effectPreset)
         {
-            switch (effect)
+            var go = VExt.LayoutSpriteObject(ObjData.r_PrefabSprite, position, ObjData.t_GameObjectsOther, LayersName.Effect.ToString(), effectPreset.spriteSingle);
+            var e = world.NewEntityWithGameObject(go);
+            e.Set<EffectComponent>().Duration = effectPreset.duration;
+        }
+
+        public static void RLCreateEnemy(this EcsWorld world, Vector2 position, EnemyPreset enemyPreset)
+        {
+            var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, enemyPreset.PresetName, ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), enemyPreset.Animation);
+            var e = world.NewEntityWithGameObject(go, true);
+            e.Set<EnemyComponent>();
+            var dataComponent = e.Set<DataSheetComponent>();
+            dataComponent.Stats = new NPCStats(enemyPreset);
+            dataComponent.PrimaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
+            dataComponent.SecondaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
+        }
+
+        public static EcsEntity NewEntityWithGameObject(this EcsWorld world, GameObject go, bool nameID = false)
+        {
+            var e = world.NewEntityWith(out GameObjectComponent goComponent);
+            goComponent.Transform = go.transform;
+            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            if (nameID)
             {
-                case SpriteEffect.None:
-                    break;
-                case SpriteEffect.Chop:
-                    var go = VExt.LayoutSpriteObjects(
-                        ObjData.r_PrefabSprite,
-                        position.x, position.y,
-                        ObjData.t_GameObjectsOther,
-                        LayersName.Effect.ToString(),
-                        ObjData.p_ChopEffect.spriteSingle);
-                    UnityEngine.Object.Destroy(go, lifeTime);
-                    break;
-                default:
-                    break;
+                goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
             }
+            return e;
         }
     }
 }

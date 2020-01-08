@@ -29,8 +29,6 @@ namespace Client
                     c1.Run = true;
                     var c = e.Set<ActionAnimationComponent>();
                     c.Animation = AnimatorField.AnimationAtack;
-
-                    Debug.Log($"entity: {e.GetInternalId()} | запущена action атака: entity: {c1.Target.GetInternalId()}");
                 }
 
                 if (c1.Run && !c1.OnAtack && c2.GObj.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
@@ -38,14 +36,14 @@ namespace Client
                     c1.OnAtack = true;
                     if (c1.PrimaryOrSecondaryWeapon)
                     {
-                        _world.RLCreateEffect(c1.TargetPosition, SpriteEffect.Chop, 0.3f);
+                        _world.RLCreateEffect(c1.TargetPosition, c3.PrimaryWeapon.HitEffect);
                         c3.PrimaryWeapon.Behaviour.OnAtack(e, c1.Target);
                     }
                     else
                     {
-                        var go = VExt.LayoutSpriteObjects(
+                        var go = VExt.LayoutSpriteObject(
                             ObjData.r_PrefabPhysicsSprite,
-                            c2.GObj.Rigidbody.position.x, c2.GObj.Rigidbody.position.y,
+                            c2.GObj.Rigidbody.position,
                             ObjData.t_GameObjectsOther,
                             LayersName.Effect.ToString(),
                             c3.SecondaryWeapon.ProjectileSprite);

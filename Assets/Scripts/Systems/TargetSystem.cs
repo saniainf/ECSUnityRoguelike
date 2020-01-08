@@ -53,7 +53,7 @@ namespace Client
         {
             if (!CheckObstacleCollision(target))
             {
-                var go = VExt.LayoutSpriteObjects(
+                var go = VExt.LayoutSpriteObject(
                     ObjData.r_PrefabSprite,
                     target.x, target.y,
                     "tileOverlay",

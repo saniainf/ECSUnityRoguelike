@@ -41,10 +41,6 @@ namespace Client
 
             entity.Set<InputPhaseComponent>();
             _worldStatus.PlayerTurnSet(entity.Get<PlayerComponent>() != null);
-
-            Debug.Log("____________________________");
-            Debug.Log($"ход entity: {entity.GetInternalId()}");
-            Debug.Log($"entity: {entity.GetInternalId()} | фаза input");
         }
     }
 }

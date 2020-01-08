@@ -16,5 +16,12 @@
             HealthPoint = HP;
             Initiative = initiative;
         }
+
+        public NPCStats(EnemyPreset enemyPreset)
+        {
+            MaxHealthPoint = enemyPreset.HealthPoint;
+            HealthPoint = enemyPreset.HealthPoint;
+            Initiative = enemyPreset.Initiative;
+        }
     }
 }

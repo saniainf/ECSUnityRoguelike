@@ -46,13 +46,6 @@ namespace Client
                 var c = e.Item2.Set<TurnComponent>();
                 c.Queue = queue++;
             }
-
-            Debug.Log("++++++++++++++++++++++++++++++");
-            Debug.Log("новый раунд");
-            foreach (var e in sortedEntities)
-            {
-                Debug.Log($"entity: {e.Item2.GetInternalId()} | очередь: {e.Item2.Get<TurnComponent>().Queue}");
-            }
         }
     }
 }

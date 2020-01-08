@@ -92,7 +92,7 @@ Animator:
   m_GameObject: {fileID: 1609624262450889742}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 65771521d11c6424791a36523ea94a27, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -117,3 +117,4 @@ MonoBehaviour:
   Collider: {fileID: 0}
   SpriteRenderer: {fileID: 1609624262450889740}
   Animator: {fileID: 1609624262450889741}
+  NPCNameText: {fileID: 0}
