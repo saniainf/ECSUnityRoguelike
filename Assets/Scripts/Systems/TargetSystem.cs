@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Client
 {
+    /// <summary>
+    /// курсор цели
+    /// </summary>
     sealed class TargetSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;

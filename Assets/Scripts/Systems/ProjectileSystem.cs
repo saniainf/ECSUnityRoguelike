@@ -33,7 +33,10 @@ namespace Client
                     float sqrDistanceToGoal = (c2.GObj.Rigidbody.position - c1.GoalPosition).sqrMagnitude;
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
-                        c1.Weapon.Behaviour.OnAtack(c1.Caster, c1.Target);
+                        _world.NewEntityWith(out DamageComponent damage);
+                        damage.target = c1.Target;
+                        damage.damageValue = c1.Weapon.Damage;
+                        //c1.Weapon.Behaviour.OnAtack(c1.Caster, c1.Target);
 
                         e.RLDestoryGO();
                     }

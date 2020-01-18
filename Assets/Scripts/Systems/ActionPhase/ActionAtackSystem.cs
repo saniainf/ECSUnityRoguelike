@@ -37,7 +37,10 @@ namespace Client
                     if (c1.PrimaryOrSecondaryWeapon)
                     {
                         _world.RLCreateEffect(c1.TargetPosition, c3.PrimaryWeapon.HitEffect);
-                        c3.PrimaryWeapon.Behaviour.OnAtack(e, c1.Target);
+                        _world.NewEntityWith(out DamageComponent damage);
+                        damage.target = c1.Target;
+                        damage.damageValue = c3.PrimaryWeapon.Damage;
+                        //c3.PrimaryWeapon.Behaviour.OnAtack(e, c1.Target);
                     }
                     else
                     {

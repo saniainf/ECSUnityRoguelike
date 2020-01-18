@@ -37,6 +37,7 @@ namespace Client
                 .Add(new ActionAtackSystem())
                 .Add(new ActionAnimationSystem())
                 .Add(new CollectSystem())
+                .Add(new DamageSystem())
                 .Add(new AppearanceSystem())
                 .Add(new GameOverSystem())
                 .Add(new EffectSystem())

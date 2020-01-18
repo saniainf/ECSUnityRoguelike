@@ -6,7 +6,6 @@ namespace Client
     /// <summary>
     /// управление сбором предметов на карте
     /// </summary>
-    
     sealed class CollectSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
