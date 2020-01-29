@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a4b267377b19124a969447f71c8d843, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
-  a: 10
+  Name: Shield
+  Buffs:
+  - {fileID: 11400000, guid: b4e935de3786f71429de4ae4e010833a, type: 2}
+  Effects: []

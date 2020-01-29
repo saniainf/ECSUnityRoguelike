@@ -8,11 +8,13 @@ namespace Client
 
         public NPCWeapon PrimaryWeapon;
         public NPCWeapon SecondaryWeapon;
+        public NPCBuffs Buffs;
 
         void IEcsAutoReset.Reset()
         {
             PrimaryWeapon = null;
             SecondaryWeapon = null;
+            Buffs = null;
         }
     }
 }
