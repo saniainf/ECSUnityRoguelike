@@ -36,6 +36,7 @@ namespace Client
                 .Add(new ActionMoveSystem())
                 .Add(new ActionAtackSystem())
                 .Add(new ActionAnimationSystem())
+                .Add(new EnvironmentPhaseSystem())
                 .Add(new CollectSystem())
                 .Add(new DamageSystem())
                 .Add(new AppearanceSystem())

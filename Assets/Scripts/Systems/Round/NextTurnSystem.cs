@@ -18,10 +18,14 @@ namespace Client
         readonly EcsFilter<TurnComponent> _canTurnEntities = null;
         readonly EcsFilter<InputPhaseComponent> _inputPhaseEntities = null;
         readonly EcsFilter<ActionPhaseComponent> _actionPhaseEntities = null;
+        readonly EcsFilter<EnvironmentPhaseComponent> _environmentPhaseEntities = null;
 
         void IEcsRunSystem.Run()
         {
-            if (_canTurnEntities.GetEntitiesCount() > 0 && _inputPhaseEntities.GetEntitiesCount() == 0 && _actionPhaseEntities.GetEntitiesCount() == 0)
+            if (_canTurnEntities.GetEntitiesCount() > 0
+                && _inputPhaseEntities.GetEntitiesCount() == 0
+                && _actionPhaseEntities.GetEntitiesCount() == 0
+                && _environmentPhaseEntities.GetEntitiesCount() == 0)
                 nextEntity();
         }
 
