@@ -73,6 +73,7 @@ namespace Client
             dataComponent.Stats = new NPCStats(enemyPreset);
             dataComponent.PrimaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
             dataComponent.SecondaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
+            dataComponent.Buffs = new NPCBuffs();
         }
 
         public static EcsEntity NewEntityWithGameObject(this EcsWorld world, GameObject go, bool nameID = false)
@@ -85,6 +86,16 @@ namespace Client
                 goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
             }
             return e;
+        }
+
+        public static Buff RLApplyBuff(this EcsEntity entity, BuffPreset preset)
+        {
+            var c = entity.Get<DataSheetComponent>();
+
+            var buff = new Buff() { BuffType = preset.BuffType, Amount = preset.Amount };
+            c.Buffs.Buffs.Add(buff);
+
+            return buff;
         }
     }
 }

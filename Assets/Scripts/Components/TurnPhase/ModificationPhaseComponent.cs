@@ -2,7 +2,7 @@
 
 namespace Client
 {
-    sealed class EnvironmentPhaseComponent : IEcsAutoReset
+    sealed class ModificationPhaseComponent : IEcsAutoReset
     {
         public bool Run = false;
         public bool PhaseEnd = false;

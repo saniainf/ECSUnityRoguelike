@@ -10,5 +10,7 @@ namespace Client
     {
         public BuffType BuffType;
         public int Amount;
+
+
     }
 }

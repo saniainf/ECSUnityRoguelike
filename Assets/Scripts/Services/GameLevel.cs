@@ -177,9 +177,10 @@ namespace Client
             dataComponent.Stats = data.NPCStats;
             dataComponent.PrimaryWeapon = data.PriamaryWeapon;
             dataComponent.SecondaryWeapon = data.SecondaryWeapon;
-
             dataComponent.Buffs = new NPCBuffs();
-            dataComponent.Buffs.Buffs.Add(new Buff() { BuffType = BuffType.Damage, Amount = 2 });
+
+            e.RLApplyBuff(Resources.Load<BuffPreset>("Presets/Buff/Damage"));
+            e.RLApplyBuff(Resources.Load<BuffPreset>("Presets/Buff/Heal"));
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)

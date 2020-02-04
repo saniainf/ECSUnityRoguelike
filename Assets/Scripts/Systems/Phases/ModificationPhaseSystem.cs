@@ -2,19 +2,19 @@ using Leopotam.Ecs;
 
 namespace Client
 {
-    sealed class EnvironmentPhaseSystem : IEcsRunSystem
+    sealed class ModificationPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<EnvironmentPhaseComponent, TurnComponent, DataSheetComponent> _environmentEntities = null;
+        readonly EcsFilter<ModificationPhaseComponent, TurnComponent, DataSheetComponent> _modificationEntities = null;
 
         void IEcsRunSystem.Run()
         {
-            foreach (var i in _environmentEntities)
+            foreach (var i in _modificationEntities)
             {
-                var e = _environmentEntities.Entities[i];
-                var c1 = _environmentEntities.Get1[i];
-                var c3 = _environmentEntities.Get3[i];
+                var e = _modificationEntities.Entities[i];
+                var c1 = _modificationEntities.Get1[i];
+                var c3 = _modificationEntities.Get3[i];
 
                 if (!c1.Run)
                 {
@@ -29,6 +29,7 @@ namespace Client
                         switch (j.BuffType)
                         {
                             case BuffType.Heal:
+                                e.RLSetHealth(e.RLGetHealth() + j.Amount);
                                 break;
                             case BuffType.Damage:
                                 _world.NewEntityWith(out DamageComponent damage);

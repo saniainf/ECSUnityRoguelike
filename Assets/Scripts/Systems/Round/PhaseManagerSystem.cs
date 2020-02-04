@@ -12,7 +12,7 @@ namespace Client
         readonly EcsWorld _world = null;
         readonly EcsFilter<InputPhaseComponent, TurnComponent> _inputPhaseEntities = null;
         readonly EcsFilter<ActionPhaseComponent, TurnComponent> _actionPhaseEntities = null;
-        readonly EcsFilter<EnvironmentPhaseComponent, TurnComponent> _environmentPhaseEntities = null;
+        readonly EcsFilter<ModificationPhaseComponent, TurnComponent> _environmentPhaseEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -55,7 +55,7 @@ namespace Client
                     }
                     else
                     {
-                        e.Set<EnvironmentPhaseComponent>();
+                        e.Set<ModificationPhaseComponent>();
                     }
                 }
             }
@@ -68,7 +68,7 @@ namespace Client
 
                 if (c1.PhaseEnd)
                 {
-                    e.Unset<EnvironmentPhaseComponent>();
+                    e.Unset<ModificationPhaseComponent>();
 
                     e.Unset<TurnComponent>();
                 }

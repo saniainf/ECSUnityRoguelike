@@ -18,7 +18,7 @@ namespace Client
         readonly EcsFilter<TurnComponent> _canTurnEntities = null;
         readonly EcsFilter<InputPhaseComponent> _inputPhaseEntities = null;
         readonly EcsFilter<ActionPhaseComponent> _actionPhaseEntities = null;
-        readonly EcsFilter<EnvironmentPhaseComponent> _environmentPhaseEntities = null;
+        readonly EcsFilter<ModificationPhaseComponent> _environmentPhaseEntities = null;
 
         void IEcsRunSystem.Run()
         {
