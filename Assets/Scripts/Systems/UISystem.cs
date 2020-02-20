@@ -1,4 +1,5 @@
 using Leopotam.Ecs;
+using LeopotamGroup.Globals;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,7 +56,7 @@ namespace Client
                 case GameStatus.LevelLoad:
                     SetActive(false);
                     levelLoadCanvas.SetActive(true);
-                    UILoadLevelText.text = ($"Level {_worldStatus.LevelNum}");
+                    UILoadLevelText.text = ($"Level {Service<GameProps>.Get().LevelNum}");
                     break;
                 case GameStatus.GameOver:
                     SetActive(false);

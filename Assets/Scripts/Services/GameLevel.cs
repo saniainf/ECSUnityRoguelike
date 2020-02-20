@@ -26,13 +26,9 @@ namespace Client
         int maxWallHP = 4;
         #endregion
 
-        NPCDataSheet playerData;
-
-        public GameLevel(EcsWorld world, NPCDataSheet playerData)
+        public GameLevel(EcsWorld world)
         {
             _world = world;
-
-            this.playerData = playerData;
 
             ObjData.t_GameBoardRoot = new GameObject("GameBoardRoot").transform;
             ObjData.t_GameObjectsRoot = new GameObject("GameObjectsRoot").transform;
@@ -71,7 +67,7 @@ namespace Client
                             break;
                         case '@':
                             LayoutFloorObject(j, i);
-                            LayoutPlayerObject(j, i, playerData);
+                            LayoutPlayerObject(j, i);
                             break;
                         default:
                             break;
@@ -160,9 +156,9 @@ namespace Client
             _world.NewEntityWithGameObject(go).Set<ZoneExitComponent>();
         }
 
-        void LayoutPlayerObject(int x, int y, NPCDataSheet data)
+        void LayoutPlayerObject(int x, int y)
         {
-            _world.RLCreatePlayer(new Vector2Int(x, y), data);
+            _world.RLCreatePlayer(new Vector2Int(x, y));
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)

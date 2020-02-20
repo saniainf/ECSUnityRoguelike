@@ -44,7 +44,6 @@ namespace Client
             }
 
             entity.Set<InputPhaseComponent>();
-            _worldStatus.PlayerTurnSet(entity.Get<PlayerComponent>() != null);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Leopotam.Ecs;
+using LeopotamGroup.Globals;
 
 namespace Client
 {
@@ -27,15 +28,15 @@ namespace Client
             dataComponent.Buffs = new NPCBuffs();
         }
 
-        public static void RLCreatePlayer(this EcsWorld world, Vector2 position, NPCDataSheet data)
+        public static void RLCreatePlayer(this EcsWorld world, Vector2 position)
         {
             var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, "player", ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), ObjData.p_PlayerPreset.Animation);
             var e = world.NewEntityWithGameObject(go, true);
             e.Set<PlayerComponent>();
             var dataComponent = e.Set<DataSheetComponent>();
-            dataComponent.Stats = data.NPCStats;
-            dataComponent.PrimaryWeapon = data.PriamaryWeapon;
-            dataComponent.SecondaryWeapon = data.SecondaryWeapon;
+            dataComponent.Stats = Service<NPCDataSheet>.Get().NPCStats;
+            dataComponent.PrimaryWeapon = Service<NPCDataSheet>.Get().PriamaryWeapon;
+            dataComponent.SecondaryWeapon = Service<NPCDataSheet>.Get().SecondaryWeapon;
             dataComponent.Buffs = new NPCBuffs();
         }
 
