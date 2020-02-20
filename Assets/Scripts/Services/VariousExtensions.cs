@@ -107,13 +107,6 @@ namespace Client
             return new Vector2Int((int)v.x, (int)v.y);
         }
 
-        public static Vector3 ToVector3(this Vector2Int v, float x = 0, float y = 0, float z = 0)
-        {
-            x = x != 0 ? v.x : x;
-            y = y != 0 ? v.y : y;
-            return new Vector3(v.x, v.y, z);
-        }
-
         public static void ReverseArray<T>(ref T[,] array)
         {
             T[,] arrayReverse = new T[array.GetLength(0), array.GetLength(1)];

@@ -3,7 +3,7 @@
     /// <summary>
     /// свойства чара (статы, оружие, etc...)
     /// </summary>
-    struct NPCDataSheet
+    class NPCDataSheet
     {
         public NPCStats NPCStats;
         public NPCWeapon PriamaryWeapon;

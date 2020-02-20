@@ -162,25 +162,7 @@ namespace Client
 
         void LayoutPlayerObject(int x, int y, NPCDataSheet data)
         {
-
-            var go = VExt.LayoutAnimationObject(
-                ObjData.r_PrefabPhysicsAnimation,
-                x, y,
-                "player",
-                ObjData.t_GameObjectsRoot,
-                LayersName.Character.ToString(),
-                ObjData.p_PlayerPreset.Animation);
-
-            var e = _world.NewEntityWithGameObject(go, true);
-            e.Set<PlayerComponent>();
-            var dataComponent = e.Set<DataSheetComponent>();
-            dataComponent.Stats = data.NPCStats;
-            dataComponent.PrimaryWeapon = data.PriamaryWeapon;
-            dataComponent.SecondaryWeapon = data.SecondaryWeapon;
-            dataComponent.Buffs = new NPCBuffs();
-
-            e.RLApplyBuff(Resources.Load<BuffPreset>("Presets/Buff/Damage"));
-            e.RLApplyBuff(Resources.Load<BuffPreset>("Presets/Buff/Heal"));
+            _world.RLCreatePlayer(new Vector2Int(x, y), data);
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)

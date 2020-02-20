@@ -1,5 +1,6 @@
 using UnityEngine;
 using Leopotam.Ecs;
+using LeopotamGroup.Globals;
 
 namespace Client
 {
@@ -57,6 +58,13 @@ namespace Client
 
         void StartGame()
         {
+            //Service<NPCDataSheet>.Set(new NPCDataSheet(
+            //    new NPCStats(ObjData.p_PlayerPreset.HealthPoint,
+            //                 ObjData.p_PlayerPreset.HealthPoint,
+            //                 ObjData.p_PlayerPreset.Initiative),
+            //    new NPCWeapon(ObjData.p_PlayerPreset.PrimaryWeaponItem, new WB_DamageOnContact()),
+            //    new NPCWeapon(ObjData.p_PlayerPreset.SecondaryWeaponItem, new WB_DamageOnContact())));
+
             levelNum = 1;
             playerData = new NPCDataSheet(
                 new NPCStats(ObjData.p_PlayerPreset.HealthPoint,

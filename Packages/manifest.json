@@ -11,6 +11,7 @@
   "dependencies": {
     "com.leopotam.ecs": "2019.12.22",
     "com.leopotam.ecs-unityintegration": "2019.12.22",
+    "com.leopotam.globals": "2019.12.22",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.collab-proxy": "1.2.16",
