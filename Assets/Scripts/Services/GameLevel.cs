@@ -124,7 +124,7 @@ namespace Client
                 x, y,
                 "floor",
                 ObjData.t_GameBoardRoot,
-                LayersName.Floor.ToString(),
+                SortingLayer.Floor.ToString(),
                 VExt.NextFromArray(ObjData.p_FloorPresets.spritesArray));
 
             _world.NewEntityWithGameObject(go);
@@ -137,7 +137,7 @@ namespace Client
                 x, y,
                 "obstacle",
                 ObjData.t_GameBoardRoot,
-                LayersName.Wall.ToString(),
+                SortingLayer.Wall.ToString(),
                 VExt.NextFromArray(ObjData.p_ObstaclePresets.spritesArray));
 
             _world.NewEntityWithGameObject(go).Set<ObstacleComponent>();
@@ -150,7 +150,7 @@ namespace Client
                 x, y,
                 "exit",
                 ObjData.t_GameObjectsRoot,
-                LayersName.Object.ToString(),
+                SortingLayer.Object.ToString(),
                 ObjData.p_ExitPointPreset.spriteSingle);
 
             _world.NewEntityWithGameObject(go).Set<ZoneExitComponent>();
@@ -170,7 +170,7 @@ namespace Client
                 cell.x, cell.y,
                 "boostHP",
                 ObjData.t_GameObjectsRoot,
-                LayersName.Object.ToString(), ObjData.p_BoostHPItemPreset.Sprite);
+                SortingLayer.Object.ToString(), ObjData.p_BoostHPItemPreset.Sprite);
 
             _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
             goComponent.Transform = go.transform;
@@ -189,7 +189,7 @@ namespace Client
                 cell.x, cell.y,
                 "heal",
                 ObjData.t_GameObjectsRoot,
-                LayersName.Object.ToString(),
+                SortingLayer.Object.ToString(),
                 ObjData.p_HealItemPreset.Sprite);
 
             _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
@@ -209,7 +209,7 @@ namespace Client
                 cell.x, cell.y,
                 "wall",
                 ObjData.t_GameObjectsRoot,
-                LayersName.Object.ToString(),
+                SortingLayer.Object.ToString(),
                 VExt.NextFromArray(ObjData.p_WallsPresets.Animation));
 
             var e = _world.NewEntityWith(out GameObjectComponent goComponent, out WallComponent _);

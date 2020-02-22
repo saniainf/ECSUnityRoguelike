@@ -48,7 +48,7 @@ namespace Client
                             ObjData.r_PrefabPhysicsSprite,
                             c2.GObj.Rigidbody.position,
                             ObjData.t_GameObjectsOther,
-                            LayersName.Effect.ToString(),
+                            SortingLayer.Effect.ToString(),
                             c3.SecondaryWeapon.ProjectileSprite);
 
                         _world.NewEntityWith(out GameObjectComponent goComponent, out ProjectileComponent projectileComponent);

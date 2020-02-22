@@ -11,14 +11,14 @@ namespace Client
     {
         public static void RLCreateEffect(this EcsWorld world, Vector2 position, EffectPreset effectPreset)
         {
-            var go = VExt.LayoutSpriteObject(ObjData.r_PrefabSprite, position, ObjData.t_GameObjectsOther, LayersName.Effect.ToString(), effectPreset.spriteSingle);
+            var go = VExt.LayoutSpriteObject(ObjData.r_PrefabSprite, position, ObjData.t_GameObjectsOther, SortingLayer.Effect.ToString(), effectPreset.spriteSingle);
             var e = world.NewEntityWithGameObject(go);
             e.Set<EffectComponent>().Duration = effectPreset.duration;
         }
 
         public static void RLCreateEnemy(this EcsWorld world, Vector2 position, EnemyPreset enemyPreset)
         {
-            var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, enemyPreset.PresetName, ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), enemyPreset.Animation);
+            var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, enemyPreset.PresetName, ObjData.t_GameObjectsRoot, SortingLayer.Character.ToString(), enemyPreset.Animation);
             var e = world.NewEntityWithGameObject(go, true);
             e.Set<EnemyComponent>();
             var dataComponent = e.Set<DataSheetComponent>();
@@ -30,7 +30,7 @@ namespace Client
 
         public static void RLCreatePlayer(this EcsWorld world, Vector2 position)
         {
-            var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, "player", ObjData.t_GameObjectsRoot, LayersName.Character.ToString(), ObjData.p_PlayerPreset.Animation);
+            var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, "player", ObjData.t_GameObjectsRoot, SortingLayer.Character.ToString(), ObjData.p_PlayerPreset.Animation);
             var e = world.NewEntityWithGameObject(go, true);
             e.Set<PlayerComponent>();
             var dataComponent = e.Set<DataSheetComponent>();

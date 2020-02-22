@@ -61,7 +61,7 @@ namespace Client
                     target.x, target.y,
                     "tileOverlay",
                     ObjData.t_GameObjectsOther,
-                    LayersName.TileOverlay.ToString(),
+                    SortingLayer.TileOverlay.ToString(),
                     ObjData.p_Overlay.spriteSingle);
 
                 _world.NewEntityWith(out GameObjectComponent goComponent, out TargetTileComponent targetTile);

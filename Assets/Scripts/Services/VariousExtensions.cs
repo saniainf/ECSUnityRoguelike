@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Client
 {
-    public enum LayersName
+    public enum SortingLayer
     {
         Floor,
         Wall,
@@ -53,6 +53,11 @@ namespace Client
 
     static class VExt
     {
+        //public static GameObject NewGameObject(GameBoardPatchPreset preset, Vector2 position)
+        //{
+
+        //}
+
         public static GameObject LayoutSpriteObject(GameObject prefab, Vector2 position, Transform parent, string sortingLayer, Sprite sprite)
         {
             string name = Guid.NewGuid().ToString();
