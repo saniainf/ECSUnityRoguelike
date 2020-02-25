@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace Client
 {
-    [CreateAssetMenu(menuName = "EcsRoguelike/Presets/GameBoardPatch", fileName = "GameBoardPatchPreset")]
-    public class GameBoardPatchPreset : ScriptableObject
+    [CreateAssetMenu(menuName = "EcsRoguelike/Presets/GameObject", fileName = "GameObjectPreset")]
+    public class GameObjectPreset : ScriptableObject
     {
         public char MapChar;
+        public string Name;
         public SortingLayer SortingLayer;
 
         [Header("Game Object Resources")]

@@ -69,6 +69,10 @@ namespace Client
                             LayoutFloorObject(j, i);
                             LayoutPlayerObject(j, i);
                             break;
+                        case 'A':
+                            LayoutFloorObject(j, i);
+                            LayoutAcidPuddle(j, i);
+                            break;
                         default:
                             break;
                     }
@@ -117,6 +121,11 @@ namespace Client
         }
 
         #region Layout
+        void LayoutAcidPuddle(int x, int y)
+        {
+            var go = VExt.CreateGameObject(ObjData.p_AcidPuddle, new Vector2(x, y));
+        }
+
         void LayoutFloorObject(int x, int y)
         {
             var go = VExt.LayoutSpriteObject(

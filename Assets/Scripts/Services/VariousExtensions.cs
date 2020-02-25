@@ -53,10 +53,18 @@ namespace Client
 
     static class VExt
     {
-        //public static GameObject NewGameObject(GameBoardPatchPreset preset, Vector2 position)
-        //{
+        public static GameObject CreateGameObject(GameObjectPreset preset, Vector2 position)
+        {
+            string name = preset.Name != "" ? preset.Name : "MapChar " + preset.MapChar.ToString();
+            GameObject go = UnityEngine.Object.Instantiate(ObjData.r_PrefabPhysicsAnimation);
+            go.transform.SetParent(ObjData.t_GameBoardRoot);
+            go.transform.localPosition = position;
+            go.name = ($"{name}_(x{go.transform.localPosition.x}, y{go.transform.localPosition.y})");
 
-        //}
+            var shortcut = go.GetComponent<PrefabComponentsShortcut>();
+            shortcut.Animator.runtimeAnimatorController = preset.AnimatorController;
+            return go;
+        }
 
         public static GameObject LayoutSpriteObject(GameObject prefab, Vector2 position, Transform parent, string sortingLayer, Sprite sprite)
         {
