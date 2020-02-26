@@ -16,7 +16,6 @@ MonoBehaviour:
   Name: AcidPuddle
   SortingLayer: 1
   spritesArray: []
-  spriteSingle: {fileID: 0}
   AnimatorController: {fileID: 22100000, guid: 6e85e422f305fa746a382519880b186e, type: 2}
   SpriteRenderer: 1
   Animator: 1

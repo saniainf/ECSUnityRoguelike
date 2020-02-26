@@ -13,7 +13,6 @@ namespace Client
 
         [Header("Game Object Resources")]
         public Sprite[] spritesArray;
-        public Sprite spriteSingle;
         public RuntimeAnimatorController AnimatorController;
 
         [Header("Game Object Components")]

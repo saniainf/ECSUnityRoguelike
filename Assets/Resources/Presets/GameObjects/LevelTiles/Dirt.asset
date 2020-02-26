@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01b737d52276fdf4cb0c0c240dba39b2, type: 3}
+  m_Name: Dirt
+  m_EditorClassIdentifier: 
+  MapChar: 46
+  Name: Dirt
+  SortingLayer: 0
+  spritesArray:
+  - {fileID: -7308334372471155770, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  - {fileID: -620116329759961305, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  - {fileID: -1188959728647595295, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  - {fileID: 7271343812890091881, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  - {fileID: 4924539640634576617, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  - {fileID: 8368126115803227190, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  - {fileID: -5388683061133038930, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  - {fileID: -8826015683729370396, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
+  AnimatorController: {fileID: 0}
+  SpriteRenderer: 1
+  Animator: 0
+  Rigidbody: 0
+  Collider: 0

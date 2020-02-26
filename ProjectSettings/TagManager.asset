@@ -44,8 +44,8 @@ TagManager:
   - name: Floor
     uniqueID: 2597622827
     locked: 0
-  - name: Wall
-    uniqueID: 2055567547
+  - name: OnFloor
+    uniqueID: 3893117261
     locked: 0
   - name: Object
     uniqueID: 689002279
@@ -55,6 +55,9 @@ TagManager:
     locked: 0
   - name: Effect
     uniqueID: 211891689
+    locked: 0
+  - name: Wall
+    uniqueID: 2055567547
     locked: 0
   - name: TileOverlay
     uniqueID: 1706279035

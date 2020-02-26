@@ -9,6 +9,7 @@ namespace Client
     public enum SortingLayer
     {
         Floor,
+        OnFloor,
         Wall,
         Object,
         Character,
@@ -56,13 +57,44 @@ namespace Client
         public static GameObject CreateGameObject(GameObjectPreset preset, Vector2 position)
         {
             string name = preset.Name != "" ? preset.Name : "MapChar " + preset.MapChar.ToString();
-            GameObject go = UnityEngine.Object.Instantiate(ObjData.r_PrefabPhysicsAnimation);
+            GameObject go = UnityEngine.Object.Instantiate(ObjData.r_PrefabGameObject);
+
             go.transform.SetParent(ObjData.t_GameBoardRoot);
             go.transform.localPosition = position;
             go.name = ($"{name}_(x{go.transform.localPosition.x}, y{go.transform.localPosition.y})");
-
             var shortcut = go.GetComponent<PrefabComponentsShortcut>();
-            shortcut.Animator.runtimeAnimatorController = preset.AnimatorController;
+
+            if (preset.SpriteRenderer)
+                shortcut.SpriteRenderer = go.AddComponent<SpriteRenderer>();
+
+            if (preset.Animator)
+                shortcut.Animator = go.AddComponent<Animator>();
+
+            if (preset.Rigidbody)
+            {
+                shortcut.Rigidbody = go.AddComponent<Rigidbody2D>();
+                shortcut.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            }
+
+            if (preset.Collider)
+            {
+                shortcut.Collider = go.AddComponent<BoxCollider2D>();
+                shortcut.Collider.isTrigger = true;
+                shortcut.Collider.size = new Vector2(0.9f, 0.9f);
+            }
+
+            if (preset.SpriteRenderer && !preset.Animator)
+            {
+                shortcut.SpriteRenderer.sprite = NextFromArray(preset.spritesArray);
+                shortcut.SpriteRenderer.sortingLayerName = preset.SortingLayer.ToString();
+            }
+
+            if (preset.Animator)
+            {
+                shortcut.Animator.runtimeAnimatorController = preset.AnimatorController;
+                shortcut.SpriteRenderer.sortingLayerName = preset.SortingLayer.ToString();
+            }
+
             return go;
         }
 
