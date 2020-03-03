@@ -8,7 +8,7 @@ namespace Client
     /// </summary>
     sealed class ActionMoveSystem : IEcsRunSystem
     {
-        const float SPEED = 7f;
+        const float SPEED = 20f;
 
         readonly EcsWorld _world = null;
 

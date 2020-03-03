@@ -1,4 +1,5 @@
 using Leopotam.Ecs;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,8 @@ namespace Client
         EcsWorld _world;
         EcsSystems _systems;
         WorldStatus _worldStatus;
+
+        public List<LevelTilePreset> LevelTilePresets;
 
         void OnEnable()
         {

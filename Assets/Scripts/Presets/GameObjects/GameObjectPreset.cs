@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Client
 {
-    [CreateAssetMenu(menuName = "EcsRoguelike/Presets/GameObject", fileName = "GameObjectPreset")]
+    [CreateAssetMenu(menuName = "EcsRoguelike/Presets/GameObjects/GameObject", fileName = "GameObjectPreset")]
     public class GameObjectPreset : ScriptableObject
     {
         public char MapChar;
