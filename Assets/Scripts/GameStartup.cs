@@ -9,16 +9,19 @@ namespace Client
     {
         EcsWorld _world;
         EcsSystems _systems;
-        WorldStatus _worldStatus;
+        WorldStatus _worldStatusInject;
+        EntitiesPresetsInject _entitiesPresetsInject;
 
-        public List<LevelTilePreset> LevelTilePresets;
+        [SerializeField]
+        private EntitiesPresets presets;
 
         void OnEnable()
         {
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
-            _worldStatus = new WorldStatus();
+            _worldStatusInject = new WorldStatus();
+            _entitiesPresetsInject = new EntitiesPresetsInject(presets);
 
 #if UNITY_EDITOR
             Leopotam.Ecs.UnityIntegration.EcsWorldObserver.Create(_world);
@@ -49,7 +52,9 @@ namespace Client
                 .Add(new CameraSystem());
 
             _systems
-                .Inject(_worldStatus);
+                .Inject(_worldStatusInject)
+                .Inject(_entitiesPresetsInject);
+
 
             _systems.Init();
         }
@@ -57,7 +62,6 @@ namespace Client
         void Update()
         {
             _systems.Run();
-            _world.EndFrame();
         }
 
         void OnDisable()

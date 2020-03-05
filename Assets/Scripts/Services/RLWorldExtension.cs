@@ -51,5 +51,13 @@ namespace Client
             }
             return e;
         }
+
+        public static EcsEntity RLNewLevelTile(this EcsWorld world, LevelTilePreset preset, Vector2 pos)
+        {
+            var go = VExt.NewGameObject(preset.GameObject, pos);
+            var e = world.NewEntityWith(out GameObjectComponent c);
+            c.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            return e;
+        }
     }
 }

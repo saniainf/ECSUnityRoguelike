@@ -11,6 +11,7 @@ namespace Client
     class GameLevel
     {
         private EcsWorld _world;
+        private EntitiesPresetsInject _presets;
 
         #region Settings
         int healCount = 3;
@@ -26,10 +27,10 @@ namespace Client
         int maxWallHP = 4;
         #endregion
 
-        public GameLevel(EcsWorld world)
+        public GameLevel(EcsWorld world, EntitiesPresetsInject presets)
         {
             _world = world;
-
+            _presets = presets;
             ObjData.t_GameBoardRoot = new GameObject("GameBoardRoot").transform;
             ObjData.t_GameObjectsRoot = new GameObject("GameObjectsRoot").transform;
             ObjData.t_GameObjectsOther = new GameObject("GameObjectsOther").transform;
@@ -123,20 +124,13 @@ namespace Client
         #region Layout
         void LayoutAcidPuddle(int x, int y)
         {
-            var go = VExt.CreateGameObject(ObjData.p_AcidPuddle, new Vector2(x, y));
+            var go = VExt.NewGameObject(ObjData.p_AcidPuddle, new Vector2(x, y));
         }
 
         void LayoutFloorObject(int x, int y)
         {
-            var go = VExt.LayoutSpriteObject(
-                ObjData.r_PrefabSprite,
-                x, y,
-                "floor",
-                ObjData.t_GameBoardRoot,
-                SortingLayer.Floor.ToString(),
-                VExt.NextFromArray(ObjData.p_FloorPresets.spritesArray));
-
-            _world.NewEntityWithGameObject(go);
+            _presets.LevelTiles.TryGetValue(".", out LevelTilePreset preset);
+            _world.RLNewLevelTile(preset, new Vector2(x, y));
         }
 
         void LayoutObstacleObject(int x, int y)

@@ -12,6 +12,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
+        readonly EntitiesPresetsInject _entitiesPresets = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
         readonly EcsFilter<GameObjectComponent>.Exclude<PlayerComponent> _transformEntities = null;
@@ -79,7 +80,7 @@ namespace Client
 
             if (loadLevelCurrentTime <= 0f)
             {
-                gameLevel = new GameLevel(_world);
+                gameLevel = new GameLevel(_world, _entitiesPresets);
                 gameLevel.LevelCreate();
                 gameLevel.SetActive(true);
                 _worldStatus.GameStatus = GameStatus.LevelRun;

@@ -54,7 +54,7 @@ namespace Client
 
     static class VExt
     {
-        public static GameObject CreateGameObject(GameObjectPreset preset, Vector2 position)
+        public static GameObject NewGameObject(GameObjectPreset preset, Vector2 position)
         {
             string name = preset.Name != "" ? preset.Name : "MapChar " + preset.MapChar.ToString();
             GameObject go = UnityEngine.Object.Instantiate(ObjData.r_PrefabGameObject);

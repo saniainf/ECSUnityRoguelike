@@ -150,8 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727fac7bd007cac4b8e62c2b39d8f3fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelTilePresets:
-  - {fileID: 11400000, guid: 9ea97d38d5c59f742a9e09e452e0bfee, type: 2}
+  presets: {fileID: 11400000, guid: 2447bd2208ab5ce42ad0a15c69588b95, type: 2}
 --- !u!4 &995316095
 Transform:
   m_ObjectHideFlags: 0
