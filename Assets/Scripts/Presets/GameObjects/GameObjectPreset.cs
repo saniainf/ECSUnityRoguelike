@@ -7,8 +7,7 @@ namespace Client
     [CreateAssetMenu(menuName = "EcsRoguelike/Presets/GameObjects/GameObject", fileName = "GameObjectPreset")]
     public class GameObjectPreset : ScriptableObject
     {
-        public char MapChar;
-        public string Name;
+        public string NameID;
         public SortingLayer SortingLayer;
 
         [Header("Game Object Resources")]

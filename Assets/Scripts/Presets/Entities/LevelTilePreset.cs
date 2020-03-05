@@ -8,5 +8,9 @@ namespace Client
     public class LevelTilePreset : ScriptableObject
     {
         public GameObjectPreset GameObject;
+
+        [Header("Entity components")]
+        public bool Obstacle;
+        public bool ExitPoint;
     }
 }

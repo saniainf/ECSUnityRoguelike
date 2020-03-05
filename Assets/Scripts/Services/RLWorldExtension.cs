@@ -28,17 +28,6 @@ namespace Client
             dataComponent.Buffs = new NPCBuffs();
         }
 
-        public static void RLCreatePlayer(this EcsWorld world, Vector2 position)
-        {
-            var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, "player", ObjData.t_GameObjectsRoot, SortingLayer.Character.ToString(), ObjData.p_PlayerPreset.Animation);
-            var e = world.NewEntityWithGameObject(go, true);
-            e.Set<PlayerComponent>();
-            var dataComponent = e.Set<DataSheetComponent>();
-            dataComponent.Stats = Service<NPCDataSheet>.Get().NPCStats;
-            dataComponent.PrimaryWeapon = Service<NPCDataSheet>.Get().PriamaryWeapon;
-            dataComponent.SecondaryWeapon = Service<NPCDataSheet>.Get().SecondaryWeapon;
-            dataComponent.Buffs = new NPCBuffs();
-        }
 
         public static EcsEntity NewEntityWithGameObject(this EcsWorld world, GameObject go, bool nameID = false)
         {
@@ -52,11 +41,29 @@ namespace Client
             return e;
         }
 
-        public static EcsEntity RLNewLevelTile(this EcsWorld world, LevelTilePreset preset, Vector2 pos)
+        public static EcsEntity RLNewLevelObject(this EcsWorld world, LevelTilePreset preset, Vector2 pos)
         {
             var go = VExt.NewGameObject(preset.GameObject, pos);
-            var e = world.NewEntityWith(out GameObjectComponent c);
-            c.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            var e = world.NewEntityWithGameObject(go, false);
+
+            if (preset.Obstacle)
+                e.Set<ObstacleComponent>();
+            if (preset.ExitPoint)
+                e.Set<ExitPointComponent>();
+
+            return e;
+        }
+
+        public static EcsEntity RLNewLevelObject(this EcsWorld world, PlayerPreset preset, Vector2 pos)
+        {
+            var go = VExt.NewGameObject(preset.GameObject, pos);
+            var e = world.NewEntityWithGameObject(go, false);
+            e.Set<PlayerComponent>();
+            var dataComponent = e.Set<DataSheetComponent>();
+            dataComponent.Stats = Service<NPCDataSheet>.Get().NPCStats;
+            dataComponent.PrimaryWeapon = Service<NPCDataSheet>.Get().PriamaryWeapon;
+            dataComponent.SecondaryWeapon = Service<NPCDataSheet>.Get().SecondaryWeapon;
+            dataComponent.Buffs = new NPCBuffs();
             return e;
         }
     }

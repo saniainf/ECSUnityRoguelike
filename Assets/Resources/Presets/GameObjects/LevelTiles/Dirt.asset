@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b737d52276fdf4cb0c0c240dba39b2, type: 3}
   m_Name: Dirt
   m_EditorClassIdentifier: 
-  MapChar: 46
-  Name: Dirt
+  NameID: Dirt
   SortingLayer: 0
   spritesArray:
   - {fileID: -7308334372471155770, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}

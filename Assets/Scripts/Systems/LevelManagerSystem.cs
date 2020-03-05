@@ -5,22 +5,17 @@ using UnityEngine.SceneManagement;
 
 namespace Client
 {
-    /// <summary>
-    /// загрузка, выгрузка уровня. сохранение данных между уровнями
-    /// </summary>
     sealed class LevelManagerSystem : IEcsRunSystem, IEcsInitSystem
     {
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
-        readonly EntitiesPresetsInject _entitiesPresets = null;
+        readonly EntitiesPresetsInject _presets = null;
 
         readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
         readonly EcsFilter<GameObjectComponent>.Exclude<PlayerComponent> _transformEntities = null;
 
         private float loadLevelTime = 2f;
-        private float loadLevelCurrentTime = 0f;
         private float gameOverTime = 2f;
-        private float gameOvetCurrentTime = 0f;
 
         private GameLevel gameLevel = null;
 
@@ -62,25 +57,23 @@ namespace Client
                 Service<GameProps>.Get().LevelNum = 1;
 
                 Service<NPCDataSheet>.Set(new NPCDataSheet(
-                    new NPCStats(ObjData.p_PlayerPreset.HealthPoint,
-                                 ObjData.p_PlayerPreset.HealthPoint,
-                                 ObjData.p_PlayerPreset.Initiative),
-                    new NPCWeapon(ObjData.p_PlayerPreset.PrimaryWeaponItem, new WB_DamageOnContact()),
-                    new NPCWeapon(ObjData.p_PlayerPreset.SecondaryWeaponItem, new WB_DamageOnContact())));
+                    new NPCStats(_presets.Player.HealthPoint,
+                                 _presets.Player.HealthPoint,
+                                 _presets.Player.Initiative),
+                    new NPCWeapon(_presets.Player.PrimaryWeaponItem, new WB_DamageOnContact()),
+                    new NPCWeapon(_presets.Player.SecondaryWeaponItem, new WB_DamageOnContact())));
             }
 
             _worldStatus.GameStatus = GameStatus.LevelLoad;
-            loadLevelCurrentTime = loadLevelTime;
-            gameOvetCurrentTime = gameOverTime;
         }
 
         void LevelLoad()
         {
-            loadLevelCurrentTime -= Time.deltaTime;
+            loadLevelTime -= Time.deltaTime;
 
-            if (loadLevelCurrentTime <= 0f)
+            if (loadLevelTime <= 0f)
             {
-                gameLevel = new GameLevel(_world, _entitiesPresets);
+                gameLevel = new GameLevel(_world, _presets);
                 gameLevel.LevelCreate();
                 gameLevel.SetActive(true);
                 _worldStatus.GameStatus = GameStatus.LevelRun;
@@ -90,39 +83,9 @@ namespace Client
         void LevelEnd()
         {
             _worldStatus.GameStatus = GameStatus.LevelLoad;
-            loadLevelCurrentTime = loadLevelTime;
 
             Service<GameProps>.Get().LevelNum += 1;
 
-            if (gameLevel != null)
-            {
-                ClearWorld();
-                gameLevel.SetActive(false);
-                gameLevel.LevelDestroy();
-                gameLevel = null;
-            }
-        }
-
-        void GameOver()
-        {
-            if (gameLevel != null)
-            {
-                ClearWorld();
-                gameLevel.SetActive(false);
-                gameLevel.LevelDestroy();
-                gameLevel = null;
-            }
-
-            gameOvetCurrentTime -= Time.deltaTime;
-
-            if (gameOvetCurrentTime <= 0f)
-            {
-                _worldStatus.GameStatus = GameStatus.Start;
-            }
-        }
-
-        void ClearWorld()
-        {
             foreach (var i in _playerEntities)
             {
                 ref var e = ref _playerEntities.Entities[i];
@@ -134,6 +97,17 @@ namespace Client
             }
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        void GameOver()
+        {
+            gameLevel.SetActive(false);
+            gameOverTime -= Time.deltaTime;
+
+            if (gameOverTime <= 0f)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
     }
 }

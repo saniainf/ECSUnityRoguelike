@@ -23,9 +23,6 @@ namespace Client
         //преднастройки сущностей
         public static WallsObject p_WallsPresets = Resources.Load<WallsObject>("Presets/Other/WallsPreset");
         public static SpritesObject p_ChopEffect = Resources.Load<SpritesObject>("Presets/Other/ChopEffect");
-        public static SpritesObject p_ObstaclePresets = Resources.Load<SpritesObject>("Presets/Other/ObstaclePresets");
-        public static SpritesObject p_FloorPresets = Resources.Load<SpritesObject>("Presets/Other/FloorPresets");
-        public static SpritesObject p_ExitPointPreset = Resources.Load<SpritesObject>("Presets/Other/ExitPointPresets");
         public static PlayerObject p_PlayerPreset = Resources.Load<PlayerObject>("Presets/Other/PlayerPreset");
         public static EnemyPreset p_Enemy01Preset = Resources.Load<EnemyPreset>("Presets/Other/Enemy/Enemy01");
         public static EnemyPreset p_Enemy02Preset = Resources.Load<EnemyPreset>("Presets/Other/Enemy/Enemy02");
@@ -37,8 +34,6 @@ namespace Client
         public static WeaponItemObject p_WeaponStonePreset = Resources.Load<WeaponItemObject>("Presets/Other/WeaponStonePreset");
 
         public static SpritesObject p_Overlay = Resources.Load<SpritesObject>("Presets/Other/Overlay");
-
-        public static GameObjectPreset p_AcidPuddle = Resources.Load<GameObjectPreset>("Presets/GameObjects/AcidPuddle");
     }
 }
 

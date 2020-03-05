@@ -56,7 +56,7 @@ namespace Client
     {
         public static GameObject NewGameObject(GameObjectPreset preset, Vector2 position)
         {
-            string name = preset.Name != "" ? preset.Name : "MapChar " + preset.MapChar.ToString();
+            string name = preset.NameID;
             GameObject go = UnityEngine.Object.Instantiate(ObjData.r_PrefabGameObject);
 
             go.transform.SetParent(ObjData.t_GameBoardRoot);

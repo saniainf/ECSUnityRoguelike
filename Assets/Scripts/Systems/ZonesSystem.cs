@@ -5,13 +5,13 @@ namespace Client
     /// <summary>
     /// контроль специальных зон на карте, выход и т.д.
     /// </summary>
-    
+
     sealed class ZonesSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<GameObjectComponent, PlayerComponent> _playerEntities = null;
-        readonly EcsFilter<GameObjectComponent, ZoneExitComponent> _zoneExitEntities = null;
+        readonly EcsFilter<GameObjectComponent, ExitPointComponent> _zoneExitEntities = null;
 
         readonly WorldStatus _worldStatus = null;
 
@@ -25,7 +25,7 @@ namespace Client
                 {
                     var zc1 = _zoneExitEntities.Get1[i];
 
-                    if (pc1.Transform.position == zc1.Transform.position)
+                    if (zc1.GObj.Collider.OverlapPoint(pc1.Transform.position))
                     {
                         _worldStatus.GameStatus = GameStatus.LevelEnd;
                     }

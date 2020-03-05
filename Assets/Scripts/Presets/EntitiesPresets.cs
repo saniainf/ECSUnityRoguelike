@@ -11,5 +11,6 @@ namespace Client
     class EntitiesPresets : ScriptableObject
     {
         public List<LevelTilePreset> LevelTiles;
+        public PlayerPreset Player;
     }
 }

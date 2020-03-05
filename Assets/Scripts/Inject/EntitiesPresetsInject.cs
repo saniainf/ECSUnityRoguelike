@@ -9,16 +9,18 @@ namespace Client
     class EntitiesPresetsInject
     {
         public Dictionary<string, LevelTilePreset> LevelTiles;
+        public PlayerPreset Player;
 
         public EntitiesPresetsInject(EntitiesPresets presets)
         {
             LevelTiles = new Dictionary<string, LevelTilePreset>();
-
             foreach (var p in presets.LevelTiles)
             {
-                var key = p.GameObject.MapChar != ' ' ? p.GameObject.MapChar.ToString() : p.GameObject.Name;
+                var key = p.GameObject.NameID;
                 LevelTiles.Add(key, p);
             }
+
+            Player = presets.Player;
         }
     }
 }

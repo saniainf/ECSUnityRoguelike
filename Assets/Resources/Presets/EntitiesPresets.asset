@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelTiles:
   - {fileID: 11400000, guid: 9ea97d38d5c59f742a9e09e452e0bfee, type: 2}
+  - {fileID: 11400000, guid: 57b7b2a596f01c943a015c9094f1d366, type: 2}
+  - {fileID: 11400000, guid: 20a1570f615577644a4639cff5e359dc, type: 2}
+  - {fileID: 11400000, guid: 4083a3b100762524b9929766c5ccf51d, type: 2}
+  Player: {fileID: 11400000, guid: 5c321607d88a1084999a1e608e64b6d9, type: 2}

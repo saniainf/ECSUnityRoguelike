@@ -53,26 +53,26 @@ namespace Client
             for (int i = 0; i < height; i++)
                 for (int j = 0; j < width; j++)
                 {
+                    if (roomsArray[i][j] != ' ')
+                    {
+                        NewGameBoardObject(rooms.GetNameID('.'), new Vector2(j, i));
+                    }
                     switch (roomsArray[i][j])
                     {
                         case '.':
-                            LayoutFloorObject(j, i);
                             emptyCells.Add(new Vector2Int(j, i));
                             break;
                         case '#':
-                            LayoutObstacleObject(j, i);
+                            NewGameBoardObject(rooms.GetNameID('#'), new Vector2(j, i));
                             break;
                         case 'X':
-                            LayoutFloorObject(j, i);
-                            LayoutExitObject(j, i);
+                            NewGameBoardObject(rooms.GetNameID('X'), new Vector2(j, i));
                             break;
                         case '@':
-                            LayoutFloorObject(j, i);
-                            LayoutPlayerObject(j, i);
+                            NewPlayerObject(j, i);
                             break;
                         case 'A':
-                            LayoutFloorObject(j, i);
-                            LayoutAcidPuddle(j, i);
+                            NewGameBoardObject(rooms.GetNameID('A'), new Vector2(j, i));
                             break;
                         default:
                             break;
@@ -105,15 +105,6 @@ namespace Client
             }
         }
 
-        public void LevelDestroy()
-        {
-            UnityEngine.Object.Destroy(ObjData.t_GameBoardRoot.gameObject);
-            UnityEngine.Object.Destroy(ObjData.t_GameObjectsRoot.gameObject);
-            UnityEngine.Object.Destroy(ObjData.t_GameObjectsOther.gameObject);
-
-            _world = null;
-        }
-
         public void SetActive(bool value)
         {
             ObjData.t_GameBoardRoot.gameObject.SetActive(value);
@@ -121,47 +112,15 @@ namespace Client
             ObjData.t_GameObjectsOther.gameObject.SetActive(value);
         }
 
-        #region Layout
-        void LayoutAcidPuddle(int x, int y)
+        private void NewGameBoardObject(string id, Vector2 pos)
         {
-            var go = VExt.NewGameObject(ObjData.p_AcidPuddle, new Vector2(x, y));
+            _presets.LevelTiles.TryGetValue(id, out LevelTilePreset preset);
+            _world.RLNewLevelObject(preset, pos);
         }
 
-        void LayoutFloorObject(int x, int y)
+        void NewPlayerObject(int x, int y)
         {
-            _presets.LevelTiles.TryGetValue(".", out LevelTilePreset preset);
-            _world.RLNewLevelTile(preset, new Vector2(x, y));
-        }
-
-        void LayoutObstacleObject(int x, int y)
-        {
-            var go = VExt.LayoutSpriteObject(
-                ObjData.r_PrefabPhysicsSprite,
-                x, y,
-                "obstacle",
-                ObjData.t_GameBoardRoot,
-                SortingLayer.Wall.ToString(),
-                VExt.NextFromArray(ObjData.p_ObstaclePresets.spritesArray));
-
-            _world.NewEntityWithGameObject(go).Set<ObstacleComponent>();
-        }
-
-        void LayoutExitObject(int x, int y)
-        {
-            var go = VExt.LayoutSpriteObject(
-                ObjData.r_PrefabSprite,
-                x, y,
-                "exit",
-                ObjData.t_GameObjectsRoot,
-                SortingLayer.Object.ToString(),
-                ObjData.p_ExitPointPreset.spriteSingle);
-
-            _world.NewEntityWithGameObject(go).Set<ZoneExitComponent>();
-        }
-
-        void LayoutPlayerObject(int x, int y)
-        {
-            _world.RLCreatePlayer(new Vector2Int(x, y));
+            _world.RLNewLevelObject(_presets.Player, new Vector2(x, y));
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
@@ -236,6 +195,5 @@ namespace Client
 
             emptyCells.Remove(cell);
         }
-        #endregion
     }
 }
