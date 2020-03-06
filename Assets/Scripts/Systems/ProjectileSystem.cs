@@ -5,7 +5,7 @@ namespace Client
 {
     sealed class ProjectileSystem : IEcsRunSystem
     {
-        const float SPEED = 7f;
+        const float SPEED = 15f;
 
         readonly EcsWorld _world = null;
 
