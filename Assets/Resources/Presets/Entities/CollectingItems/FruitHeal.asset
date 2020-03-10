@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a819b54bf864434885569d1dc1b7f0b, type: 3}
-  m_Name: HealFruit
+  m_Name: FruitHeal
   m_EditorClassIdentifier: 
   GameObject: {fileID: 11400000, guid: df27ec7a00b72284fa27cc570b6d0c02, type: 2}
-  Buff: {fileID: 11400000, guid: dadbdfc31285e5943a86cf771fbc94f1, type: 2}
+  Spell: {fileID: 11400000, guid: f72fa2b46cc1fc045b90da3a3ccefb0e, type: 2}

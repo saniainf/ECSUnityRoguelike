@@ -12,5 +12,6 @@ namespace Client
     {
         public List<LevelTilePreset> LevelTiles;
         public PlayerPreset Player;
+        public List<CollectingItemPreset> CollectingItems;
     }
 }

@@ -11,6 +11,6 @@ namespace Client
     class CollectingItemPreset : ScriptableObject
     {
         public GameObjectPreset GameObject;
-        public BuffPreset Buff;
+        public SpellPreset Spell;
     }
 }

@@ -6,22 +6,24 @@ using Random = UnityEngine.Random;
 
 namespace Client
 {
+    public enum StatusEffectType
+    {
+        Eating,
+        Healing,
+        Bleeding,
+        Acid
+    }
+
     public enum SortingLayer
     {
         Floor,
         OnFloor,
-        Wall,
         Object,
         Character,
         Effect,
+        Wall,
         TileOverlay,
         UI
-    }
-
-    public enum SpriteEffect
-    {
-        None,
-        Chop
     }
 
     public enum AnimatorField
