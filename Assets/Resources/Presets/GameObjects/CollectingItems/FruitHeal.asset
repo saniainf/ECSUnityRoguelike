@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: FruitHeal
   m_EditorClassIdentifier: 
   NameID: FruitHeal
-  SortingLayer: 3
-  spritesArray: []
+  SortingLayer: 2
+  spritesArray:
+  - {fileID: 2242210235191273320, guid: e4429db727f96384994f6a5a4a64c32d, type: 3}
   AnimatorController: {fileID: 0}
   SpriteRenderer: 1
   Animator: 0

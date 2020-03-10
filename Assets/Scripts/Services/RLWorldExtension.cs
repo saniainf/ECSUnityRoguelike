@@ -66,5 +66,13 @@ namespace Client
             dataComponent.Buffs = new NPCBuffs();
             return e;
         }
+
+        public static EcsEntity RLNewLevelObject(this EcsWorld world, CollectingItemPreset preset, Vector2 pos)
+        {
+            var go = VExt.NewGameObject(preset.GameObject, pos);
+            var e = world.NewEntityWithGameObject(go, false);
+
+            return e;
+        }
     }
 }

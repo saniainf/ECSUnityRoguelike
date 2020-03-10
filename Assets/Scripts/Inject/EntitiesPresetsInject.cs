@@ -10,6 +10,7 @@ namespace Client
     {
         public Dictionary<string, LevelTilePreset> LevelTiles;
         public PlayerPreset Player;
+        public Dictionary<string, CollectingItemPreset> CollectingItems;
 
         public EntitiesPresetsInject(EntitiesPresets presets)
         {
@@ -21,6 +22,13 @@ namespace Client
             }
 
             Player = presets.Player;
+
+            CollectingItems = new Dictionary<string, CollectingItemPreset>();
+            foreach (var p in presets.CollectingItems)
+            {
+                var key = p.GameObject.NameID;
+                CollectingItems.Add(key, p);
+            }
         }
     }
 }

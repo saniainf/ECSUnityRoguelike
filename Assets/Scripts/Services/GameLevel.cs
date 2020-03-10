@@ -55,7 +55,7 @@ namespace Client
                 {
                     if (roomsArray[i][j] != ' ')
                     {
-                        NewGameBoardObject(rooms.GetNameID('.'), new Vector2(j, i));
+                        NewLevelTile(rooms.GetNameID('.'), new Vector2(j, i));
                     }
                     switch (roomsArray[i][j])
                     {
@@ -63,16 +63,16 @@ namespace Client
                             emptyCells.Add(new Vector2Int(j, i));
                             break;
                         case '#':
-                            NewGameBoardObject(rooms.GetNameID('#'), new Vector2(j, i));
+                            NewLevelTile(rooms.GetNameID('#'), new Vector2(j, i));
                             break;
                         case 'X':
-                            NewGameBoardObject(rooms.GetNameID('X'), new Vector2(j, i));
+                            NewLevelTile(rooms.GetNameID('X'), new Vector2(j, i));
                             break;
                         case '@':
-                            NewPlayerObject(j, i);
+                            NewPlayer(j, i);
                             break;
                         case 'A':
-                            NewGameBoardObject(rooms.GetNameID('A'), new Vector2(j, i));
+                            NewLevelTile(rooms.GetNameID('A'), new Vector2(j, i));
                             break;
                         default:
                             break;
@@ -86,7 +86,7 @@ namespace Client
 
             for (int i = 0; i < healCount; i++)
             {
-                LayoutHealObject(ref emptyCells);
+                NewFruitHeal(ref emptyCells);
             }
 
             for (int i = 0; i < wallCount; i++)
@@ -112,15 +112,22 @@ namespace Client
             ObjData.t_GameObjectsOther.gameObject.SetActive(value);
         }
 
-        private void NewGameBoardObject(string id, Vector2 pos)
+        private void NewLevelTile(string id, Vector2 pos)
         {
             _presets.LevelTiles.TryGetValue(id, out LevelTilePreset preset);
             _world.RLNewLevelObject(preset, pos);
         }
 
-        void NewPlayerObject(int x, int y)
+        void NewPlayer(int x, int y)
         {
             _world.RLNewLevelObject(_presets.Player, new Vector2(x, y));
+        }
+
+        void NewFruitHeal(ref List<Vector2Int> emptyCells)
+        {
+            var pos = VExt.NextFromList(emptyCells);
+            _presets.CollectingItems.TryGetValue("FruitHeal", out CollectingItemPreset preset);
+            _world.RLNewLevelObject(preset, pos);
         }
 
         void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
