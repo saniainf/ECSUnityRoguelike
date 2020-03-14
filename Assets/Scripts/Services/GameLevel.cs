@@ -81,7 +81,7 @@ namespace Client
 
             for (int i = 0; i < boostHPCount; i++)
             {
-                LayoutBoostHPObject(ref emptyCells);
+                //LayoutBoostHPObject(ref emptyCells);
             }
 
             for (int i = 0; i < healCount; i++)
@@ -128,45 +128,7 @@ namespace Client
             var pos = VExt.NextFromList(emptyCells);
             _presets.CollectingItems.TryGetValue("FruitHeal", out CollectingItemPreset preset);
             _world.RLNewLevelObject(preset, pos);
-        }
-
-        void LayoutBoostHPObject(ref List<Vector2Int> emptyCells)
-        {
-            var cell = VExt.NextFromList(emptyCells);
-
-            var go = VExt.LayoutSpriteObject(
-                ObjData.r_PrefabSprite,
-                cell.x, cell.y,
-                "boostHP",
-                ObjData.t_GameObjectsRoot,
-                SortingLayer.Object.ToString(), ObjData.p_BoostHPItemPreset.Sprite);
-
-            _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
-            goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
-            collectItemComponent.CollectItem = new CollectItemBoostHP(ObjData.p_BoostHPItemPreset.Value);
-
-            emptyCells.Remove(cell);
-        }
-
-        void LayoutHealObject(ref List<Vector2Int> emptyCells)
-        {
-            var cell = VExt.NextFromList(emptyCells);
-
-            var go = VExt.LayoutSpriteObject(
-                ObjData.r_PrefabSprite,
-                cell.x, cell.y,
-                "heal",
-                ObjData.t_GameObjectsRoot,
-                SortingLayer.Object.ToString(),
-                ObjData.p_HealItemPreset.Sprite);
-
-            _world.NewEntityWith(out GameObjectComponent goComponent, out CollectItemComponent collectItemComponent);
-            goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
-            collectItemComponent.CollectItem = new CollectItemHeal(ObjData.p_HealItemPreset.Value);
-
-            emptyCells.Remove(cell);
+            emptyCells.Remove(pos);
         }
 
         void LayoutWallObject(ref List<Vector2Int> emptyCells)
@@ -184,10 +146,10 @@ namespace Client
             var e = _world.NewEntityWith(out GameObjectComponent goComponent, out WallComponent _);
 
             goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
-            goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
+            goComponent.GO = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GO.NPCNameText.text = e.GetInternalId().ToString();
 
-            var dataComponent = e.Set<DataSheetComponent>();
+            var dataComponent = e.Set<NPCDataSheetComponent>();
             dataComponent.Stats.MaxHealthPoint = UnityEngine.Random.Range(minWallHP, maxWallHP + 1);
             dataComponent.Stats.HealthPoint = dataComponent.Stats.MaxHealthPoint;
 

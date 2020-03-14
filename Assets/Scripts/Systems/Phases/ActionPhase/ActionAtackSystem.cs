@@ -11,7 +11,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        EcsFilter<ActionAtackComponent, GameObjectComponent, DataSheetComponent> _atackEntities = null;
+        EcsFilter<ActionAtackComponent, GameObjectComponent, NPCDataSheetComponent> _atackEntities = null;
 
         private float atackTime = 0.5f;
 
@@ -31,7 +31,7 @@ namespace Client
                     c.Animation = AnimatorField.AnimationAtack;
                 }
 
-                if (c1.Run && !c1.OnAtack && c2.GObj.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
+                if (c1.Run && !c1.OnAtack && c2.GO.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
                 {
                     c1.OnAtack = true;
                     if (c1.PrimaryOrSecondaryWeapon)
@@ -46,16 +46,16 @@ namespace Client
                     {
                         var go = VExt.LayoutSpriteObject(
                             ObjData.r_PrefabPhysicsSprite,
-                            c2.GObj.Rigidbody.position,
+                            c2.GO.Rigidbody.position,
                             ObjData.t_GameObjectsOther,
                             SortingLayer.Effect.ToString(),
                             c3.SecondaryWeapon.ProjectileSprite);
 
                         _world.NewEntityWith(out GameObjectComponent goComponent, out ProjectileComponent projectileComponent);
                         goComponent.Transform = go.transform;
-                        goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+                        goComponent.GO = go.GetComponent<PrefabComponentsShortcut>();
 
-                        projectileComponent.StartPosition = c2.GObj.Rigidbody.position;
+                        projectileComponent.StartPosition = c2.GO.Rigidbody.position;
                         projectileComponent.GoalPosition = c1.TargetPosition;
                         projectileComponent.Caster = e;
                         projectileComponent.Target = c1.Target;
@@ -63,7 +63,7 @@ namespace Client
                     }
                 }
 
-                if (c1.Run && c1.OnAtack && !c2.GObj.Animator.GetBool(AnimatorField.ActionRun.ToString()))
+                if (c1.Run && c1.OnAtack && !c2.GO.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
                     e.Unset<ActionAtackComponent>();
                 }

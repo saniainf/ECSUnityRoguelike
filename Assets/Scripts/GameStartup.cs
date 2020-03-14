@@ -30,6 +30,7 @@ namespace Client
             _systems
                 //.Add(new TestsSystem())
                 .Add(new ProjectileSystem())
+
                 .Add(new QueueSystem())
                 .Add(new PhaseManagerSystem())
                 .Add(new NextTurnSystem())
@@ -44,7 +45,6 @@ namespace Client
                 .Add(new ActionAnimationSystem())
                 .Add(new EnvironmentPhaseSystem())
                 .Add(new ModificationPhaseSystem())
-                .Add(new CollectSystem())
                 .Add(new DamageSystem())
                 .Add(new AppearanceSystem())
                 .Add(new GameOverSystem())

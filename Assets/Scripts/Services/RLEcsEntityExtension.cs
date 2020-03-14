@@ -15,14 +15,14 @@ namespace Client
 
         public static void RLSetHealth(this EcsEntity entity, int value)
         {
-            var c = entity.Get<DataSheetComponent>();
+            var c = entity.Get<NPCDataSheetComponent>();
             if (c != null)
                 c.Stats.HealthPoint = Mathf.Min(value, c.Stats.MaxHealthPoint);
         }
 
         public static void RLSetMaxHealth(this EcsEntity entity, int value)
         {
-            var c = entity.Get<DataSheetComponent>();
+            var c = entity.Get<NPCDataSheetComponent>();
             if (c != null)
                 c.Stats.MaxHealthPoint = value;
         }
@@ -30,7 +30,7 @@ namespace Client
         public static int RLGetHealth(this EcsEntity entity)
         {
             int value = 0;
-            var c = entity.Get<DataSheetComponent>();
+            var c = entity.Get<NPCDataSheetComponent>();
             if (c != null)
                 value = c.Stats.HealthPoint;
             return value;
@@ -39,7 +39,7 @@ namespace Client
         public static int RLGetMaxHealth(this EcsEntity entity)
         {
             int value = 0;
-            var c = entity.Get<DataSheetComponent>();
+            var c = entity.Get<NPCDataSheetComponent>();
             if (c != null)
                 value = c.Stats.MaxHealthPoint;
             return value;
@@ -47,19 +47,21 @@ namespace Client
 
         public static void RLApplyDamage(this EcsEntity entity, int value)
         {
-            var c = entity.Get<DataSheetComponent>();
+            var c = entity.Get<NPCDataSheetComponent>();
             if (c != null)
                 c.Stats.HealthPoint -= value;
         }
 
-        public static Buff RLApplyBuff(this EcsEntity entity, BuffPreset preset)
+        public static void RLApplySpell(this EcsEntity entity, SpellPreset preset)
         {
-            var c = entity.Get<DataSheetComponent>();
+            if (preset.StatusEffect != null)
+                entity.RLApplyStatusEffect(preset.StatusEffect);
+        }
 
-            var buff = new Buff() { BuffType = preset.BuffType, Amount = preset.Amount };
-            c.Buffs.Buffs.Add(buff);
-
-            return buff;
+        public static void RLApplyStatusEffect(this EcsEntity entity, StatusEffectPreset preset)
+        {
+            var data = entity.Get<NPCDataSheetComponent>();
+            data.StatusEffects.Add(new StatusEffect { EffectType = preset.StatusType, Value = preset.Value, Time = preset.Time });
         }
     }
 }

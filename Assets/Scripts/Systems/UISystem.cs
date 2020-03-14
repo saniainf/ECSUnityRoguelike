@@ -13,7 +13,7 @@ namespace Client
         //UNDONE ui
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerDataEntities = null;
+        readonly EcsFilter<NPCDataSheetComponent, PlayerComponent> _playerDataEntities = null;
         readonly WorldStatus _worldStatus = null;
 
         readonly GameObject canvasPrefab = Resources.Load<GameObject>("Prefabs/UI/UICanvas");

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EatingSmall
   m_EditorClassIdentifier: 
   StatusType: 0
-  Value: 3
-  Turn: 3
+  Value: 1
+  Time: 3

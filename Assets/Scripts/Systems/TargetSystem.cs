@@ -11,7 +11,7 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<InputPhaseComponent, TurnComponent, PlayerComponent> _inputPlayerEntities = null;
-        readonly EcsFilter<GameObjectComponent, DataSheetComponent>.Exclude<PlayerComponent> _collisionEntities = null;
+        readonly EcsFilter<GameObjectComponent, NPCDataSheetComponent>.Exclude<PlayerComponent> _collisionEntities = null;
         readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
         readonly EcsFilter<TargetTileComponent> _targetTiles = null;
 
@@ -66,7 +66,7 @@ namespace Client
 
                 _world.NewEntityWith(out GameObjectComponent goComponent, out TargetTileComponent targetTile);
                 goComponent.Transform = go.transform;
-                goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+                goComponent.GO = go.GetComponent<PrefabComponentsShortcut>();
 
                 SetupTargetTile(target, ref goComponent, ref targetTile);
             }
@@ -79,7 +79,7 @@ namespace Client
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
                 var c1 = _obstacleEntities.Get1[i];
 
-                if (c1.GObj.Collider.OverlapPoint(goalPosition))
+                if (c1.GO.Collider.OverlapPoint(goalPosition))
                 {
                     return true;
                 }
@@ -101,9 +101,9 @@ namespace Client
                     var cc1 = _collisionEntities.Get1[j];
                     var ce = _collisionEntities.Entities[j];
 
-                    if (cc1.GObj.Collider.OverlapPoint(target))
+                    if (cc1.GO.Collider.OverlapPoint(target))
                     {
-                        var playerColider = pgoc.GObj.Collider;
+                        var playerColider = pgoc.GO.Collider;
                         RaycastHit2D[] hit = new RaycastHit2D[1];
 
                         var count = playerColider.Raycast(target - playerPoint, hit);
@@ -113,17 +113,17 @@ namespace Client
                             if ((target - playerPoint).sqrMagnitude == 1.0f)
                             {
                                 Debug.DrawLine(playerPoint, target, Color.red, 1f);
-                                goc.GObj.SpriteRenderer.color = Color.red;
+                                goc.GO.SpriteRenderer.color = Color.red;
                                 targetTile.Target = ce;
                                 targetTile.TargetPos = target;
                                 targetTile.AtackType = AtackType.Melee;
                             }
                             else
                             {
-                                if (hit[0].collider == cc1.GObj.Collider)
+                                if (hit[0].collider == cc1.GO.Collider)
                                 {
                                     Debug.DrawLine(playerPoint, target, Color.yellow, 1f);
-                                    goc.GObj.SpriteRenderer.color = Color.yellow;
+                                    goc.GO.SpriteRenderer.color = Color.yellow;
                                     targetTile.Target = ce;
                                     targetTile.TargetPos = target;
                                     targetTile.AtackType = AtackType.Range;

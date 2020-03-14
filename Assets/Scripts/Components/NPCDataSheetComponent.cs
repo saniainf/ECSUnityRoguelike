@@ -1,20 +1,21 @@
 using Leopotam.Ecs;
+using System.Collections.Generic;
 
 namespace Client
 {
-    sealed class DataSheetComponent : IEcsAutoReset
+    sealed class NPCDataSheetComponent : IEcsAutoReset
     {
         public NPCStats Stats;
 
         public NPCWeapon PrimaryWeapon;
         public NPCWeapon SecondaryWeapon;
-        public NPCBuffs Buffs;
+        public List<StatusEffect> StatusEffects;
 
         void IEcsAutoReset.Reset()
         {
             PrimaryWeapon = null;
             SecondaryWeapon = null;
-            Buffs = null;
+            StatusEffects = null;
         }
     }
 }

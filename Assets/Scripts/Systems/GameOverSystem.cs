@@ -12,8 +12,8 @@ namespace Client
         readonly EcsWorld _world = null;
         readonly WorldStatus _worldStatus = null;
 
-        readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
-        readonly EcsFilter<DataSheetComponent> _dataSheetEntities = null;
+        readonly EcsFilter<NPCDataSheetComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<NPCDataSheetComponent> _dataSheetEntities = null;
 
 
         void IEcsRunSystem.Run()

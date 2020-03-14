@@ -6,11 +6,11 @@ namespace Client
     sealed class GameObjectComponent : IEcsAutoReset
     {
         public Transform Transform = null;
-        public PrefabComponentsShortcut GObj = null;
+        public PrefabComponentsShortcut GO = null;
 
         void IEcsAutoReset.Reset()
         {
-            GObj = null;
+            GO = null;
             Transform = null;
         }
     }

@@ -36,7 +36,7 @@ namespace Client
 
                     Vector2 checkPoint = cgo.Transform.position;
                     checkPoint.x = cgo.Transform.position.x - 1;
-                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
+                    if (pc1.GO.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
                         target = pe;
@@ -45,7 +45,7 @@ namespace Client
                     }
 
                     checkPoint.x = cgo.Transform.position.x + 1;
-                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
+                    if (pc1.GO.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
                         target = pe;
@@ -55,7 +55,7 @@ namespace Client
 
                     checkPoint = cgo.Transform.position;
                     checkPoint.y = cgo.Transform.position.y + 1;
-                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
+                    if (pc1.GO.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
                         target = pe;
@@ -64,7 +64,7 @@ namespace Client
                     }
 
                     checkPoint.y = cgo.Transform.position.y - 1;
-                    if (pc1.GObj.Collider.OverlapPoint(checkPoint))
+                    if (pc1.GO.Collider.OverlapPoint(checkPoint))
                     {
                         goalPosition = checkPoint;
                         target = pe;

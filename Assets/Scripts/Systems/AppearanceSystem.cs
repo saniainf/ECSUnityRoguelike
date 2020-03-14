@@ -11,7 +11,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<GameObjectComponent, DataSheetComponent> _aspectEntities = null;
+        readonly EcsFilter<GameObjectComponent, NPCDataSheetComponent> _aspectEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -20,7 +20,7 @@ namespace Client
                 var c1 = _aspectEntities.Get1[i];
                 var c2 = _aspectEntities.Get2[i];
 
-                c1.GObj.Animator.SetBool(AnimatorField.Damaged.ToString(), (c2.Stats.MaxHealthPoint != c2.Stats.HealthPoint));
+                c1.GO.Animator.SetBool(AnimatorField.Damaged.ToString(), (c2.Stats.MaxHealthPoint != c2.Stats.HealthPoint));
             }
         }
     }

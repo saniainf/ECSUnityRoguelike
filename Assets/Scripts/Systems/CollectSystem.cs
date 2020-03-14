@@ -10,7 +10,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<GameObjectComponent, DataSheetComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<GameObjectComponent, NPCDataSheetComponent, PlayerComponent> _playerEntities = null;
         readonly EcsFilter<GameObjectComponent, CollectItemComponent> _collectItemEntities = null;
 
         void IEcsRunSystem.Run()
@@ -27,9 +27,9 @@ namespace Client
                     var cc1 = _collectItemEntities.Get1[j];
                     var cc2 = _collectItemEntities.Get2[j];
 
-                    if (pc1.GObj.Collider.OverlapPoint(cc1.Transform.position))
+                    if (pc1.GO.Collider.OverlapPoint(cc1.Transform.position))
                     {
-                        cc2.CollectItem.OnCollect(pe);
+                        //cc2.CollectItem.OnCollect(pe);
                         ce.RLDestoryGO();
                     }
                 }

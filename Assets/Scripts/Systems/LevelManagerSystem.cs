@@ -11,7 +11,7 @@ namespace Client
         readonly WorldStatus _worldStatus = null;
         readonly EntitiesPresetsInject _presets = null;
 
-        readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<NPCDataSheetComponent, PlayerComponent> _playerEntities = null;
         readonly EcsFilter<GameObjectComponent>.Exclude<PlayerComponent> _transformEntities = null;
 
         private float loadLevelTime = 2f;

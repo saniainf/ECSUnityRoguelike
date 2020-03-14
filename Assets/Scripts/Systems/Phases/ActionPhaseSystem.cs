@@ -3,10 +3,6 @@ using UnityEngine;
 
 namespace Client
 {
-    /// <summary>
-    /// фаза выполнения команды ввода
-    /// </summary>
-
     sealed class ActionPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
@@ -17,9 +13,6 @@ namespace Client
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
         readonly EcsFilter<ActionAtackComponent> _atackEntities = null;
         readonly EcsFilter<ProjectileComponent> _projectileEntities = null;
-
-        readonly EcsFilter<GameObjectComponent, DataSheetComponent> _collisionEntities = null;
-        readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
 
         void IEcsRunSystem.Run()
         {

@@ -6,7 +6,7 @@ namespace Client
     {
         readonly EcsWorld _world = null;
 
-        readonly EcsFilter<ModificationPhaseComponent, TurnComponent, DataSheetComponent> _modificationEntities = null;
+        readonly EcsFilter<ModificationPhaseComponent, NPCDataSheetComponent> _modificationEntities = null;
 
         void IEcsRunSystem.Run()
         {
@@ -14,36 +14,33 @@ namespace Client
             {
                 var e = _modificationEntities.Entities[i];
                 var c1 = _modificationEntities.Get1[i];
-                var c3 = _modificationEntities.Get3[i];
+                var c2 = _modificationEntities.Get2[i];
 
                 if (!c1.Run)
                 {
                     c1.Run = true;
                     c1.PhaseEnd = true;
 
-                    if (c3.Buffs == null)
-                        continue;
-
-                    foreach (var j in c3.Buffs.Buffs)
+                    foreach (var j in c2.StatusEffects)
                     {
-                        switch (j.BuffType)
+                        switch (j.EffectType)
                         {
-                            case BuffType.Heal:
-                                e.RLSetHealth(e.RLGetHealth() + j.Amount);
+                            case StatusEffectType.Eating:
+                                e.RLSetHealth(e.RLGetHealth() + j.Value);
+                                j.Time -= 1;
                                 break;
-                            case BuffType.Damage:
-                                _world.NewEntityWith(out DamageComponent damage);
-                                damage.target = e;
-                                damage.damageValue = j.Amount;
+                            case StatusEffectType.Healing:
                                 break;
-                            case BuffType.DamageResist:
+                            case StatusEffectType.Bleeding:
                                 break;
-                            case BuffType.AtackDamage:
+                            case StatusEffectType.Acid:
                                 break;
                             default:
                                 break;
                         }
                     }
+
+                    c2.StatusEffects.RemoveAll(effect => effect.Time <= 0);
                 }
             }
         }

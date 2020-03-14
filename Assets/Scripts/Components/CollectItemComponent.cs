@@ -9,11 +9,17 @@ namespace Client
 {
     class CollectItemComponent : IEcsAutoReset
     {
-        public ICollectItem CollectItem;
+        /*
+         * может быть 
+         * item use
+         * item
+         * spell
+         * */
+        public SpellPreset Spell;
 
         void IEcsAutoReset.Reset()
         {
-            CollectItem = null;
+            Spell = null;
         }
     }
 }

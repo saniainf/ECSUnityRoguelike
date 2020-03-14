@@ -14,7 +14,7 @@ namespace Client
 
         readonly EcsFilter<ActionMoveComponent, TurnComponent, GameObjectComponent> _moveEntities = null;
 
-        readonly EcsFilter<GameObjectComponent, DataSheetComponent> _collisionEntities = null;
+        readonly EcsFilter<GameObjectComponent, NPCDataSheetComponent> _collisionEntities = null;
         readonly EcsFilter<GameObjectComponent, ObstacleComponent> _obstacleEntities = null;
 
         void IEcsRunSystem.Run()
@@ -52,19 +52,19 @@ namespace Client
 
                 if (!c1.Run)
                 {
-                    c1.StartPosition = c3.GObj.Rigidbody.position;
+                    c1.StartPosition = c3.GO.Rigidbody.position;
                     c1.Run = true;
                 }
 
                 if (c1.Run)
                 {
-                    var nextPosition = Vector2.MoveTowards(c3.GObj.Rigidbody.position, c1.GoalPosition, SPEED * Time.deltaTime);
-                    c3.GObj.Rigidbody.MovePosition(nextPosition);
+                    var nextPosition = Vector2.MoveTowards(c3.GO.Rigidbody.position, c1.GoalPosition, SPEED * Time.deltaTime);
+                    c3.GO.Rigidbody.MovePosition(nextPosition);
 
-                    float sqrDistanceToGoal = (c3.GObj.Rigidbody.position - c1.GoalPosition).sqrMagnitude;
+                    float sqrDistanceToGoal = (c3.GO.Rigidbody.position - c1.GoalPosition).sqrMagnitude;
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
-                        c3.GObj.Rigidbody.position = c1.GoalPosition;
+                        c3.GO.Rigidbody.position = c1.GoalPosition;
 
                         e.Unset<ActionMoveComponent>();
                     }
@@ -79,7 +79,7 @@ namespace Client
                 ref var wallEntity = ref _obstacleEntities.Entities[i];
                 var c1 = _obstacleEntities.Get1[i];
 
-                if (c1.GObj.Collider.OverlapPoint(goalPosition))
+                if (c1.GO.Collider.OverlapPoint(goalPosition))
                 {
                     return true;
                 }
@@ -96,7 +96,7 @@ namespace Client
                 ref var ce = ref _collisionEntities.Entities[i];
                 var c1 = _collisionEntities.Get1[i];
 
-                if (c1.GObj.Collider.OverlapPoint(goalPosition))
+                if (c1.GO.Collider.OverlapPoint(goalPosition))
                 {
                     target = ce;
                     return true;

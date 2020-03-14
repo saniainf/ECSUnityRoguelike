@@ -21,16 +21,16 @@ namespace Client
 
                 if (!c1.Run)
                 {
-                    c1.StartPosition = c2.GObj.Rigidbody.position;
+                    c1.StartPosition = c2.GO.Rigidbody.position;
                     c1.Run = true;
                 }
 
                 if (c1.Run)
                 {
-                    var nextPosition = Vector2.MoveTowards(c2.GObj.Rigidbody.position, c1.GoalPosition, SPEED * Time.deltaTime);
-                    c2.GObj.Rigidbody.MovePosition(nextPosition);
+                    var nextPosition = Vector2.MoveTowards(c2.GO.Rigidbody.position, c1.GoalPosition, SPEED * Time.deltaTime);
+                    c2.GO.Rigidbody.MovePosition(nextPosition);
 
-                    float sqrDistanceToGoal = (c2.GObj.Rigidbody.position - c1.GoalPosition).sqrMagnitude;
+                    float sqrDistanceToGoal = (c2.GO.Rigidbody.position - c1.GoalPosition).sqrMagnitude;
                     if (sqrDistanceToGoal < float.Epsilon)
                     {
                         _world.NewEntityWith(out DamageComponent damage);

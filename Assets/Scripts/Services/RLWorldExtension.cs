@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Leopotam.Ecs;
 using LeopotamGroup.Globals;
+using System.Collections.Generic;
 
 namespace Client
 {
@@ -21,11 +22,11 @@ namespace Client
             var go = VExt.LayoutAnimationObject(ObjData.r_PrefabPhysicsAnimation, position, enemyPreset.PresetName, ObjData.t_GameObjectsRoot, SortingLayer.Character.ToString(), enemyPreset.Animation);
             var e = world.NewEntityWithGameObject(go, true);
             e.Set<EnemyComponent>();
-            var dataComponent = e.Set<DataSheetComponent>();
-            dataComponent.Stats = new NPCStats(enemyPreset);
-            dataComponent.PrimaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
-            dataComponent.SecondaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
-            dataComponent.Buffs = new NPCBuffs();
+            var data = e.Set<NPCDataSheetComponent>();
+            data.Stats = new NPCStats(enemyPreset);
+            data.PrimaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
+            data.SecondaryWeapon = new NPCWeapon(enemyPreset.PrimaryWeaponItem, new WB_DamageOnContact());
+            data.StatusEffects = new List<StatusEffect>();
         }
 
 
@@ -33,10 +34,10 @@ namespace Client
         {
             var e = world.NewEntityWith(out GameObjectComponent goComponent);
             goComponent.Transform = go.transform;
-            goComponent.GObj = go.GetComponent<PrefabComponentsShortcut>();
+            goComponent.GO = go.GetComponent<PrefabComponentsShortcut>();
             if (nameID)
             {
-                goComponent.GObj.NPCNameText.text = e.GetInternalId().ToString();
+                goComponent.GO.NPCNameText.text = e.GetInternalId().ToString();
             }
             return e;
         }
@@ -59,11 +60,11 @@ namespace Client
             var go = VExt.NewGameObject(preset.GameObject, pos);
             var e = world.NewEntityWithGameObject(go, false);
             e.Set<PlayerComponent>();
-            var dataComponent = e.Set<DataSheetComponent>();
-            dataComponent.Stats = Service<NPCDataSheet>.Get().NPCStats;
-            dataComponent.PrimaryWeapon = Service<NPCDataSheet>.Get().PriamaryWeapon;
-            dataComponent.SecondaryWeapon = Service<NPCDataSheet>.Get().SecondaryWeapon;
-            dataComponent.Buffs = new NPCBuffs();
+            var data = e.Set<NPCDataSheetComponent>();
+            data.Stats = Service<NPCDataSheet>.Get().NPCStats;
+            data.PrimaryWeapon = Service<NPCDataSheet>.Get().PriamaryWeapon;
+            data.SecondaryWeapon = Service<NPCDataSheet>.Get().SecondaryWeapon;
+            data.StatusEffects = new List<StatusEffect>();
             return e;
         }
 
@@ -71,7 +72,8 @@ namespace Client
         {
             var go = VExt.NewGameObject(preset.GameObject, pos);
             var e = world.NewEntityWithGameObject(go, false);
-
+            var c = e.Set<CollectItemComponent>();
+            c.Spell = preset.Spell;
             return e;
         }
     }

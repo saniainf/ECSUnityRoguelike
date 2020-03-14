@@ -13,8 +13,8 @@ namespace Client
         readonly EcsWorld _world = null;
 
         readonly EcsFilter<TurnComponent> _canTurnEntities = null;
-        readonly EcsFilter<DataSheetComponent, PlayerComponent> _playerEntities = null;
-        readonly EcsFilter<DataSheetComponent, EnemyComponent> _enemyEntities = null;
+        readonly EcsFilter<NPCDataSheetComponent, PlayerComponent> _playerEntities = null;
+        readonly EcsFilter<NPCDataSheetComponent, EnemyComponent> _enemyEntities = null;
 
         void IEcsRunSystem.Run()
         {

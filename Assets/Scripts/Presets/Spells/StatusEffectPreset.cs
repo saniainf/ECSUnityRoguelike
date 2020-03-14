@@ -8,7 +8,7 @@ namespace Client
     public class StatusEffectPreset : ScriptableObject
     {
         public StatusEffectType StatusType;
-        public float Value;
-        public int Turn;
+        public int Value;
+        public int Time;
     }
 }

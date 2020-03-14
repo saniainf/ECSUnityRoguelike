@@ -25,7 +25,7 @@ namespace Client
                 {
                     var zc1 = _zoneExitEntities.Get1[i];
 
-                    if (zc1.GObj.Collider.OverlapPoint(pc1.Transform.position))
+                    if (zc1.GO.Collider.OverlapPoint(pc1.Transform.position))
                     {
                         _worldStatus.GameStatus = GameStatus.LevelEnd;
                     }
