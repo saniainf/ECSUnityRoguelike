@@ -30,10 +30,10 @@ namespace Client
     {
         None,
         Damaged,
-        AnimationAtack,
+        AnimationAttack,
         AnimationTakeDamage,
         ActionRun,
-        ActionOnAtack,
+        ActionOnAttack,
         ActionTime
     }
 
@@ -47,7 +47,7 @@ namespace Client
         GameOver
     }
 
-    public enum AtackType
+    public enum AttackType
     {
         None,
         Melee,

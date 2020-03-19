@@ -6,12 +6,12 @@ namespace Client
     {
         public NPCWeapon Weapon;
 
-        abstract public void OnAtack(EcsEntity caster, EcsEntity target);
+        abstract public void OnAttack(EcsEntity caster, EcsEntity target);
     }
 
     class WeaponEmpty : WeaponBehaviour
     {
-        public override void OnAtack(EcsEntity caster, EcsEntity target)
+        public override void OnAttack(EcsEntity caster, EcsEntity target)
         {
 
         }
@@ -19,9 +19,9 @@ namespace Client
 
     class WB_DamageOnContact : WeaponBehaviour
     {
-        public override void OnAtack(EcsEntity caster, EcsEntity target)
+        public override void OnAttack(EcsEntity caster, EcsEntity target)
         {
-            target.RLApplyDamage(Weapon.Damage);
+            //target.RLApplyDamage(Weapon.Damage);
         }
     }
 }

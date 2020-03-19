@@ -120,7 +120,7 @@ namespace Client
                                 goc.GO.SpriteRenderer.color = Color.red;
                                 targetTile.Target = ce;
                                 targetTile.TargetPos = target;
-                                targetTile.AtackType = AtackType.Melee;
+                                targetTile.AttackType = AttackType.Melee;
                             }
                             else
                             {
@@ -129,7 +129,7 @@ namespace Client
                                     goc.GO.SpriteRenderer.color = Color.yellow;
                                     targetTile.Target = ce;
                                     targetTile.TargetPos = target;
-                                    targetTile.AtackType = AtackType.Range;
+                                    targetTile.AttackType = AttackType.Range;
                                 }
                             }
                         }

@@ -10,6 +10,22 @@ namespace Client
     /// </summary>
     static class RLWorldExtension
     {
+        public static void RLApplyDamage(this EcsWorld world, EcsEntity target, EcsEntity caster, int value)
+        {
+            world.NewEntityWith(out ApplyDamageComponent damage);
+            damage.Target = target;
+            damage.Caster = caster;
+            damage.DamageValue = value;
+        }
+
+        public static void RLApplySpell(this EcsWorld world, EcsEntity target, EcsEntity caster, SpellPreset preset)
+        {
+            world.NewEntityWith(out ApplySpellComponent spell);
+            spell.Target = target;
+            spell.Caster = caster;
+            spell.Spell = preset;
+        }
+
         public static void RLCreateEffect(this EcsWorld world, Vector2 position, EffectPreset effectPreset)
         {
             var go = VExt.LayoutSpriteObject(ObjData.r_PrefabSprite, position, ObjData.t_GameObjectsOther, SortingLayer.Effect.ToString(), effectPreset.spriteSingle);

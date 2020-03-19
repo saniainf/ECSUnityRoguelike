@@ -13,11 +13,11 @@ namespace Client
 
         void IEcsRunSystem.Run()
         {
-            npcTurn();
-            playerTurn();
+            NpcTurn();
+            PlayerTurn();
         }
 
-        void npcTurn()
+        void NpcTurn()
         {
             foreach (var i in _npcEntities)
             {
@@ -32,7 +32,7 @@ namespace Client
             }
         }
 
-        void playerTurn()
+        void PlayerTurn()
         {
             foreach (var i in _playerEntities)
             {
@@ -54,7 +54,7 @@ namespace Client
                         if (pc3.GO.Collider.OverlapPoint(cc1.Transform.position))
                         {
                             if (cc2.Spell != null)
-                                pe.RLApplySpell(cc2.Spell);
+                                _world.RLApplySpell(pe, ce, cc2.Spell);
                             ce.RLDestoryGO();
                         }
                     }

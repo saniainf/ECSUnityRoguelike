@@ -45,23 +45,16 @@ namespace Client
             return value;
         }
 
-        public static void RLApplyDamage(this EcsEntity entity, int value)
-        {
-            var c = entity.Get<NPCDataSheetComponent>();
-            if (c != null)
-                c.Stats.HealthPoint -= value;
-        }
+        //public static void RLApplySpell(this EcsEntity entity, SpellPreset preset)
+        //{
+        //    if (preset.StatusEffect != null)
+        //        entity.RLApplyStatusEffect(preset.StatusEffect);
+        //}
 
-        public static void RLApplySpell(this EcsEntity entity, SpellPreset preset)
-        {
-            if (preset.StatusEffect != null)
-                entity.RLApplyStatusEffect(preset.StatusEffect);
-        }
-
-        public static void RLApplyStatusEffect(this EcsEntity entity, StatusEffectPreset preset)
-        {
-            var data = entity.Get<NPCDataSheetComponent>();
-            data.StatusEffects.Add(new StatusEffect { EffectType = preset.StatusType, Value = preset.Value, Time = preset.Time });
-        }
+        //public static void RLApplyStatusEffect(this EcsEntity entity, StatusEffectPreset preset)
+        //{
+        //    var data = entity.Get<NPCDataSheetComponent>();
+        //    data.StatusEffects.Add(new StatusEffect { EffectType = preset.StatusType, Value = preset.Value, Time = preset.Time });
+        //}
     }
 }

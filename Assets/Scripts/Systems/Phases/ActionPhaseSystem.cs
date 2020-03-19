@@ -11,7 +11,7 @@ namespace Client
 
         readonly EcsFilter<ActionMoveComponent> _moveEntities = null;
         readonly EcsFilter<ActionAnimationComponent> _animationEntities = null;
-        readonly EcsFilter<ActionAtackComponent> _atackEntities = null;
+        readonly EcsFilter<ActionAttackComponent> _attackEntities = null;
         readonly EcsFilter<ProjectileComponent> _projectileEntities = null;
 
         void IEcsRunSystem.Run()
@@ -28,7 +28,7 @@ namespace Client
                 }
             }
 
-            if (_moveEntities.IsEmpty() && _animationEntities.IsEmpty() && _atackEntities.IsEmpty() && _projectileEntities.IsEmpty())
+            if (_moveEntities.IsEmpty() && _animationEntities.IsEmpty() && _attackEntities.IsEmpty() && _projectileEntities.IsEmpty())
             {
                 foreach (var i in _actionPhaseEntities)
                 {

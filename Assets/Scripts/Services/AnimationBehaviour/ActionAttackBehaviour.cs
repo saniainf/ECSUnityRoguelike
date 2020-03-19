@@ -3,27 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionAtackBehaviour : StateMachineBehaviour
+public class ActionAttackBehaviour : StateMachineBehaviour
 {
-    private bool onAtack = false;
+    private bool onAttack = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        onAtack = false;
+        onAttack = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!onAtack && Math.Round(stateInfo.normalizedTime, 1) == 0.5f)
+        if (!onAttack && Math.Round(stateInfo.normalizedTime, 1) == 0.5f)
         {
-            onAtack = true;
-            animator.SetBool("ActionOnAtack", true);
+            onAttack = true;
+            animator.SetBool("ActionOnAttack", true);
         }
-        else if (onAtack)
+        else if (onAttack)
         {
-            animator.SetBool("ActionOnAtack", false);
+            animator.SetBool("ActionOnAttack", false);
         }
     }
 

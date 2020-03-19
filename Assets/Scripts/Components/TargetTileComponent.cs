@@ -7,13 +7,13 @@ namespace Client
     {
         public EcsEntity Target = EcsEntity.Null;
         public Vector2 TargetPos = Vector2.zero;
-        public AtackType AtackType = AtackType.None;
+        public AttackType AttackType = AttackType.None;
 
         void IEcsAutoReset.Reset()
         {
             Target = EcsEntity.Null;
             TargetPos = Vector2.zero;
-            AtackType = AtackType.None;
+            AttackType = AttackType.None;
         }
     }
 }

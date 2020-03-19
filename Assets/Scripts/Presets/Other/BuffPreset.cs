@@ -9,7 +9,7 @@ namespace Client
         Heal,
         Damage,
         DamageResist,
-        AtackDamage
+        AttackDamage
     }
 
     [CreateAssetMenu(menuName = "EcsRoguelike/Presets/Buff", fileName = "BuffPreset")]
@@ -34,8 +34,8 @@ namespace Client
         [Space]
         public bool Attacks;
         public int AttacksAmount;
-        public bool DecreaseOnAtack;
-        public int DecreaseOnAtackAmount;
+        public bool DecreaseOnAttack;
+        public int DecreaseOnAttackAmount;
     }
 
 }

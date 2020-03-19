@@ -82,12 +82,12 @@ namespace Client
         }
     }
 
-    class InputComAtackMelee : IInputCommand
+    class InputComAttackMelee : IInputCommand
     {
         EcsEntity target;
         Vector2 targetPosition;
 
-        public InputComAtackMelee(EcsEntity target, Vector2 targetPos)
+        public InputComAttackMelee(EcsEntity target, Vector2 targetPos)
         {
             this.target = target;
             targetPosition = targetPos;
@@ -95,19 +95,19 @@ namespace Client
 
         void IInputCommand.Execute(EcsEntity entity)
         {
-            var c = entity.Set<ActionAtackComponent>();
+            var c = entity.Set<ActionAttackComponent>();
             c.Target = target;
             c.TargetPosition = targetPosition;
             c.PrimaryOrSecondaryWeapon = true;
         }
     }
 
-    class InputComAtackRange : IInputCommand
+    class InputComAttackRange : IInputCommand
     {
         EcsEntity target;
         Vector2 targetPosition;
 
-        public InputComAtackRange(EcsEntity target, Vector2 targetPos)
+        public InputComAttackRange(EcsEntity target, Vector2 targetPos)
         {
             this.target = target;
             targetPosition = targetPos;
@@ -115,7 +115,7 @@ namespace Client
 
         void IInputCommand.Execute(EcsEntity entity)
         {
-            var c = entity.Set<ActionAtackComponent>();
+            var c = entity.Set<ActionAttackComponent>();
             c.Target = target;
             c.TargetPosition = targetPosition;
             c.PrimaryOrSecondaryWeapon = false;

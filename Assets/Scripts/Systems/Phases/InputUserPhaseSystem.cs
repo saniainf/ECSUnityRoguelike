@@ -26,17 +26,17 @@ namespace Client
             {
                 var tc = _targetTiles.Get1[i];
 
-                switch (tc.AtackType)
+                switch (tc.AttackType)
                 {
-                    case AtackType.None:
+                    case AttackType.None:
                         break;
-                    case AtackType.Melee:
+                    case AttackType.Melee:
                         if (Input.GetMouseButtonDown(0))
-                            MeleeAtack(tc);
+                            MeleeAttack(tc);
                         break;
-                    case AtackType.Range:
+                    case AttackType.Range:
                         if (Input.GetMouseButtonDown(1))
-                            RangeAtack(tc);
+                            RangeAttack(tc);
                         break;
                     default:
                         break;
@@ -44,26 +44,26 @@ namespace Client
             }
         }
 
-        void MeleeAtack(TargetTileComponent target)
+        void MeleeAttack(TargetTileComponent target)
         {
             foreach (var i in _inputPhaseEntities)
             {
                 var ic1 = _inputPhaseEntities.Get1[i];
                 var ic2 = _inputPhaseEntities.Get2[i];
 
-                ic2.InputCommand = new InputComAtackMelee(target.Target, target.TargetPos);
+                ic2.InputCommand = new InputComAttackMelee(target.Target, target.TargetPos);
                 ic1.PhaseEnd = true;
             }
         }
 
-        void RangeAtack(TargetTileComponent target)
+        void RangeAttack(TargetTileComponent target)
         {
             foreach (var i in _inputPhaseEntities)
             {
                 var ic1 = _inputPhaseEntities.Get1[i];
                 var ic2 = _inputPhaseEntities.Get2[i];
 
-                ic2.InputCommand = new InputComAtackRange(target.Target, target.TargetPos);
+                ic2.InputCommand = new InputComAttackRange(target.Target, target.TargetPos);
                 ic1.PhaseEnd = true;
             }
         }

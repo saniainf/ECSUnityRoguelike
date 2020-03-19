@@ -41,7 +41,7 @@ namespace Client
                     // TODO проверка на атаку при движении
                     if (true)
                     {
-                        var c = e.Set<ActionAtackComponent>();
+                        var c = e.Set<ActionAttackComponent>();
                         c.Target = target;
                         c.TargetPosition = c1.GoalPosition;
                     }

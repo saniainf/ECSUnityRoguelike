@@ -7,40 +7,37 @@ namespace Client
     /// управление атакой чара в фазу действия
     /// </summary>
 
-    sealed class ActionAtackSystem : IEcsRunSystem
+    sealed class ActionAttackSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
 
-        EcsFilter<ActionAtackComponent, GameObjectComponent, NPCDataSheetComponent> _atackEntities = null;
+        EcsFilter<ActionAttackComponent, GameObjectComponent, NPCDataSheetComponent> _attackingEntities = null;
 
-        private float atackTime = 0.5f;
+        private float attackTime = 0.5f;
 
         void IEcsRunSystem.Run()
         {
-            foreach (var i in _atackEntities)
+            foreach (var i in _attackingEntities)
             {
-                ref var e = ref _atackEntities.Entities[i];
-                var c1 = _atackEntities.Get1[i];
-                var c2 = _atackEntities.Get2[i];
-                var c3 = _atackEntities.Get3[i];
+                ref var e = ref _attackingEntities.Entities[i];
+                var c1 = _attackingEntities.Get1[i];
+                var c2 = _attackingEntities.Get2[i];
+                var c3 = _attackingEntities.Get3[i];
 
                 if (!c1.Run)
                 {
                     c1.Run = true;
                     var c = e.Set<ActionAnimationComponent>();
-                    c.Animation = AnimatorField.AnimationAtack;
+                    c.Animation = AnimatorField.AnimationAttack;
                 }
 
-                if (c1.Run && !c1.OnAtack && c2.GO.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > atackTime)
+                if (c1.Run && !c1.OnAttack && c2.GO.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > attackTime)
                 {
-                    c1.OnAtack = true;
+                    c1.OnAttack = true;
                     if (c1.PrimaryOrSecondaryWeapon)
                     {
                         _world.RLCreateEffect(c1.TargetPosition, c3.PrimaryWeapon.HitEffect);
-                        _world.NewEntityWith(out DamageComponent damage);
-                        damage.target = c1.Target;
-                        damage.damageValue = c3.PrimaryWeapon.Damage;
-                        //c3.PrimaryWeapon.Behaviour.OnAtack(e, c1.Target);
+                        _world.RLApplyDamage(c1.Target, e, c3.PrimaryWeapon.Damage);
                     }
                     else
                     {
@@ -63,9 +60,9 @@ namespace Client
                     }
                 }
 
-                if (c1.Run && c1.OnAtack && !c2.GO.Animator.GetBool(AnimatorField.ActionRun.ToString()))
+                if (c1.Run && c1.OnAttack && !c2.GO.Animator.GetBool(AnimatorField.ActionRun.ToString()))
                 {
-                    e.Unset<ActionAtackComponent>();
+                    e.Unset<ActionAttackComponent>();
                 }
             }
         }

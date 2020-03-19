@@ -8,14 +8,20 @@ namespace Client
     sealed class DamageSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
-        readonly EcsFilter<DamageComponent> _damageEntities = null;
+        readonly EcsFilter<ApplyDamageComponent> _damageEntities = null;
 
         void IEcsRunSystem.Run()
         {
             foreach (var i in _damageEntities)
             {
                 var c1 = _damageEntities.Get1[i];
-                c1.target.RLApplyDamage(c1.damageValue);
+                var data = c1.Target.Get<NPCDataSheetComponent>();
+
+                if (data != null)
+                {
+                    data.Stats.HealthPoint -= c1.DamageValue;
+                }
+
                 _damageEntities.Entities[i].Destroy();
             }
         }

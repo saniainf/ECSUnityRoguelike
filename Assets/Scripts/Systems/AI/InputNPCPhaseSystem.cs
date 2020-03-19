@@ -26,7 +26,7 @@ namespace Client
                 Vector2 goalPosition = Vector2.zero;
 
                 bool skip = false;
-                bool atackPlayer = false;
+                bool attackPlayer = false;
                 EcsEntity target = EcsEntity.Null;
 
                 foreach (var j in _playerEntities)
@@ -40,7 +40,7 @@ namespace Client
                     {
                         goalPosition = checkPoint;
                         target = pe;
-                        atackPlayer = true;
+                        attackPlayer = true;
                         continue;
                     }
 
@@ -49,7 +49,7 @@ namespace Client
                     {
                         goalPosition = checkPoint;
                         target = pe;
-                        atackPlayer = true;
+                        attackPlayer = true;
                         continue;
                     }
 
@@ -59,7 +59,7 @@ namespace Client
                     {
                         goalPosition = checkPoint;
                         target = pe;
-                        atackPlayer = true;
+                        attackPlayer = true;
                         continue;
                     }
 
@@ -68,26 +68,26 @@ namespace Client
                     {
                         goalPosition = checkPoint;
                         target = pe;
-                        atackPlayer = true;
+                        attackPlayer = true;
                         continue;
                     }
                 }
 
-                if (atackPlayer)
+                if (attackPlayer)
                 {
-                    c2.InputCommand = new InputComAtackMelee(target, goalPosition);
+                    c2.InputCommand = new InputComAttackMelee(target, goalPosition);
                     c1.PhaseEnd = true;
                     continue;
                 }
 
-                if (!atackPlayer && UnityEngine.Random.value < 0.7f)
+                if (!attackPlayer && UnityEngine.Random.value < 0.7f)
                 {
                     c2.InputCommand = new InputComEmpty();
                     c1.PhaseEnd = true;
                     continue;
                 }
 
-                if (!atackPlayer && !skip)
+                if (!attackPlayer && !skip)
                 {
                     float v = 0f;
                     float h = 0f;

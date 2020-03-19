@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Client
 {
-    sealed class ActionAtackComponent : IEcsAutoReset
+    sealed class ActionAttackComponent : IEcsAutoReset
     {
         public bool Run = false;
-        public bool OnAtack = false;
+        public bool OnAttack = false;
 
         public bool PrimaryOrSecondaryWeapon = true;
         public Vector2 TargetPosition = Vector2.zero;
@@ -15,7 +15,7 @@ namespace Client
         void IEcsAutoReset.Reset()
         {
             Run = false;
-            OnAtack = false;
+            OnAttack = false;
             PrimaryOrSecondaryWeapon = true;
 
             TargetPosition = Vector2.zero;
