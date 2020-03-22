@@ -11,6 +11,7 @@ namespace Client
         public Dictionary<string, LevelTilePreset> LevelTiles;
         public PlayerPreset Player;
         public Dictionary<string, CollectingItemPreset> CollectingItems;
+        public Dictionary<string, StatusEffectHandler> StatusEffectHandlers;
 
         public EntitiesPresetsInject(EntitiesPresets presets)
         {
@@ -28,6 +29,13 @@ namespace Client
             {
                 var key = p.GameObject.NameID;
                 CollectingItems.Add(key, p);
+            }
+
+            StatusEffectHandlers = new Dictionary<string, StatusEffectHandler>();
+            foreach (var p in presets.StatusEffectHandlers)
+            {
+                var key = p.EffectType.ToString();
+                StatusEffectHandlers.Add(key, p);
             }
         }
     }

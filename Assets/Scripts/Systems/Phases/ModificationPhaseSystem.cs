@@ -5,6 +5,7 @@ namespace Client
     sealed class ModificationPhaseSystem : IEcsRunSystem
     {
         readonly EcsWorld _world = null;
+        EntitiesPresetsInject _entitiesPresetsInject = null;
 
         readonly EcsFilter<ModificationPhaseComponent, NPCDataSheetComponent> _modificationEntities = null;
 
@@ -23,21 +24,10 @@ namespace Client
 
                     foreach (var j in c2.StatusEffects)
                     {
-                        switch (j.EffectType)
-                        {
-                            case StatusEffectType.Eating:
-                                e.RLSetHealth(e.RLGetHealth() + j.Value);
-                                j.Time -= 1;
-                                break;
-                            case StatusEffectType.Healing:
-                                break;
-                            case StatusEffectType.Bleeding:
-                                break;
-                            case StatusEffectType.Acid:
-                                break;
-                            default:
-                                break;
-                        }
+                        string key = j.EffectType.ToString();
+                        _entitiesPresetsInject.StatusEffectHandlers.TryGetValue(key, out StatusEffectHandler handler);
+                        handler.OnModificatonPhase(e, j);
+                        handler.OnTick(e, j);
                     }
 
                     c2.StatusEffects.RemoveAll(effect => effect.Time <= 0);

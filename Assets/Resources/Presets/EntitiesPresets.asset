@@ -20,3 +20,5 @@ MonoBehaviour:
   Player: {fileID: 11400000, guid: 5c321607d88a1084999a1e608e64b6d9, type: 2}
   CollectingItems:
   - {fileID: 11400000, guid: bd86d9002e661c04d9911eaf09d66ac7, type: 2}
+  StatusEffectHandlers:
+  - {fileID: 11400000, guid: a2fa1284b0e2fb142acf43a2517b94a5, type: 2}
