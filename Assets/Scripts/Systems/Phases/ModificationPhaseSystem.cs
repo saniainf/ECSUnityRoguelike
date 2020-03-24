@@ -27,6 +27,7 @@ namespace Client
                         string key = j.EffectType.ToString();
                         _entitiesPresetsInject.StatusEffectHandlers.TryGetValue(key, out StatusEffectHandler handler);
                         handler.OnModificatonPhase(e, j);
+                        handler.OnModificatonPhase(_world, e, j);
                         handler.OnTick(e, j);
                     }
 

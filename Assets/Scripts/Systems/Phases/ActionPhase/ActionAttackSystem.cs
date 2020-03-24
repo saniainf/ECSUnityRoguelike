@@ -38,6 +38,10 @@ namespace Client
                     {
                         _world.RLCreateEffect(c1.TargetPosition, c3.PrimaryWeapon.HitEffect);
                         _world.RLApplyDamage(c1.Target, e, c3.PrimaryWeapon.Damage);
+                        if (c3.PrimaryWeapon.SpellPreset != null)
+                        {
+                            _world.RLApplySpell(c1.Target, e, c3.PrimaryWeapon.SpellPreset);
+                        }
                     }
                     else
                     {

@@ -13,6 +13,7 @@ namespace Client
         public Sprite ProjectileSprite;
         public EffectPreset HitEffect;
         public WeaponBehaviour Behaviour;
+        public SpellPreset SpellPreset;
 
         public NPCWeapon(WeaponItemObject weaponItem, WeaponBehaviour weaponBehaviour)
         {
@@ -21,6 +22,7 @@ namespace Client
             HitEffect = weaponItem.HitEffect;
             Damage = weaponItem.Damage;
             ProjectileSprite = weaponItem.ProjectileSprite;
+            SpellPreset = weaponItem.SpellPreset;
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Client
         public int Damage;
         public Sprite ProjectileSprite;
         public EffectPreset HitEffect;
+        public SpellPreset SpellPreset;
     }
 }

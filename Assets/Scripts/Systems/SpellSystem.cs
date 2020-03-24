@@ -28,7 +28,8 @@ namespace Client
 
             if (data != null)
             {
-                data.StatusEffects.Add(new StatusEffect { EffectType = preset.StatusType, Value = preset.Value, Time = preset.Time });
+                if (data.StatusEffects != null)
+                    data.StatusEffects.Add(new StatusEffect { EffectType = preset.StatusType, Value = preset.Value, Time = preset.Time });
             }
         }
     }

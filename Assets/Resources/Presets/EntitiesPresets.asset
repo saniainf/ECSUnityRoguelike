@@ -22,3 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bd86d9002e661c04d9911eaf09d66ac7, type: 2}
   StatusEffectHandlers:
   - {fileID: 11400000, guid: a2fa1284b0e2fb142acf43a2517b94a5, type: 2}
+  - {fileID: 11400000, guid: 44bfd43caa4c13849a55a51648a3e5cf, type: 2}

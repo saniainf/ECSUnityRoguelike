@@ -14,6 +14,11 @@ namespace Client
 
         }
 
+        public virtual void OnModificatonPhase(EcsWorld world, EcsEntity entity, StatusEffect effect)
+        {
+
+        }
+
         public virtual void OnTick(EcsEntity entity, StatusEffect effect)
         {
             effect.Time -= 1;
