@@ -31,7 +31,7 @@ namespace Client
                     c.Animation = AnimatorField.AnimationAttack;
                 }
 
-                if (c1.Run && !c1.OnAttack && c2.GO.Animator.GetFloat(AnimatorField.ActionTime.ToString()) > attackTime)
+                if (c1.Run && !c1.OnAttack && c2.GO.AnimatorActionTime > attackTime)
                 {
                     c1.OnAttack = true;
                     if (c1.PrimaryOrSecondaryWeapon)
@@ -64,7 +64,7 @@ namespace Client
                     }
                 }
 
-                if (c1.Run && c1.OnAttack && !c2.GO.Animator.GetBool(AnimatorField.ActionRun.ToString()))
+                if (c1.Run && c1.OnAttack && !c2.GO.AnimatorActionRun)
                 {
                     e.Unset<ActionAttackComponent>();
                 }
